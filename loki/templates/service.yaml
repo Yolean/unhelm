@@ -1,0 +1,24 @@
+---
+# Source: loki/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-loki
+  labels:
+    app: loki
+    chart: loki-0.7.2
+    release: release-name
+    heritage: Tiller
+  annotations:
+    {}
+    
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3100
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+  selector:
+    app: loki
+    release: release-name
