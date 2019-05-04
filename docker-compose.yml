@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+
+  # The origin of many dashboards in prometheus-operator's kube-prometheus
+  kubernetes-mixin:
+    build: ./jsonnet-docker
+    volumes:
+    - ./kubernetes-mixin/:/workspace
+    command:
+    - /bin/sh
+    - -cex
+    - |
+      mkdir -p /workspace
+      git clone --branch v0.1.0 https://github.com/kubernetes-monitoring/kubernetes-mixin /kubernetes-mixin
+      cd /kubernetes-mixin
+      cp LICENSE /workspace/
+      jb install
+      make prometheus_alerts.yaml
+      cp prometheus_alerts.yaml /workspace/
+      make prometheus_rules.yaml
+      cp prometheus_rules.yaml /workspace/
+      make dashboards_out
+      cp -r dashboards_out /workspace/dashboards
+      echo "Done. Now run:"
+      echo "mv kubernetes-mixin kubernetes-mixin.old && docker cp unhelm_kubernetes-mixin_1:/workspace kubernetes-mixin"
