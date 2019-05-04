@@ -2,11 +2,34 @@ version: '2'
 
 services:
 
+  # There are no mounted volumes. We've used docker-compose cp to extract the results.
+
+  helm-charts:
+    build: ./helm-docker
+    command:
+    - /bin/sh
+    - -cex
+    - |
+      mkdir -p /workspace
+      [ ! -d ./charts ] && git clone --depth 1 -b master https://github.com/helm/charts ./charts
+      helm template ./charts/stable/grafana/ --output-dir /workspace
+      helm template ./charts/stable/minio/ --output-dir /workspace
+      echo "Done"
+
+  helm-loki:
+    build: ./helm-docker
+    command:
+    - /bin/sh
+    - -cex
+    - |
+      mkdir -p /workspace
+      [ ! -d ./loki-repo ] && git clone --depth 1 -b master https://github.com/grafana/loki ./loki-repo
+      helm template ./loki-repo/production/helm/loki --output-dir /workspace
+      echo "Done"
+
   # The origin of many dashboards in prometheus-operator's kube-prometheus
   kubernetes-mixin:
     build: ./jsonnet-docker
-    volumes:
-    - ./kubernetes-mixin/:/workspace
     command:
     - /bin/sh
     - -cex
@@ -22,5 +45,4 @@ services:
       cp prometheus_rules.yaml /workspace/
       make dashboards_out
       cp -r dashboards_out /workspace/dashboards
-      echo "Done. Now run:"
-      echo "mv kubernetes-mixin kubernetes-mixin.old && docker cp unhelm_kubernetes-mixin_1:/workspace kubernetes-mixin"
+      echo "Done"
