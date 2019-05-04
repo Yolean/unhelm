@@ -1,8 +1,27 @@
 ---
-# Source: minio/templates/deployment.yaml
+# Source: minio/templates/statefulset.yaml
 
-apiVersion: apps/v1beta2
-kind: Deployment
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-minio-svc
+  labels:
+    app: minio
+    chart: "minio-2.4.13"
+    release: "release-name"
+    heritage: "Tiller"
+spec:
+  clusterIP: None
+  ports:
+    - name: service
+      port: 9000
+      protocol: TCP
+  selector:
+    app: minio
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
 metadata:
   name: release-name-minio
   labels:
@@ -11,11 +30,10 @@ metadata:
     release: release-name
     heritage: Tiller
 spec:
-  strategy:
+  updateStrategy:
     type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 100%
-      maxUnavailable: 0
+  serviceName: release-name-minio-svc
+  replicas: 4
   selector:
     matchLabels:
       app: minio
@@ -29,14 +47,20 @@ spec:
     spec:
       containers:
         - name: minio
-          image: "minio/minio:RELEASE.2019-04-09T01-22-30Z"
+          image: minio/minio:RELEASE.2019-04-09T01-22-30Z
           imagePullPolicy: IfNotPresent
-          command: [ "/bin/sh", 
-          "-ce", 
-          "/usr/bin/docker-entrypoint.sh minio -C /root/.minio/ server /export" ]
+          command: [ "/bin/sh",
+          "-ce",
+          "/usr/bin/docker-entrypoint.sh minio -C /root/.minio/ server
+          http://release-name-minio-0.release-name-minio-svc.default.svc.cluster.local/export
+          http://release-name-minio-1.release-name-minio-svc.default.svc.cluster.local/export
+          http://release-name-minio-2.release-name-minio-svc.default.svc.cluster.local/export
+          http://release-name-minio-3.release-name-minio-svc.default.svc.cluster.local/export" ]
+          
           volumeMounts:
             - name: export
               mountPath: /export
+            
             - name: minio-config-dir
               mountPath: /root/.minio/
           ports:
@@ -65,26 +89,23 @@ spec:
             timeoutSeconds: 1
             successThreshold: 1
             failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              path: /minio/health/ready
-              port: service
-            initialDelaySeconds: 5
-            periodSeconds: 15
-            timeoutSeconds: 1
-            successThreshold: 1
-            failureThreshold: 3
           resources:
             requests:
               cpu: 250m
               memory: 256Mi
             
       volumes:
-        - name: export
-          persistentVolumeClaim:
-            claimName: release-name-minio
         - name: minio-user
           secret:
             secretName: release-name-minio
         - name: minio-config-dir
           emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: export
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Gi
+

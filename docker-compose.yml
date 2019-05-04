@@ -13,7 +13,8 @@ services:
       mkdir -p /workspace
       [ ! -d ./charts ] && git clone --depth 1 -b master https://github.com/helm/charts ./charts
       helm template ./charts/stable/grafana/ --output-dir /workspace
-      helm template ./charts/stable/minio/ --output-dir /workspace
+      helm template ./charts/stable/minio/ --output-dir /workspace \
+        --set "mode=distributed"
       echo "Done"
 
   helm-loki:
