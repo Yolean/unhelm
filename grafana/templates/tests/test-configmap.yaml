@@ -3,16 +3,16 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: release-name-grafana-test
+  name: logs-grafana-test
   labels:
-    app: release-name-grafana
+    app: logs-grafana
     chart: "grafana-3.4.2"
     heritage: "Tiller"
-    release: "release-name"
+    release: "logs"
 data:
   run.sh: |-
     @test "Test Health" {
-      url="http://release-name-grafana/api/health"
+      url="http://logs-grafana/api/health"
 
       code=$(curl -s -o /dev/null -I -w "%{http_code}" $url)
       [ "$code" == "200" ]

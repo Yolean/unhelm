@@ -7,7 +7,7 @@ metadata:
   labels:
     app: grafana
     chart: grafana-3.4.2
-    release: release-name
+    release: logs
     heritage: Tiller
-  name: release-name-grafana-clusterrole
+  name: logs-grafana-clusterrole
 rules: []

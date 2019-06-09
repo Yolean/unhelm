@@ -4,17 +4,17 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: release-name-grafana-clusterrolebinding
+  name: logs-grafana-clusterrolebinding
   labels:
     app: grafana
     chart: grafana-3.4.2
-    release: release-name
+    release: logs
     heritage: Tiller
 subjects:
   - kind: ServiceAccount
-    name: release-name-grafana
+    name: logs-grafana
     namespace: default
 roleRef:
   kind: ClusterRole
-  name: release-name-grafana-clusterrole
+  name: logs-grafana-clusterrole
   apiGroup: rbac.authorization.k8s.io

@@ -4,12 +4,12 @@
 apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: release-name-grafana-test
+  name: logs-grafana-test
   labels:
     app: grafana
     chart: grafana-3.4.2
     heritage: Tiller
-    release: release-name
+    release: logs
 spec:
   allowPrivilegeEscalation: true
   privileged: false

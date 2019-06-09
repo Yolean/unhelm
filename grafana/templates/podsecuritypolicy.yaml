@@ -4,13 +4,13 @@
 apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: release-name-grafana
+  name: logs-grafana
   namespace: default
   labels:
     app: grafana
     chart: grafana-3.4.2
     heritage: Tiller
-    release: release-name
+    release: logs
   annotations:
     seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
     seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'

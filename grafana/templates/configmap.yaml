@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: release-name-grafana
+  name: logs-grafana
   namespace: default
   labels:
     app: grafana
     chart: grafana-3.4.2
-    release: release-name
+    release: logs
     heritage: Tiller
 data:
   grafana.ini: |
