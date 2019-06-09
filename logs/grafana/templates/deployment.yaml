@@ -4,7 +4,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: logs-grafana
-  namespace: default
+  namespace: logs
   labels:
     app: grafana
     chart: grafana-3.4.2
@@ -24,10 +24,10 @@ spec:
         app: grafana
         release: logs
       annotations:
-        checksum/config: a7fbcd1efed511b33891c49d17fd271414dbf815dbc01ef8de0ce0ebdcab598d
+        checksum/config: 290e81c1c0b6b2e2dc372b7ffb69a641c2ffa081850616afacf4ac952ad47fd2
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/secret: 8aa561b702cd1e7a635893f871f8fd60065a3316a229c8b1963e3926fd9359a5
+        checksum/secret: 16907e35660fd01e274e1d74e938ce8d86a87c0458c649b9a57eb0b8f0968d4c
     spec:
       serviceAccountName: logs-grafana
       securityContext:

@@ -4,7 +4,7 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
   name: logs-grafana
-  namespace: default
+  namespace: logs
   labels:
     app: grafana
     chart: grafana-3.4.2
@@ -17,4 +17,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: logs-grafana
-  namespace: default
+  namespace: logs

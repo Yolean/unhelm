@@ -13,7 +13,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: logs-grafana
-    namespace: default
+    namespace: logs
 roleRef:
   kind: ClusterRole
   name: logs-grafana-clusterrole

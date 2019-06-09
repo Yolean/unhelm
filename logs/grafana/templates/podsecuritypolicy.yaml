@@ -5,7 +5,7 @@ apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
   name: logs-grafana
-  namespace: default
+  namespace: logs
   labels:
     app: grafana
     chart: grafana-3.4.2
