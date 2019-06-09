@@ -13,7 +13,7 @@ services:
       mkdir -p /workspace
       cd /workspace
       [ ! -d ./charts ] && git clone --depth 1 -b master https://github.com/helm/charts ./charts
-      helm template ./charts/stable/grafana/ --name logs --output-dir .
+      helm template ./charts/stable/grafana/ --name logs --output-dir ./logs
       helm template ./charts/stable/minio/ --output-dir . \
         --set "mode=distributed"
       echo "Done"
@@ -27,8 +27,8 @@ services:
       mkdir -p /workspace
       cd /workspace
       [ ! -d ./loki-repo ] && git clone --depth 1 -b master https://github.com/grafana/loki ./loki-repo
-      helm template ./loki-repo/production/helm/loki --name logs --output-dir .
-      helm template ./loki-repo/production/helm/promtail --name logs --output-dir .
+      helm template ./loki-repo/production/helm/loki --name logs --output-dir ./logs
+      helm template ./loki-repo/production/helm/promtail --name logs --output-dir ./logs
       echo "Done"
 
   # The origin of many dashboards in prometheus-operator's kube-prometheus
