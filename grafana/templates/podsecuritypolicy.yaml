@@ -5,9 +5,10 @@ apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
   name: release-name-grafana
+  namespace: default
   labels:
     app: grafana
-    chart: grafana-3.3.6
+    chart: grafana-3.4.2
     heritage: Tiller
     release: release-name
   annotations:

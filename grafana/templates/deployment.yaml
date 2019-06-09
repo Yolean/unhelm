@@ -4,9 +4,10 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: release-name-grafana
+  namespace: default
   labels:
     app: grafana
-    chart: grafana-3.3.6
+    chart: grafana-3.4.2
     release: release-name
     heritage: Tiller
 spec:
@@ -23,10 +24,10 @@ spec:
         app: grafana
         release: release-name
       annotations:
-        checksum/config: fb94edf0538ae97e948759212ed4a91dd954c79ca76b9660f62ddf44f7090bd6
+        checksum/config: 8bccdd12427cb58ceb7b051a5e683b762c1a5381e003a63ab37428f610f7869b
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/secret: d81b9b41a218838787248a495e681a3cc90f67400781ec8971f2d5ccddb23b13
+        checksum/secret: 4ebf602cd2207c63ec22c8a8b160625c31eef5b94caae9bf6b5b88ec8b556cde
     spec:
       serviceAccountName: release-name-grafana
       securityContext:
@@ -35,7 +36,7 @@ spec:
         
       containers:
         - name: grafana
-          image: "grafana/grafana:6.1.6"
+          image: "grafana/grafana:6.2.2"
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: config

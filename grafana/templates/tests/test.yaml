@@ -6,7 +6,7 @@ metadata:
   name: release-name-grafana-test
   labels:
     app: release-name-grafana
-    chart: "grafana-3.3.6"
+    chart: "grafana-3.4.2"
     heritage: "Tiller"
     release: "release-name"
   annotations:

@@ -2,7 +2,7 @@ version: '2'
 
 services:
 
-  # There are no mounted volumes. We've used docker-compose cp to extract the results.
+  # There are no mounted volumes. We've used docker cp to extract the results.
 
   helm-charts:
     build: ./helm-docker
@@ -11,9 +11,10 @@ services:
     - -cex
     - |
       mkdir -p /workspace
+      cd /workspace
       [ ! -d ./charts ] && git clone --depth 1 -b master https://github.com/helm/charts ./charts
-      helm template ./charts/stable/grafana/ --output-dir /workspace
-      helm template ./charts/stable/minio/ --output-dir /workspace \
+      helm template ./charts/stable/grafana/ --output-dir .
+      helm template ./charts/stable/minio/ --output-dir . \
         --set "mode=distributed"
       echo "Done"
 
