@@ -1,19 +1,16 @@
 ---
-# Source: loki/templates/service.yaml
+# Source: loki/templates/service-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: release-name-loki
+  name: release-name-loki-headless
   labels:
     app: loki
     chart: loki-0.10.0
     release: release-name
     heritage: Tiller
-  annotations:
-    {}
-    
 spec:
-  type: ClusterIP
+  clusterIP: None
   ports:
     - port: 3100
       protocol: TCP
