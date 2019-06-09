@@ -3,11 +3,11 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: release-name-loki
+  name: logs-loki
   labels:
     app: loki
     chart: loki-0.10.0
-    release: release-name
+    release: logs
     heritage: Tiller
   annotations:
     {}
@@ -18,8 +18,8 @@ spec:
   selector:
     matchLabels:
       app: loki
-      release: release-name
-  serviceName: release-name-loki-headless
+      release: logs
+  serviceName: logs-loki-headless
   updateStrategy:
     type: RollingUpdate
     
@@ -28,14 +28,14 @@ spec:
       labels:
         app: loki
         name: loki
-        release: release-name
+        release: logs
       annotations:
-        checksum/config: f9b83129c9b309e74996b4cc142e67d5622cfda51bb84448d70e75905e1c1a4d
+        checksum/config: 7cf874265bfc8490d22edff140d056a264163f8d29030ef5587216fff333c3ce
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
         
     spec:
-      serviceAccountName: release-name-loki
+      serviceAccountName: logs-loki
       securityContext:
         fsGroup: 10001
         runAsGroup: 10001
@@ -89,7 +89,7 @@ spec:
       volumes:
         - name: config
           secret:
-            secretName: release-name-loki
+            secretName: logs-loki
         - name: storage
           emptyDir: {}
 

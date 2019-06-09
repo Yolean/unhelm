@@ -4,12 +4,12 @@
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: release-name-loki
+  name: logs-loki
   labels:
     app: loki
     chart: loki-0.10.0
     heritage: Tiller
-    release: release-name
+    release: logs
 spec:
   privileged: false
   allowPrivilegeEscalation: false
