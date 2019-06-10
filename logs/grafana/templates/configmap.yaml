@@ -23,3 +23,12 @@ data:
     logs = /var/log/grafana
     plugins = /var/lib/grafana/plugins
     provisioning = /etc/grafana/provisioning
+
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+    - access: proxy
+      name: Loki-logs
+      type: loki
+      url: http://loki:3100
+    

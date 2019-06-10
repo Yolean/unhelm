@@ -13,7 +13,7 @@ services:
       mkdir -p /workspace
       cd /workspace
       [ ! -d ./charts ] && git clone --depth 1 -b master https://github.com/helm/charts ./charts
-      helm template ./charts/stable/grafana/ --name logs --namespace logs --output-dir ./logs
+      helm template ./charts/stable/grafana/ --name logs --namespace logs -f ./logs/grafana.yaml --output-dir ./logs
       helm template ./charts/stable/minio/ --output-dir . \
         --set "mode=distributed"
       echo "Done"
