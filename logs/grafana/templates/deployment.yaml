@@ -27,7 +27,6 @@ spec:
         checksum/config: e3eb2286e1c06b065238a2d74734b291beb3a9812408c77ae17536521653af0b
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/secret: da82449adeb52e2a2fa7c8377ffc16fa144a8ba3bb2ed3da58562d0e7d9f588b
     spec:
       serviceAccountName: logs-grafana
       securityContext:
@@ -42,9 +41,6 @@ spec:
             - name: config
               mountPath: "/etc/grafana/grafana.ini"
               subPath: grafana.ini
-            - name: ldap
-              mountPath: "/etc/grafana/ldap.toml"
-              subPath: ldap.toml
             - name: storage
               mountPath: "/var/lib/grafana"
             - name: config
@@ -88,11 +84,5 @@ spec:
         - name: config
           configMap:
             name: logs-grafana
-        - name: ldap
-          secret:
-            secretName: logs-grafana
-            items:
-              - key: ldap-toml
-                path: ldap.toml
         - name: storage
           emptyDir: {}

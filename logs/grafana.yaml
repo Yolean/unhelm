@@ -1,6 +1,5 @@
-env:
-  GF_SECURITY_ADMIN_USER: admin
-  GF_SECURITY_ADMIN_PASSWORD: hardcoded-and-public
+admin:
+  existingSecret: logs-grafana
 datasources:
   datasources.yaml:
     apiVersion: 1
