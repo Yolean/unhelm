@@ -1,0 +1,10 @@
+resources:
+- ./templates/podsecuritypolicy.yaml
+- ./templates/configmap.yaml
+- ./templates/serviceaccount.yaml
+- ./templates/clusterrole.yaml
+- ./templates/clusterrolebinding.yaml
+- ./templates/role.yaml
+- ./templates/rolebinding.yaml
+- ./templates/service.yaml
+- ./templates/deployment.yaml
