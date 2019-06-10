@@ -24,7 +24,7 @@ spec:
         app: grafana
         release: logs
       annotations:
-        checksum/config: e3eb2286e1c06b065238a2d74734b291beb3a9812408c77ae17536521653af0b
+        checksum/config: ae8d13c2324c4b4c2f6a104bdfc45261f0db2683da0d214f4c37bdd98e722531
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
     spec:
