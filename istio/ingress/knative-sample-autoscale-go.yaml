@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: knative-sample-autoscale-go
+  namespace: istio-system
+spec:
+  rules:
+  - host: autoscale-go.default.example.com
+    http: &ingressgateway
+      paths:
+      - path: /
+        backend:
+          serviceName: istio-ingressgateway
+          servicePort: 80
+  # With serving configured to avoid subdomains
+  - host: autoscale-go--default.example.com
+    http: *ingressgateway
