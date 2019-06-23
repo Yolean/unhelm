@@ -1,0 +1,21 @@
+resources:
+- istio/charts/gateways/templates/poddisruptionbudget.yaml
+- istio/charts/pilot/templates/poddisruptionbudget.yaml
+- istio/templates/configmap.yaml
+- istio/charts/gateways/templates/serviceaccount.yaml
+- istio/charts/pilot/templates/serviceaccount.yaml
+- istio/templates/serviceaccount.yaml
+- istio/charts/gateways/templates/clusterrole.yaml
+- istio/charts/pilot/templates/clusterrole.yaml
+- istio/templates/clusterrole.yaml
+- istio/charts/gateways/templates/clusterrolebindings.yaml
+- istio/charts/pilot/templates/clusterrolebinding.yaml
+- istio/templates/clusterrolebinding.yaml
+- istio/charts/gateways/templates/role.yaml
+- istio/charts/gateways/templates/rolebindings.yaml
+- istio/charts/gateways/templates/service.yaml
+- istio/charts/pilot/templates/service.yaml
+- istio/charts/gateways/templates/deployment.yaml
+- istio/charts/pilot/templates/deployment.yaml
+- istio/charts/gateways/templates/autoscale.yaml
+- istio/charts/pilot/templates/autoscale.yaml

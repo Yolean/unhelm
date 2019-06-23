@@ -1,0 +1,2 @@
+resources:
+- istio-system-injection-disabled.yaml
