@@ -7,7 +7,7 @@
 #kubectl apply -k istio/namespace/
 #kubectl apply -f istio/knative-lean/
 
-export ISTIO_VERSION=1.1.9
+export ISTIO_VERSION=1.1.11
 
 curl -sLS -o istio.tar.gz https://github.com/istio/istio/releases/download/$ISTIO_VERSION/istio-$ISTIO_VERSION-linux.tar.gz
 tar xvzf istio.tar.gz && rm istio.tar.gz
