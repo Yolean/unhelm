@@ -1,0 +1,6 @@
+resources:
+- secrets.yaml
+- configmap.yaml
+- serviceaccount.yaml
+- service.yaml
+- statefulset.yaml

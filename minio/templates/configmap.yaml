@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: release-name-minio
+  name: blobs-minio
   labels:
     app: minio
-    chart: minio-2.4.13
-    release: release-name
+    chart: minio-2.5.6
+    release: blobs
     heritage: Tiller
 data:
   initialize: |-

@@ -13,13 +13,19 @@ services:
       mkdir -p /workspace
       cd /workspace
       [ ! -d ./charts ] && git clone --depth 1 -b master https://github.com/helm/charts ./charts
-      echo 'resources:' > logs/grafana/kustomization.yaml
-      helm template ./charts/stable/grafana/ --name logs --namespace logs -f ./logs/grafana.yaml --output-dir ./logs \
-        | sed 's|wrote ./logs/grafana/|- ./|' \
-        | grep -v /tests/ \
-        | tee -a logs/grafana/kustomization.yaml
       helm template ./charts/stable/minio/ --output-dir . \
-        --set "mode=distributed"
+        --set "mode=distributed" \
+        --name blobs \
+        --namespace ystack \
+        | tee minio/helm-output
+      sed -i 's|apps/v1beta1|apps/v1|' minio/templates/*
+      cat << EOF > minio/templates/kustomization.yaml
+      resources:
+      EOF
+      cat minio/helm-output \
+        | sed "s|wrote ./minio/templates/|- |" \
+        >> minio/templates/kustomization.yaml
+      rm minio/helm-output
       echo "Done"
 
   helm-loki:
