@@ -20,6 +20,9 @@ spec:
   - name: memcache
     port: 11211
     targetPort: memcache
+  - name: metrics
+    port: 9150
+    targetPort: metrics
   selector:
     app.kubernetes.io/name: memcached
     app.kubernetes.io/instance: release-name

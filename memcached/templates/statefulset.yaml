@@ -23,6 +23,10 @@ spec:
       labels:
         app.kubernetes.io/name: memcached
         app.kubernetes.io/instance: release-name
+      annotations:
+        prometheus.io/port: "9150"
+        prometheus.io/scrape: "true"
+        
     spec:
       securityContext:
         fsGroup: 1001
@@ -63,6 +67,17 @@ spec:
           requests:
             cpu: 50m
             memory: 64Mi
+          
+      - name: metrics
+        image: quay.io/prometheus/memcached-exporter:v0.6.0
+        imagePullPolicy: ""
+        securityContext:
+          runAsUser: 1001
+        ports:
+        - name: metrics
+          containerPort: 9150
+        resources:
+          {}
           
   updateStrategy:
     type: RollingUpdate
