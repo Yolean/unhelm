@@ -3,7 +3,7 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: release-name-memcached
+  name: channel-memcached
   namespace: channel
   annotations:
     helm.sh/hook: "post-upgrade, post-install"
@@ -11,12 +11,12 @@ metadata:
   labels:
     app.kubernetes.io/name: memcached
     helm.sh/chart: memcached-3.2.3
-    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/instance: channel
     app.kubernetes.io/version: "1.5.20"
     app.kubernetes.io/managed-by: Tiller
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: memcached
-      app.kubernetes.io/instance: release-name
+      app.kubernetes.io/instance: channel
   minAvailable: 2

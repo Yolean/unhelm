@@ -3,26 +3,26 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: release-name-memcached
+  name: channel-memcached
   namespace: channel
   labels:
     app.kubernetes.io/name: memcached
     helm.sh/chart: memcached-3.2.3
-    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/instance: channel
     app.kubernetes.io/version: "1.5.20"
     app.kubernetes.io/managed-by: Tiller
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: memcached
-      app.kubernetes.io/instance: release-name
-  serviceName: release-name-memcached
+      app.kubernetes.io/instance: channel
+  serviceName: channel-memcached
   replicas: 3
   template:
     metadata:
       labels:
         app.kubernetes.io/name: memcached
-        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/instance: channel
       annotations:
         prometheus.io/port: "9150"
         prometheus.io/scrape: "true"
@@ -37,9 +37,9 @@ spec:
             labelSelector:
               matchLabels:
                 app.kubernetes.io/name: memcached
-                app.kubernetes.io/instance: release-name
+                app.kubernetes.io/instance: channel
       containers:
-      - name: release-name-memcached
+      - name: channel-memcached
         image: memcached:1.5.20
         imagePullPolicy: ""
         securityContext:
