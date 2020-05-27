@@ -1,3 +1,5 @@
+AntiAffinity: "soft"
+
 metrics:
   enabled: true
 podAnnotations:
