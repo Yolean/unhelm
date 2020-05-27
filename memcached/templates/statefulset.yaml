@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: release-name-memcached
-  namespace: default
+  namespace: channel
   labels:
     app.kubernetes.io/name: memcached
     helm.sh/chart: memcached-3.2.3
