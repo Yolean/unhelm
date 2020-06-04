@@ -1,0 +1,4 @@
+resources:
+- templates/svc.yaml
+- templates/pdb.yaml
+- templates/statefulset.yaml
