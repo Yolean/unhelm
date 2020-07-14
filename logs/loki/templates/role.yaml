@@ -5,7 +5,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: logs-loki
-  namespace: logs
+  namespace: monitoring
   labels:
     app: loki
     chart: loki-0.30.1

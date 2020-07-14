@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: logs-promtail
-  namespace: logs
+  namespace: monitoring
   labels:
     app: promtail
     chart: promtail-0.23.2
@@ -27,7 +27,7 @@ spec:
         app: promtail
         release: logs
       annotations:
-        checksum/config: ec96766a030448fe425a4a5cac7a77387aa474530c9f80b26982582007ab2953
+        checksum/config: af435f1d08d43738f742866fd8f2439236c62b71ef86b4e2e5a1b975d3342049
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
         

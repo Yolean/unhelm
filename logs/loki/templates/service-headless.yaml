@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: logs-loki-headless
-  namespace: logs
+  namespace: monitoring
   labels:
     app: loki
     chart: loki-0.30.1

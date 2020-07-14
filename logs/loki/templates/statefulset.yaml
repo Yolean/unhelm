@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: logs-loki
-  namespace: logs
+  namespace: monitoring
   labels:
     app: loki
     chart: loki-0.30.1
@@ -31,7 +31,7 @@ spec:
         name: loki
         release: logs
       annotations:
-        checksum/config: 0ccb0358c0183bc8f40cf1a63b1ea5388510459d396324671909543ef0763e59
+        checksum/config: 68e44479696cf162690546a24f648666a49bd4da79564f9f24c29d16e7bffb03
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
         

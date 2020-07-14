@@ -5,7 +5,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: logs-promtail
-  namespace: logs
+  namespace: monitoring
   labels:
     app: promtail
     chart: promtail-0.23.2
