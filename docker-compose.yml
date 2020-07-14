@@ -12,8 +12,10 @@ services:
       [ ! -d ./loki-repo ] && git clone --depth 1 -b master https://github.com/grafana/loki ./loki-repo
       mkdir -p logs/loki/
       echo 'resources:' > logs/loki/kustomization.yaml
+      mkdir -p logs/promtail/
+      echo 'resources:' > logs/promtail/kustomization.yaml
       helm template ./loki-repo/production/helm/loki --name logs --namespace logs --output-dir ./logs | sed 's|wrote ./logs/loki/|- ./|' | tee -a logs/loki/kustomization.yaml
-      helm template ./loki-repo/production/helm/promtail --name logs --namespace logs --output-dir ./logs
+      helm template ./loki-repo/production/helm/promtail --name logs --namespace logs --output-dir ./logs | sed 's|wrote ./logs/promtail/|- ./|' | tee -a logs/promtail/kustomization.yaml
       echo "Done"
       echo "There are no mounted volumes. Use docker cp to extract the results."
       sleep 300
