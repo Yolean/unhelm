@@ -4,18 +4,19 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: logs-promtail
+  namespace: logs
   labels:
     app: promtail
-    chart: promtail-0.8.0
+    chart: promtail-0.23.2
     release: logs
     heritage: Tiller
 data:
   promtail.yaml: |
     client:
       backoff_config:
-        maxbackoff: 5s
-        maxretries: 5
-        minbackoff: 100ms
+        max_period: 5s
+        max_retries: 20
+        min_period: 100ms
       batchsize: 102400
       batchwait: 1s
       external_labels: {}
@@ -42,9 +43,11 @@ data:
         - __meta_kubernetes_pod_node_name
         target_label: __host__
       - action: drop
-        regex: ^$
+        regex: ''
         source_labels:
         - __service__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
       - action: replace
         replacement: $1
         separator: /
@@ -59,13 +62,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
-      - action: labelmap
-        regex: __meta_kubernetes_pod_label_(.+)
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:
@@ -90,9 +91,11 @@ data:
         - __meta_kubernetes_pod_node_name
         target_label: __host__
       - action: drop
-        regex: ^$
+        regex: ''
         source_labels:
         - __service__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
       - action: replace
         replacement: $1
         separator: /
@@ -107,13 +110,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
-      - action: labelmap
-        regex: __meta_kubernetes_pod_label_(.+)
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:
@@ -134,7 +135,7 @@ data:
         - __meta_kubernetes_pod_label_name
         - __meta_kubernetes_pod_label_app
       - action: drop
-        regex: ^([0-9a-z-.]+)(-[0-9a-f]{8,10})$
+        regex: '[0-9a-z-.]+-[0-9a-f]{8,10}'
         source_labels:
         - __meta_kubernetes_pod_controller_name
       - source_labels:
@@ -144,9 +145,11 @@ data:
         - __meta_kubernetes_pod_node_name
         target_label: __host__
       - action: drop
-        regex: ^$
+        regex: ''
         source_labels:
         - __service__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
       - action: replace
         replacement: $1
         separator: /
@@ -161,13 +164,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
-      - action: labelmap
-        regex: __meta_kubernetes_pod_label_(.+)
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:
@@ -188,11 +189,11 @@ data:
         - __meta_kubernetes_pod_label_name
         - __meta_kubernetes_pod_label_app
       - action: keep
-        regex: ^([0-9a-z-.]+)(-[0-9a-f]{8,10})$
+        regex: '[0-9a-z-.]+-[0-9a-f]{8,10}'
         source_labels:
         - __meta_kubernetes_pod_controller_name
       - action: replace
-        regex: ^([0-9a-z-.]+)(-[0-9a-f]{8,10})$
+        regex: '([0-9a-z-.]+)-[0-9a-f]{8,10}'
         source_labels:
         - __meta_kubernetes_pod_controller_name
         target_label: __service__
@@ -200,9 +201,11 @@ data:
         - __meta_kubernetes_pod_node_name
         target_label: __host__
       - action: drop
-        regex: ^$
+        regex: ''
         source_labels:
         - __service__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
       - action: replace
         replacement: $1
         separator: /
@@ -217,13 +220,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
-      - action: labelmap
-        regex: __meta_kubernetes_pod_label_(.+)
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:
@@ -238,7 +239,7 @@ data:
       - role: pod
       relabel_configs:
       - action: drop
-        regex: ^$
+        regex: ''
         source_labels:
         - __meta_kubernetes_pod_annotation_kubernetes_io_config_mirror
       - action: replace
@@ -249,9 +250,11 @@ data:
         - __meta_kubernetes_pod_node_name
         target_label: __host__
       - action: drop
-        regex: ^$
+        regex: ''
         source_labels:
         - __service__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
       - action: replace
         replacement: $1
         separator: /
@@ -266,13 +269,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
-      - action: labelmap
-        regex: __meta_kubernetes_pod_label_(.+)
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:

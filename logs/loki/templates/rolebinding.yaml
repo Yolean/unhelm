@@ -5,9 +5,10 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: logs-loki
+  namespace: logs
   labels:
     app: loki
-    chart: loki-0.10.0
+    chart: loki-0.30.1
     heritage: Tiller
     release: logs
 roleRef:

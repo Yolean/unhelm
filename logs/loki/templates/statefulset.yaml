@@ -4,9 +4,10 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: logs-loki
+  namespace: logs
   labels:
     app: loki
-    chart: loki-0.10.0
+    chart: loki-0.30.1
     release: logs
     heritage: Tiller
   annotations:
@@ -30,7 +31,7 @@ spec:
         name: loki
         release: logs
       annotations:
-        checksum/config: 7cf874265bfc8490d22edff140d056a264163f8d29030ef5587216fff333c3ce
+        checksum/config: 0ccb0358c0183bc8f40cf1a63b1ea5388510459d396324671909543ef0763e59
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
         
@@ -42,9 +43,12 @@ spec:
         runAsNonRoot: true
         runAsUser: 10001
         
+      initContainers:
+        []
+        
       containers:
         - name: loki
-          image: "grafana/loki:v0.1.0"
+          image: "grafana/loki:1.5.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/loki/loki.yaml"
@@ -85,7 +89,7 @@ spec:
       tolerations:
         []
         
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 4800
       volumes:
         - name: config
           secret:
