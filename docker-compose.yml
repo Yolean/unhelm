@@ -2,8 +2,6 @@ version: '2'
 
 services:
 
-  # There are no mounted volumes. We've used docker cp to extract the results.
-
   helm-loki:
     image: solsson/y-docker-base:builder-base@sha256:2f2abe47831216935063be7aee2d94df1e474d8dec405ec9795e8a0f0d78265d
     command:
@@ -12,7 +10,10 @@ services:
     - |
       cd /workspace
       [ ! -d ./loki-repo ] && git clone --depth 1 -b master https://github.com/grafana/loki ./loki-repo
+      mkdir -p logs/loki/
       echo 'resources:' > logs/loki/kustomization.yaml
       helm template ./loki-repo/production/helm/loki --name logs --namespace logs --output-dir ./logs | sed 's|wrote ./logs/loki/|- ./|' | tee -a logs/loki/kustomization.yaml
       helm template ./loki-repo/production/helm/promtail --name logs --namespace logs --output-dir ./logs
       echo "Done"
+      echo "There are no mounted volumes. Use docker cp to extract the results."
+      sleep 300
