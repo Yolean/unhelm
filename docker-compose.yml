@@ -41,23 +41,3 @@ services:
       helm template ./loki-repo/production/helm/loki --name logs --namespace logs --output-dir ./logs | sed 's|wrote ./logs/loki/|- ./|' | tee -a logs/loki/kustomization.yaml
       helm template ./loki-repo/production/helm/promtail --name logs --namespace logs --output-dir ./logs
       echo "Done"
-
-  # The origin of many dashboards in prometheus-operator's kube-prometheus
-  kubernetes-mixin:
-    build: ./jsonnet-docker
-    command:
-    - /bin/sh
-    - -cex
-    - |
-      mkdir -p /workspace
-      git clone --branch v0.1.0 https://github.com/kubernetes-monitoring/kubernetes-mixin /kubernetes-mixin
-      cd /kubernetes-mixin
-      cp LICENSE /workspace/
-      jb install
-      make prometheus_alerts.yaml
-      cp prometheus_alerts.yaml /workspace/
-      make prometheus_rules.yaml
-      cp prometheus_rules.yaml /workspace/
-      make dashboards_out
-      cp -r dashboards_out /workspace/dashboards
-      echo "Done"
