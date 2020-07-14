@@ -4,30 +4,6 @@ services:
 
   # There are no mounted volumes. We've used docker cp to extract the results.
 
-  helm-charts:
-    build: ./helm-docker
-    command:
-    - /bin/sh
-    - -cex
-    - |
-      mkdir -p /workspace
-      cd /workspace
-      [ ! -d ./charts ] && git clone --depth 1 -b master https://github.com/helm/charts ./charts
-      helm template ./charts/stable/minio/ --output-dir . \
-        --set "mode=distributed" \
-        --name blobs \
-        --namespace ystack \
-        | tee minio/helm-output
-      sed -i 's|apps/v1beta1|apps/v1|' minio/templates/*
-      cat << EOF > minio/templates/kustomization.yaml
-      resources:
-      EOF
-      cat minio/helm-output \
-        | sed "s|wrote ./minio/templates/|- |" \
-        >> minio/templates/kustomization.yaml
-      rm minio/helm-output
-      echo "Done"
-
   helm-loki:
     build: ./helm-docker
     command:
