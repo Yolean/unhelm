@@ -3,19 +3,19 @@ version: '2'
 services:
 
   helm-loki:
-    image: solsson/y-docker-base:builder-base@sha256:2f2abe47831216935063be7aee2d94df1e474d8dec405ec9795e8a0f0d78265d
+    build: ./helm3
     command:
-    - /bin/sh
+    - /bin/bash
     - -cex
     - |
-      cd /workspace
-      [ ! -d ./loki-repo ] && git clone --depth 1 -b master https://github.com/grafana/loki ./loki-repo
+      helm version
+      helm repo add grafana https://grafana.github.io/helm-charts
       mkdir -p logs/loki/
       echo 'resources:' > logs/loki/kustomization.yaml
       mkdir -p logs/promtail/
       echo 'resources:' > logs/promtail/kustomization.yaml
-      helm template ./loki-repo/production/helm/loki --name logs --namespace monitoring --output-dir ./logs | sed 's|wrote ./logs/loki/|- ./|' | tee -a logs/loki/kustomization.yaml
-      helm template ./loki-repo/production/helm/promtail --name logs --namespace monitoring --output-dir ./logs | sed 's|wrote ./logs/promtail/|- ./|' | tee -a logs/promtail/kustomization.yaml
+      helm template logs grafana/loki --namespace monitoring --output-dir ./logs | sed 's|wrote ./logs/loki/|- ./|' | tee -a logs/loki/kustomization.yaml
+      helm template logs grafana/promtail --namespace monitoring --output-dir ./logs | sed 's|wrote ./logs/promtail/|- ./|' | tee -a logs/promtail/kustomization.yaml
       echo "Done"
       echo "There are no mounted volumes. Use docker cp to extract the results."
       sleep 300
