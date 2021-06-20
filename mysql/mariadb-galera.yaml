@@ -6,3 +6,5 @@
 # - mariadb-password=
 existingSecret: mariadb-auth
 createSecret: false
+
+replicaCount: 1
