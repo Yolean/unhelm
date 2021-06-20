@@ -1,6 +1,7 @@
 resources:
 - ./templates/configmap.yaml
 - ./templates/headless-svc.yaml
+- ./templates/metrics-svc.yaml
 - ./templates/svc.yaml
 - ./templates/statefulset.yaml
 

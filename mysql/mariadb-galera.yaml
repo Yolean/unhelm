@@ -8,3 +8,10 @@ existingSecret: mariadb-auth
 createSecret: false
 
 replicaCount: 1
+
+persistence:
+  # We rely on the volume resize feature
+  size: 1Gi
+
+metrics:
+  enabled: true
