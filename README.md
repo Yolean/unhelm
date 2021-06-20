@@ -4,5 +4,6 @@ For example
 
 ```
 mkdir /tmp/unhelm && chmod a+rxw /tmp/unhelm
-docker-compose up --build loki
+docker-compose up --build logs
+docker-compose up --build mysql
 ```
