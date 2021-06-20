@@ -1,19 +1,19 @@
 ---
 # Source: grafana/templates/clusterrolebinding.yaml
-
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: logs-grafana-clusterrolebinding
   labels:
-    app: grafana
-    chart: grafana-3.4.2
-    release: logs
-    heritage: Tiller
+    helm.sh/chart: grafana-6.13.2
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: logs
+    app.kubernetes.io/version: "8.0.3"
+    app.kubernetes.io/managed-by: Helm
 subjects:
   - kind: ServiceAccount
     name: logs-grafana
-    namespace: logs
+    namespace: monitoring
 roleRef:
   kind: ClusterRole
   name: logs-grafana-clusterrole

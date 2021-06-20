@@ -1,41 +1,44 @@
 ---
 # Source: grafana/templates/deployment.yaml
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: logs-grafana
-  namespace: logs
+  namespace: monitoring
   labels:
-    app: grafana
-    chart: grafana-3.4.2
-    release: logs
-    heritage: Tiller
+    helm.sh/chart: grafana-6.13.2
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: logs
+    app.kubernetes.io/version: "8.0.3"
+    app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: grafana
-      release: logs
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/instance: logs
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: grafana
-        release: logs
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/instance: logs
       annotations:
-        checksum/config: ae8d13c2324c4b4c2f6a104bdfc45261f0db2683da0d214f4c37bdd98e722531
+        checksum/config: 5844636c1e91646001a9af13040bc02f6e7755ec82b20355b46cbb1275a6b8cb
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
     spec:
+      
       serviceAccountName: logs-grafana
       securityContext:
         fsGroup: 472
+        runAsGroup: 472
         runAsUser: 472
-        
       containers:
         - name: grafana
-          image: "grafana/grafana:6.2.2"
+          image: "grafana/grafana:8.0.3"
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: config
@@ -64,6 +67,15 @@ spec:
                 secretKeyRef:
                   name: logs-grafana
                   key: admin-password
+            
+            - name: GF_PATHS_DATA
+              value: /var/lib/grafana/
+            - name: GF_PATHS_LOGS
+              value: /var/log/grafana
+            - name: GF_PATHS_PLUGINS
+              value: /var/lib/grafana/plugins
+            - name: GF_PATHS_PROVISIONING
+              value: /etc/grafana/provisioning
           livenessProbe:
             failureThreshold: 10
             httpGet:
@@ -71,15 +83,12 @@ spec:
               port: 3000
             initialDelaySeconds: 60
             timeoutSeconds: 30
-            
           readinessProbe:
             httpGet:
               path: /api/health
               port: 3000
-            
           resources:
             {}
-            
       volumes:
         - name: config
           configMap:
