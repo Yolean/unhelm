@@ -10,8 +10,8 @@ metadata:
     app.kubernetes.io/instance: ystack
     app.kubernetes.io/managed-by: Helm
 spec:
-  podManagementPolicy: OrderedReady
-  replicas: 1
+  podManagementPolicy: Parallel
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: mariadb-galera

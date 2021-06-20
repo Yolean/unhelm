@@ -9,8 +9,9 @@ services:
     - ./logs:/workspace/logs:ro
     command:
     - /bin/bash
-    - -cex
+    - -cx
     - |
+      set -eo pipefail
       helm version
       helm repo add grafana https://grafana.github.io/helm-charts
       mkdir -p /tmp/unhelm/logs/{grafana,loki,fluent-bit}
@@ -31,8 +32,9 @@ services:
     - ./mysql:/workspace/mysql:ro
     command:
     - /bin/bash
-    - -cex
+    - -cx
     - |
+      set -eo pipefail
       helm version
       helm repo add bitnami https://charts.bitnami.com/bitnami
       helm search repo bitnami
