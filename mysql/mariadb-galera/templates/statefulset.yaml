@@ -10,8 +10,8 @@ metadata:
     app.kubernetes.io/instance: ystack
     app.kubernetes.io/managed-by: Helm
 spec:
-  podManagementPolicy: Parallel
-  replicas: 2
+  podManagementPolicy: OrderedReady
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: mariadb-galera
@@ -28,21 +28,9 @@ spec:
       
       serviceAccountName: default
       affinity:
-        podAffinity:
-          
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/name: mariadb-galera
-                    app.kubernetes.io/instance: ystack
-                namespaces:
-                  - "mysql"
-                topologyKey: kubernetes.io/hostname
-              weight: 1
-        nodeAffinity:
-          
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity: null
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
@@ -65,7 +53,7 @@ spec:
             - name: MARIADB_GALERA_CLUSTER_NAME
               value: "galera"
             - name: MARIADB_GALERA_CLUSTER_ADDRESS
-              value: "gcomm://ystack-mariadb-galera-headless.mysql.svc.cluster.local"
+              value: "gcomm://ystack-mariadb-galera-headless.unhelm-namespace-placeholder.svc.cluster.local"
             - name: MARIADB_ROOT_USER
               value: "root"
             - name: MARIADB_ROOT_PASSWORD
