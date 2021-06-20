@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mariadb-mariadb-galera
+  name: ystack-mariadb-galera
   labels:
     app.kubernetes.io/name: mariadb-galera
     helm.sh/chart: mariadb-galera-5.10.1
-    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/instance: ystack
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -18,4 +18,4 @@ spec:
       nodePort: null
   selector:
     app.kubernetes.io/name: mariadb-galera
-    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/instance: ystack

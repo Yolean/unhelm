@@ -1,5 +1,4 @@
 resources:
-- ./templates/secrets.yaml
 - ./templates/configmap.yaml
 - ./templates/headless-svc.yaml
 - ./templates/svc.yaml

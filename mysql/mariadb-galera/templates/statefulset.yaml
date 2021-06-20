@@ -3,11 +3,11 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mariadb-mariadb-galera
+  name: ystack-mariadb-galera
   labels:
     app.kubernetes.io/name: mariadb-galera
     helm.sh/chart: mariadb-galera-5.10.1
-    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/instance: ystack
     app.kubernetes.io/managed-by: Helm
 spec:
   podManagementPolicy: OrderedReady
@@ -15,15 +15,15 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: mariadb-galera
-      app.kubernetes.io/instance: mariadb
-  serviceName: mariadb-mariadb-galera
+      app.kubernetes.io/instance: ystack
+  serviceName: ystack-mariadb-galera
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
         app.kubernetes.io/name: mariadb-galera
-        app.kubernetes.io/instance: mariadb
+        app.kubernetes.io/instance: ystack
     spec:
       
       serviceAccountName: default
@@ -36,7 +36,7 @@ spec:
                 labelSelector:
                   matchLabels:
                     app.kubernetes.io/name: mariadb-galera
-                    app.kubernetes.io/instance: mariadb
+                    app.kubernetes.io/instance: ystack
                 namespaces:
                   - "mysql"
                 topologyKey: kubernetes.io/hostname
@@ -65,13 +65,13 @@ spec:
             - name: MARIADB_GALERA_CLUSTER_NAME
               value: "galera"
             - name: MARIADB_GALERA_CLUSTER_ADDRESS
-              value: "gcomm://mariadb-mariadb-galera-headless.mysql.svc.cluster.local"
+              value: "gcomm://ystack-mariadb-galera-headless.mysql.svc.cluster.local"
             - name: MARIADB_ROOT_USER
               value: "root"
             - name: MARIADB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mariadb-mariadb-galera
+                  name: mariadb-auth
                   key: mariadb-root-password
             - name: MARIADB_DATABASE
               value: "my_database"
@@ -80,7 +80,7 @@ spec:
             - name: MARIADB_GALERA_MARIABACKUP_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mariadb-mariadb-galera
+                  name: mariadb-auth
                   key: mariadb-galera-mariabackup-password
             - name: MARIADB_ENABLE_LDAP
               value: "no"
@@ -143,13 +143,13 @@ spec:
           emptyDir: {}
         - name: mariadb-galera-config
           configMap:
-            name: mariadb-mariadb-galera-configuration
+            name: ystack-mariadb-galera-configuration
   volumeClaimTemplates:
     - metadata:
         name: data
         labels:
           app.kubernetes.io/name: mariadb-galera
-          app.kubernetes.io/instance: mariadb
+          app.kubernetes.io/instance: ystack
           app.kubernetes.io/managed-by: Helm
       spec:
         accessModes:
