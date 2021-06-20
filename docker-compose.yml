@@ -23,3 +23,22 @@ services:
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/logs/* ./logs/"
+
+  mysql:
+    build: ./helm3
+    volumes:
+    - /tmp/unhelm:/tmp/unhelm:rw
+    - ./mysql:/workspace/mysql:ro
+    command:
+    - /bin/bash
+    - -cex
+    - |
+      helm version
+      helm repo add bitnami https://charts.bitnami.com/bitnami
+      helm search repo bitnami
+      mkdir -p /tmp/unhelm/mysql/mariadb-galera
+      echo 'resources:' > /tmp/unhelm/mysql/mariadb-galera/kustomization.yaml
+      helm template mariadb bitnami/mariadb-galera -f mysql/mariadb-galera.yaml --namespace mysql --output-dir /tmp/unhelm/mysql | sed 's|wrote /tmp/unhelm/mysql/mariadb-galera/|- ./|'  | tee -a /tmp/unhelm/logs/grafana/kustomization.yaml
+      set +x
+      echo "Done. To extract the results:"
+      echo "rsync -av --delete /tmp/unhelm/mysql/* ./mysql/"
