@@ -3,5 +3,6 @@ The scripts are in [docker-compose.yml](./docker-compose.yml).
 For example
 
 ```
-docker-compose up --build helm-loki
+mkdir /tmp/unhelm && chmod a+rxw /tmp/unhelm
+docker-compose up --build loki
 ```

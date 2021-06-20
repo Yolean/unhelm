@@ -2,20 +2,26 @@ version: '2'
 
 services:
 
-  helm-loki:
+  logs:
     build: ./helm3
+    volumes:
+    - /tmp/unhelm:/tmp/unhelm:rw
+    - ./logs:/workspace/logs:ro
     command:
     - /bin/bash
     - -cex
     - |
       helm version
       helm repo add grafana https://grafana.github.io/helm-charts
-      mkdir -p logs/loki/
-      echo 'resources:' > logs/loki/kustomization.yaml
-      mkdir -p logs/promtail/
-      echo 'resources:' > logs/promtail/kustomization.yaml
-      helm template logs grafana/loki --namespace monitoring --output-dir ./logs | sed 's|wrote ./logs/loki/|- ./|' | tee -a logs/loki/kustomization.yaml
-      helm template logs grafana/promtail --namespace monitoring --output-dir ./logs | sed 's|wrote ./logs/promtail/|- ./|' | tee -a logs/promtail/kustomization.yaml
-      echo "Done"
-      echo "There are no mounted volumes. Use docker cp to extract the results."
-      sleep 300
+      mkdir -p /tmp/unhelm/logs/grafana/
+      echo 'resources:' > /tmp/unhelm/logs/grafana/kustomization.yaml
+      mkdir -p /tmp/unhelm/logs/loki/
+      echo 'resources:' > /tmp/unhelm/logs/loki/kustomization.yaml
+      mkdir -p /tmp/unhelm/logs/promtail/
+      echo 'resources:' > /tmp/unhelm/logs/promtail/kustomization.yaml
+      helm template logs grafana/grafana -f logs/grafana.yaml --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/grafana/|- ./|'  | tee -a /tmp/unhelm/logs/grafana/kustomization.yaml
+      helm template logs grafana/loki                         --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/loki/|- ./|'     | tee -a /tmp/unhelm/logs/loki/kustomization.yaml
+      helm template logs grafana/promtail                     --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/promtail/|- ./|' | tee -a /tmp/unhelm/logs/promtail/kustomization.yaml
+      set +x
+      echo "Done. To extract the results:"
+      echo "rsync -av --delete /tmp/unhelm/logs/* ./logs/"
