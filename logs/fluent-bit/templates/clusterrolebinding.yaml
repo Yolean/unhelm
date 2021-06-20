@@ -1,0 +1,19 @@
+---
+# Source: fluent-bit/templates/clusterrolebinding.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: logs-fluent-bit-loki-clusterrolebinding
+  labels:
+    app: fluent-bit-loki
+    chart: fluent-bit-2.3.0
+    release: logs
+    heritage: Helm
+subjects:
+  - kind: ServiceAccount
+    name: logs-fluent-bit-loki
+    namespace: monitoring
+roleRef:
+  kind: ClusterRole
+  name: logs-fluent-bit-loki-clusterrole
+  apiGroup: rbac.authorization.k8s.io

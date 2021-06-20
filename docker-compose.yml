@@ -17,11 +17,11 @@ services:
       echo 'resources:' > /tmp/unhelm/logs/grafana/kustomization.yaml
       mkdir -p /tmp/unhelm/logs/loki/
       echo 'resources:' > /tmp/unhelm/logs/loki/kustomization.yaml
-      mkdir -p /tmp/unhelm/logs/promtail/
-      echo 'resources:' > /tmp/unhelm/logs/promtail/kustomization.yaml
+      mkdir -p /tmp/unhelm/logs/fluent-bit/
+      echo 'resources:' > /tmp/unhelm/logs/fluent-bit/kustomization.yaml
       helm template logs grafana/grafana -f logs/grafana.yaml --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/grafana/|- ./|'  | tee -a /tmp/unhelm/logs/grafana/kustomization.yaml
       helm template logs grafana/loki                         --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/loki/|- ./|'     | tee -a /tmp/unhelm/logs/loki/kustomization.yaml
-      helm template logs grafana/promtail                     --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/promtail/|- ./|' | tee -a /tmp/unhelm/logs/promtail/kustomization.yaml
+      helm template logs grafana/fluent-bit                   --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/fluent-bit/|- ./|' | tee -a /tmp/unhelm/logs/fluent-bit/kustomization.yaml
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/logs/* ./logs/"
