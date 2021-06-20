@@ -1,9 +1,10 @@
 resources:
 - ./templates/podsecuritypolicy.yaml
-- ./templates/secret.yaml
 - ./templates/serviceaccount.yaml
+- ./templates/secret.yaml
 - ./templates/role.yaml
 - ./templates/rolebinding.yaml
 - ./templates/service-headless.yaml
 - ./templates/service.yaml
 - ./templates/statefulset.yaml
+

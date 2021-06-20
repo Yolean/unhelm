@@ -1,20 +1,20 @@
 ---
 # Source: promtail/templates/clusterrolebinding.yaml
-
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: logs-promtail-clusterrolebinding
+  name: logs-promtail
   labels:
-    app: promtail
-    chart: promtail-0.23.2
-    release: logs
-    heritage: Tiller
+    helm.sh/chart: promtail-3.6.0
+    app.kubernetes.io/name: promtail
+    app.kubernetes.io/instance: logs
+    app.kubernetes.io/version: "2.2.1"
+    app.kubernetes.io/managed-by: Helm
 subjects:
   - kind: ServiceAccount
     name: logs-promtail
     namespace: monitoring
 roleRef:
   kind: ClusterRole
-  name: logs-promtail-clusterrole
+  name: logs-promtail
   apiGroup: rbac.authorization.k8s.io

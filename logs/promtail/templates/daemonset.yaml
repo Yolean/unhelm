@@ -4,67 +4,63 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: logs-promtail
-  namespace: monitoring
   labels:
-    app: promtail
-    chart: promtail-0.23.2
-    release: logs
-    heritage: Tiller
-  annotations:
-    {}
-    
+    helm.sh/chart: promtail-3.6.0
+    app.kubernetes.io/name: promtail
+    app.kubernetes.io/instance: logs
+    app.kubernetes.io/version: "2.2.1"
+    app.kubernetes.io/managed-by: Helm
 spec:
   selector:
     matchLabels:
-      app: promtail
-      release: logs
+      app.kubernetes.io/name: promtail
+      app.kubernetes.io/instance: logs
   updateStrategy:
     {}
-    
   template:
     metadata:
       labels:
-        app: promtail
-        release: logs
+        app.kubernetes.io/name: promtail
+        app.kubernetes.io/instance: logs
       annotations:
-        checksum/config: af435f1d08d43738f742866fd8f2439236c62b71ef86b4e2e5a1b975d3342049
-        prometheus.io/port: http-metrics
-        prometheus.io/scrape: "true"
-        
+        checksum/config: 847839b2c42533338e2b7a3be6afd415f9cac598d76c4a28c67ed7edef0163cd
     spec:
       serviceAccountName: logs-promtail
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
       containers:
         - name: promtail
-          image: "grafana/promtail:1.5.0"
+          image: "docker.io/grafana/promtail:2.2.1"
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/promtail/promtail.yaml"
-            - "-client.url=http://logs-loki:3100/loki/api/v1/push"
           volumeMounts:
             - name: config
               mountPath: /etc/promtail
             - name: run
               mountPath: /run/promtail
             - mountPath: /var/lib/docker/containers
-              name: docker
+              name: containers
               readOnly: true
             - mountPath: /var/log/pods
               name: pods
               readOnly: true
-            
           env:
             - name: HOSTNAME
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
           ports:
-            - containerPort: 3101
-              name: http-metrics
+            - name: http-metrics
+              containerPort: 3101
+              protocol: TCP
           securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
             readOnlyRootFilesystem: true
-            runAsGroup: 0
-            runAsUser: 0
-            
           readinessProbe:
             failureThreshold: 5
             httpGet:
@@ -74,32 +70,23 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-            
-          resources:
-            {}
-            
-      nodeSelector:
-        {}
-        
-      affinity:
-        {}
-        
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
           operator: Exists
-        
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+          operator: Exists
       volumes:
         - name: config
-          configMap:
-            name: logs-promtail
+          secret:
+            secretName: logs-promtail
         - name: run
           hostPath:
             path: /run/promtail
         - hostPath:
             path: /var/lib/docker/containers
-          name: docker
+          name: containers
         - hostPath:
             path: /var/log/pods
           name: pods
-        

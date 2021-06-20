@@ -7,12 +7,11 @@ metadata:
   namespace: monitoring
   labels:
     app: loki
-    chart: loki-0.30.1
+    chart: loki-2.5.0
     release: logs
-    heritage: Tiller
+    heritage: Helm
   annotations:
     {}
-    
 spec:
   podManagementPolicy: OrderedReady
   replicas: 1
@@ -23,7 +22,6 @@ spec:
   serviceName: logs-loki-headless
   updateStrategy:
     type: RollingUpdate
-    
   template:
     metadata:
       labels:
@@ -31,10 +29,9 @@ spec:
         name: loki
         release: logs
       annotations:
-        checksum/config: 68e44479696cf162690546a24f648666a49bd4da79564f9f24c29d16e7bffb03
+        checksum/config: cb7caf3124e7dd3ef4fd802d4aa1dbecd94b164b9581c01faf50b6d3c0507551
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
-        
     spec:
       serviceAccountName: logs-loki
       securityContext:
@@ -42,13 +39,11 @@ spec:
         runAsGroup: 10001
         runAsNonRoot: true
         runAsUser: 10001
-        
       initContainers:
         []
-        
       containers:
         - name: loki
-          image: "grafana/loki:1.5.0"
+          image: "grafana/loki:2.2.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/loki/loki.yaml"
@@ -67,28 +62,22 @@ spec:
               path: /ready
               port: http-metrics
             initialDelaySeconds: 45
-            
           readinessProbe:
             httpGet:
               path: /ready
               port: http-metrics
             initialDelaySeconds: 45
-            
           resources:
             {}
-            
           securityContext:
             readOnlyRootFilesystem: true
           env:
       nodeSelector:
         {}
-        
       affinity:
         {}
-        
       tolerations:
         []
-        
       terminationGracePeriodSeconds: 4800
       volumes:
         - name: config
@@ -96,4 +85,3 @@ spec:
             secretName: logs-loki
         - name: storage
           emptyDir: {}
-

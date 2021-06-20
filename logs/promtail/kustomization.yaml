@@ -1,9 +1,7 @@
 resources:
-- ./templates/podsecuritypolicy.yaml
-- ./templates/configmap.yaml
 - ./templates/serviceaccount.yaml
+- ./templates/secret.yaml
 - ./templates/clusterrole.yaml
 - ./templates/clusterrolebinding.yaml
-- ./templates/role.yaml
-- ./templates/rolebinding.yaml
 - ./templates/daemonset.yaml
+

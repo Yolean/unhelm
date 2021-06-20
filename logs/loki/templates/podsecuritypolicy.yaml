@@ -1,14 +1,13 @@
 ---
 # Source: loki/templates/podsecuritypolicy.yaml
-
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   name: logs-loki
   labels:
     app: loki
-    chart: loki-0.30.1
-    heritage: Tiller
+    chart: loki-2.5.0
+    heritage: Helm
     release: logs
 spec:
   privileged: false
@@ -18,6 +17,8 @@ spec:
     - 'emptyDir'
     - 'persistentVolumeClaim'
     - 'secret'
+    - 'projected'
+    - 'downwardAPI'
   hostNetwork: false
   hostIPC: false
   hostPID: false
@@ -38,4 +39,3 @@ spec:
   readOnlyRootFilesystem: true
   requiredDropCapabilities:
     - ALL
-

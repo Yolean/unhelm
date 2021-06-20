@@ -1,21 +1,25 @@
 ---
 # Source: promtail/templates/clusterrole.yaml
-
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
+  name: logs-promtail
   labels:
-    app: promtail
-    chart: promtail-0.23.2
-    release: logs
-    heritage: Tiller
-  name: logs-promtail-clusterrole
+    helm.sh/chart: promtail-3.6.0
+    app.kubernetes.io/name: promtail
+    app.kubernetes.io/instance: logs
+    app.kubernetes.io/version: "2.2.1"
+    app.kubernetes.io/managed-by: Helm
 rules:
-- apiGroups: [""] # "" indicates the core API group
-  resources:
-  - nodes
-  - nodes/proxy
-  - services
-  - endpoints
-  - pods
-  verbs: ["get", "watch", "list"]
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+      - nodes/proxy
+      - services
+      - endpoints
+      - pods
+    verbs:
+      - get
+      - watch
+      - list

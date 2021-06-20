@@ -7,12 +7,11 @@ metadata:
   namespace: monitoring
   labels:
     app: loki
-    chart: loki-0.30.1
+    chart: loki-2.5.0
     release: logs
-    heritage: Tiller
+    heritage: Helm
   annotations:
     {}
-    
 spec:
   type: ClusterIP
   ports:
