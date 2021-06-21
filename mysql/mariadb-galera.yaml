@@ -7,10 +7,9 @@
 existingSecret: mariadb-auth
 createSecret: false
 
-replicaCount: 1
 # see "To restart the cluster" in https://github.com/bitnami/charts/tree/master/bitnami/mariadb-galera#bootstraping-a-node-other-than-0
-# Parallel doesn't work at first cluster start
-#podManagementPolicy: Parallel
+replicaCount: 1
+podManagementPolicy: Parallel
 
 persistence:
   # We rely on the volume resize feature

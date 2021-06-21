@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/instance: ystack
     app.kubernetes.io/managed-by: Helm
 spec:
-  podManagementPolicy: OrderedReady
+  podManagementPolicy: Parallel
   replicas: 1
   selector:
     matchLabels:
