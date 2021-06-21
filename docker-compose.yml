@@ -43,6 +43,7 @@ services:
       helm template ystack bitnami/mariadb-galera -f mysql/mariadb-galera.yaml --namespace unhelm-namespace-placeholder --output-dir /tmp/unhelm/mysql | sed 's|wrote /tmp/unhelm/mysql/mariadb-galera/|- ./|'  | tee -a /tmp/unhelm/mysql/mariadb-galera/kustomization.yaml
       # Opinions, https://github.com/Yolean/kubernetes-mysql-cluster/pull/35
       sed -i.org 's/\butf8/utf8mb4/' /tmp/unhelm/mysql/mariadb-galera/templates/configmap.yaml
+      sed -i 's/plugin_load_add=auth_pam/#plugin_load_add=auth_pam/' /tmp/unhelm/mysql/mariadb-galera/templates/configmap.yaml
       # Your Kustomize base must override:
       grep -rn unhelm-namespace-placeholder /tmp/unhelm/mysql
       set +x
