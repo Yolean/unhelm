@@ -3,7 +3,8 @@ version: '2'
 services:
 
   logs:
-    build: ./helm3
+    image: yolean/ystack-runner:6be9ec5eb04edf6cc1f670a4d556ca408916e564@sha256:dc2b930963699ff0ca45876911c25ac38631754b779db71bb1806e2de5b3b044
+    working_dir: /tmp
     volumes:
     - /tmp/unhelm:/tmp/unhelm:rw
     - ./logs:/workspace/logs:ro
@@ -26,7 +27,8 @@ services:
       echo "rsync -av --delete /tmp/unhelm/logs/* ./logs/"
 
   mysql:
-    build: ./helm3
+    image: yolean/ystack-runner:6be9ec5eb04edf6cc1f670a4d556ca408916e564@sha256:dc2b930963699ff0ca45876911c25ac38631754b779db71bb1806e2de5b3b044
+    working_dir: /tmp
     volumes:
     - /tmp/unhelm:/tmp/unhelm:rw
     - ./mysql:/workspace/mysql:ro
@@ -49,3 +51,27 @@ services:
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/mysql/* ./mysql/"
+
+  redpanda:
+    image: yolean/ystack-runner:6be9ec5eb04edf6cc1f670a4d556ca408916e564@sha256:dc2b930963699ff0ca45876911c25ac38631754b779db71bb1806e2de5b3b044
+    working_dir: /workspace
+    volumes:
+    - /tmp/unhelm:/tmp/unhelm:rw
+    - ./redpanda:/workspace/redpanda:ro
+    # https://vectorized.io/docs/quick-start-kubernetes
+    command:
+    - /bin/bash
+    - -cx
+    - |
+      set -eo pipefail
+      helm version
+      helm repo add redpanda https://charts.vectorized.io/
+      helm search repo redpanda
+      export VERSION=$$(curl -s https://api.github.com/repos/vectorizedio/redpanda/releases/latest | jq -r .tag_name)
+      mkdir -p /tmp/unhelm/redpanda/crd /tmp/unhelm/redpanda/redpanda-operator
+      kubectl kustomize https://github.com/vectorizedio/redpanda/src/go/k8s/config/crd?ref=$${VERSION} > /tmp/unhelm/redpanda/crd/redpanda-operator-crd.yaml
+      echo 'resources:' > /tmp/unhelm/redpanda/redpanda-operator/kustomization.yaml
+      helm template redpanda/redpanda-operator -f ./redpanda/redpanda-operator.yaml --namespace unhelm-namespace-placeholder --output-dir /tmp/unhelm/redpanda | sed 's|wrote /tmp/redpanda/redanda-operator/|- ./|'  | tee -a /tmp/unhelm/redpanda/redpanda-operator/kustomization.yaml
+      set +x
+      echo "Done. To extract the results:"
+      echo "rsync -av --delete /tmp/unhelm/redpanda/* ./redpanda/"
