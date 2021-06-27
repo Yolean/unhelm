@@ -13,7 +13,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: unhelm-redpanda-operator
-  namespace: unhelm-namespace-placeholder
+  namespace: redpanda-system
 roleRef:
   kind: Role
   name: unhelm-redpanda-operator-election-role

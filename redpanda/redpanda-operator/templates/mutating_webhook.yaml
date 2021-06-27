@@ -4,7 +4,7 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   annotations:
-    cert-manager.io/inject-ca-from: unhelm-namespace-placeholder/redpanda-serving-cert
+    cert-manager.io/inject-ca-from: redpanda-system/redpanda-serving-cert
   name: unhelm-redpanda-operator-mutating-webhook-configuration
 webhooks:
   - admissionReviewVersions:
@@ -13,7 +13,7 @@ webhooks:
     clientConfig:
       service:
         name: redpanda-operator-webhook-service
-        namespace: unhelm-namespace-placeholder
+        namespace: redpanda-system
         path: /mutate-redpanda-vectorized-io-v1alpha1-cluster
     failurePolicy: Fail
     name: mcluster.kb.io

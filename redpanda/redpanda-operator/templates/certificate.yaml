@@ -12,8 +12,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 spec:
   dnsNames:
-    - redpanda-operator-webhook-service.unhelm-namespace-placeholder.svc
-    - redpanda-operator-webhook-service.unhelm-namespace-placeholder.svc.cluster.local
+    - redpanda-operator-webhook-service.redpanda-system.svc
+    - redpanda-operator-webhook-service.redpanda-system.svc.cluster.local
   issuerRef:
     kind: Issuer
     name: unhelm-redpanda-operator-selfsigned-issuer

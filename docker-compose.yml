@@ -71,7 +71,7 @@ services:
       mkdir -p /tmp/unhelm/redpanda/redpanda-operator-crd /tmp/unhelm/redpanda/redpanda-operator /tmp/unhelm/redpanda/redpanda
       kubectl kustomize https://github.com/vectorizedio/redpanda/src/go/k8s/config/crd?ref=$${VERSION} > /tmp/unhelm/redpanda/redpanda-operator-crd/redpanda-operator-crd.yaml
       echo 'resources:' > /tmp/unhelm/redpanda/redpanda-operator/kustomization.yaml
-      helm template unhelm redpanda/redpanda-operator -f /workspace/redpanda/redpanda-operator.yaml --namespace unhelm-namespace-placeholder --output-dir /tmp/unhelm/redpanda | sed 's|wrote /tmp/unhelm/redpanda/redpanda-operator/|- ./|'  | grep -v '/test/' | tee -a /tmp/unhelm/redpanda/redpanda-operator/kustomization.yaml
+      helm template unhelm redpanda/redpanda-operator -f /workspace/redpanda/redpanda-operator.yaml --namespace redpanda-system --output-dir /tmp/unhelm/redpanda | sed 's|wrote /tmp/unhelm/redpanda/redpanda-operator/|- ./|'  | grep -v '/test/' | tee -a /tmp/unhelm/redpanda/redpanda-operator/kustomization.yaml
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/redpanda/* ./redpanda/"
