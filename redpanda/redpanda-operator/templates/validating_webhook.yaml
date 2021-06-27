@@ -5,7 +5,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   annotations:
     cert-manager.io/inject-ca-from: unhelm-namespace-placeholder/redpanda-serving-cert
-  name: RELEASE-NAME-redpanda-operator-validating-webhook-configuration
+  name: unhelm-redpanda-operator-validating-webhook-configuration
 webhooks:
   - admissionReviewVersions:
     - v1

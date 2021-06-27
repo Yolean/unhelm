@@ -1,21 +1,18 @@
 resources:
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/service_account.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/configmap.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/clusterrole.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/clusterrole_metrics.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/clusterrole_proxy.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/clusterrole_binding.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/clusterrole_proxy_binding.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/role.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/role_binding.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/service_metrics.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/service_webhook.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/deployment.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/certificate.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/issuer.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/mutating_webhook.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/validating_webhook.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/test/create-topic-with-client-auth.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/test/create-topic-with-client-auth.yaml
-wrote /tmp/unhelm/redpanda/redpanda-operator/templates/test/three_node_cluster.yaml
+- ./templates/service_account.yaml
+- ./templates/configmap.yaml
+- ./templates/clusterrole.yaml
+- ./templates/clusterrole_metrics.yaml
+- ./templates/clusterrole_proxy.yaml
+- ./templates/clusterrole_binding.yaml
+- ./templates/clusterrole_proxy_binding.yaml
+- ./templates/role.yaml
+- ./templates/role_binding.yaml
+- ./templates/service_metrics.yaml
+- ./templates/service_webhook.yaml
+- ./templates/deployment.yaml
+- ./templates/certificate.yaml
+- ./templates/issuer.yaml
+- ./templates/mutating_webhook.yaml
+- ./templates/validating_webhook.yaml
 

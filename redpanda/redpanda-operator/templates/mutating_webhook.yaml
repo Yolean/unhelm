@@ -5,7 +5,7 @@ kind: MutatingWebhookConfiguration
 metadata:
   annotations:
     cert-manager.io/inject-ca-from: unhelm-namespace-placeholder/redpanda-serving-cert
-  name: RELEASE-NAME-redpanda-operator-mutating-webhook-configuration
+  name: unhelm-redpanda-operator-mutating-webhook-configuration
 webhooks:
   - admissionReviewVersions:
     - v1

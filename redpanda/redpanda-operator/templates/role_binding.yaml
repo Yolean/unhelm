@@ -3,18 +3,18 @@
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: RELEASE-NAME-redpanda-operator-election-rolebinding
+  name: unhelm-redpanda-operator-election-rolebinding
   labels:
     app.kubernetes.io/name: redpanda-operator
     helm.sh/chart: redpanda-operator-v21.6.5
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "v21.6.5"
     app.kubernetes.io/managed-by: Helm
 subjects:
 - kind: ServiceAccount
-  name: RELEASE-NAME-redpanda-operator
+  name: unhelm-redpanda-operator
   namespace: unhelm-namespace-placeholder
 roleRef:
   kind: Role
-  name: RELEASE-NAME-redpanda-operator-election-role
+  name: unhelm-redpanda-operator-election-role
   apiGroup: rbac.authorization.k8s.io

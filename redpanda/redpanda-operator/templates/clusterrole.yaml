@@ -3,11 +3,11 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: RELEASE-NAME-redpanda-operator
+  name: unhelm-redpanda-operator
   labels:
     app.kubernetes.io/name: redpanda-operator
     helm.sh/chart: redpanda-operator-v21.6.5
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "v21.6.5"
     app.kubernetes.io/managed-by: Helm
 rules:

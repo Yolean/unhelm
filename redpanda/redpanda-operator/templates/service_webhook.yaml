@@ -7,7 +7,7 @@ metadata:
   labels:
     app.kubernetes.io/name: redpanda-operator
     helm.sh/chart: redpanda-operator-v21.6.5
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "v21.6.5"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -16,4 +16,4 @@ spec:
     targetPort: 9443
   selector:
     app.kubernetes.io/name: redpanda-operator
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: unhelm
