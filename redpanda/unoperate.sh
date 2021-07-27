@@ -2,24 +2,24 @@
 set -x
 set -e
 
-# echo "Please confirm that this is an ephemeral test cluster"
-# kubectl context current-context
-# read -p "Ok? [y/n] " ok && [ "$ok" = "y" ] || exit 1
+echo "Please confirm that this is an ephemeral test cluster"
+kubectl context current-context
+read -p "Ok? [y/n] " ok && [ "$ok" = "y" ] || exit 1
 
-# # meant to run from the unhelp root dir
-# stat redpanda/redpanda-operator
+# meant to run from the unhelp root dir
+stat redpanda/redpanda-operator
 
-# kubectl create namespace cert-manager 
-# kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.4.1/cert-manager.yaml
-# kubectl -n cert-manager rollout status deploy cert-manager
-# kubectl -n cert-manager rollout status deploy cert-manager-webhook
+kubectl create namespace cert-manager
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.4.1/cert-manager.yaml
+kubectl -n cert-manager rollout status deploy cert-manager
+kubectl -n cert-manager rollout status deploy cert-manager-webhook
 
-# kubectl create namespace redpanda-system
-# kubectl apply -f redpanda/redpanda-operator-crd/redpanda-operator-crd.yaml
-# kubectl -n redpanda-system apply -k apply -k redpanda/redpanda-operator/
-# kubectl -n redpanda-system rollout status deploy unhelm-redpanda-operator
+kubectl create namespace redpanda-system
+kubectl apply -f redpanda/redpanda-operator-crd/redpanda-operator-crd.yaml
+kubectl -n redpanda-system apply -k apply -k redpanda/redpanda-operator/
+kubectl -n redpanda-system rollout status deploy unhelm-redpanda-operator
 
-# kubectl create namespace redpanda-example
+kubectl create namespace redpanda-example
 for example in \
     https://github.com/vectorizedio/redpanda/raw/dev/src/go/k8s/config/samples/one_node_cluster.yaml \
     https://github.com/vectorizedio/redpanda/raw/dev/src/go/k8s/config/samples/tls.yaml \
