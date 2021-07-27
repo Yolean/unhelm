@@ -42,5 +42,8 @@ for example in \
   kubectl -n redpanda-example get service redpanda -o yaml > $exampledir/service.yaml
   kubectl -n redpanda-example get statefulset redpanda -o yaml > $exampledir/statefulset.yaml
   kubectl -n redpanda-example get configmap redpanda-base -o yaml > $exampledir/configmap.yaml
+  for i in $(seq 0 2); do
+    kubectl -n redpanda-example exec redpanda-$i -- cat /etc/redpanda/redpanda.yaml > $exampledir/redpanda-$i.yaml || echo "Failed to get config from pod $i"
+  done
   kubectl -n redpanda-example delete -f $exampledir/example.yaml
 done
