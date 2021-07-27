@@ -6,9 +6,9 @@ metadata:
   name: unhelm-redpanda-operator
   labels:
     app.kubernetes.io/name: redpanda-operator
-    helm.sh/chart: redpanda-operator-v21.6.5
+    helm.sh/chart: redpanda-operator-v21.7.6
     app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "v21.6.5"
+    app.kubernetes.io/version: "v21.7.6"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io

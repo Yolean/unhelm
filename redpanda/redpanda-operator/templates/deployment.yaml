@@ -7,9 +7,9 @@ metadata:
   labels:
     
     app.kubernetes.io/name: redpanda-operator
-    helm.sh/chart: redpanda-operator-v21.6.5
+    helm.sh/chart: redpanda-operator-v21.7.6
     app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "v21.6.5"
+    app.kubernetes.io/version: "v21.7.6"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -37,12 +37,16 @@ spec:
         - containerPort: 8443
           name: https
       - name: manager
-        image: "vectorized/redpanda-operator:v21.6.5"
+        image: "vectorized/redpanda-operator:v21.7.6"
         imagePullPolicy: IfNotPresent
         args:
         - --health-probe-bind-address=:8081
         - --metrics-bind-address=127.0.0.1:8080
         - --leader-elect
+        - --configurator-tag=v21.7.6
+        - --configurator-base-image=vectorized/configurator
+        - --configurator-image-pull-policy=IfNotPresent
+        - --cluster-domain=cluster.local
         - --webhook-enabled=true
         command:
         - /manager
