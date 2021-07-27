@@ -1,0 +1,95 @@
+apiVersion: v1
+data:
+  redpanda.yaml: |
+    config_file: /etc/redpanda/redpanda.yaml
+    redpanda:
+        data_directory: /var/lib/redpanda/data
+        rpc_server:
+            address: 0.0.0.0
+            port: 33145
+        advertised_rpc_api:
+            address: 0.0.0.0
+            port: 33145
+        kafka_api:
+            - address: 0.0.0.0
+              port: 9092
+              name: kafka
+            - address: 0.0.0.0
+              port: 9093
+              name: kafka-external
+        admin:
+            - address: 0.0.0.0
+              port: 9644
+              name: admin
+        node_id: 0
+        seed_servers:
+            - host:
+                address: redpanda-0.redpanda.redpanda-example.svc.cluster.local.
+                port: 33145
+            - host:
+                address: redpanda-1.redpanda.redpanda-example.svc.cluster.local.
+                port: 33145
+            - host:
+                address: redpanda-2.redpanda.redpanda-example.svc.cluster.local.
+                port: 33145
+        developer_mode: true
+        log_segment_size: 536870912
+        auto_create_topics_enabled: false
+        enable_idempotence: true
+        enable_transactions: true
+    rpk:
+        enable_usage_stats: false
+        tune_network: false
+        tune_disk_scheduler: false
+        tune_disk_nomerges: false
+        tune_disk_write_cache: false
+        tune_disk_irq: false
+        tune_fstrim: false
+        tune_cpu: false
+        tune_aio_events: false
+        tune_clocksource: false
+        tune_swappiness: false
+        tune_transparent_hugepages: false
+        enable_memory_locking: false
+        tune_coredump: false
+        coredump_dir: /var/lib/redpanda/coredump
+        overprovisioned: false
+    pandaproxy:
+        pandaproxy_api:
+            - address: 0.0.0.0
+              port: 8082
+              name: proxy
+            - address: 0.0.0.0
+              port: 8083
+              name: proxy-external
+    pandaproxy_client:
+        brokers:
+            - address: redpanda-0.redpanda.redpanda-example.svc.cluster.local.
+              port: 9092
+            - address: redpanda-1.redpanda.redpanda-example.svc.cluster.local.
+              port: 9092
+            - address: redpanda-2.redpanda.redpanda-example.svc.cluster.local.
+              port: 9092
+    schema_registry: {}
+kind: ConfigMap
+metadata:
+  annotations:
+    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWzEVk9v47YT/SoCz5b/rO3dmNff71oU6KGXpiBG5EgmRJHskFLiDfzdC0pWIttKtwkWqH2xZ968R3Gox3lh4PXvSEE7yzjrNmzBFERg/IURKg9WwfIEjWGcSWdLXYlSG+TZCqNcjYjVFfTRjn/5o82yLEuEQmlCGR2deLbqgFZGF2/1CTFgyUsRkDqkS3H6gFKEIfBsvey/bxnvKPJsu93s9kMQVIcUdUAlEhV4/TmeGsoabsrzfyAYKQ7rw5dp1EKDfGD7MNH2HaIcnyOSBTM+cqPtR5f5dbe7Z++ZhrB1CoVWPLsUB0R1aUy40jq6EPmUarLNY3/z9fL1hLzG8Bkab3AZOrmUpg0RaWmcBLO8ZrtrzQd0N/+R7pefqauwQ+M8kmicQp5FanHIGFeJgFWDNoqgvyPP9tuvD9/Wh83lDEIbnZCEEFFE57UMAi0UBhXPSjDhwjPEhFbYeBfRyiuVSzYS2AAyamfDmCZf8ytQG6BCESLEcKUQW4vCYnxyVN8nlA61CPKIqjVI7+Sta5AqnOHt00+kIwoJ8ojvIDT9dZ8pQyTd3Melb++DoJ3ADu3cw0njZB1cS3JGPzyB99r2h+Q21++rB0pNPLYVerh9yMveNtg4Oomko201swJHqNrGX2XGYPLfOecd8wPadUieXKfTfTA5JD3Wk3s+Xdr9FviERz6sH2Y8smf7MNGMR/ZEE4+crFUajXZ8fQty9a2b/UzrmrsQ5hQ+b1L/VuHzdjRVSC9oA4Kw0iGme/zl/GjZecFqbRXj7H/9fPALeLZgDUYY5wgDBZqQfoH3y7otkCxGDEvtVtI13lm0kfHXeYMtZoDahghW4o9wDVioUOXFaYLMk3tCdDRbkk7Nj2g9UMxdOYWdF+ymMi8gIBvCwcPVYsf9ZgvmnizSb1giJacNjP9xM4W9NqvrJyb9HVVaQ7cB44+QRrQimcCvief/aDD2ZcmRF2lIi+SMQRojY3eGHrO7VbMFa3VCrLdrOHxbb/Nyu9/nO3nY5w8lyHy/3xXlTm0Pa6XY+c/z+e8AAAD//1BLBwgng8rwEQMAADUKAABQSwECFAAUAAgACAAAAAAAJ4PK8BEDAAA1CgAACAAAAAAAAAAAAAAAAAAAAAAAb3JpZ2luYWxQSwUGAAAAAAEAAQA2AAAARwMAAAAA
+  creationTimestamp: "2021-07-27T15:57:41Z"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: redpanda-operator
+    app.kubernetes.io/name: redpanda
+    app.kubernetes.io/part-of: redpanda
+  name: redpanda-base
+  namespace: redpanda-example
+  ownerReferences:
+  - apiVersion: redpanda.vectorized.io/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: redpanda
+    uid: 030a9703-f355-4c95-8fac-554bf4d390dd
+  resourceVersion: "15413"
+  uid: 9724aa6e-5759-49d8-9e52-8825824216db

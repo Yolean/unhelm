@@ -1,0 +1,235 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    banzaicloud.com/last-applied: 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
+  creationTimestamp: "2021-07-27T15:57:41Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: redpanda-operator
+    app.kubernetes.io/name: redpanda
+    app.kubernetes.io/part-of: redpanda
+  name: redpanda
+  namespace: redpanda-example
+  ownerReferences:
+  - apiVersion: redpanda.vectorized.io/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: redpanda
+    uid: 030a9703-f355-4c95-8fac-554bf4d390dd
+  resourceVersion: "15688"
+  uid: 2460daad-20a8-4c4b-bf23-f07e9f6f693c
+spec:
+  podManagementPolicy: Parallel
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: redpanda
+      app.kubernetes.io/instance: redpanda
+      app.kubernetes.io/name: redpanda
+  serviceName: redpanda
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: redpanda
+        app.kubernetes.io/instance: redpanda
+        app.kubernetes.io/name: redpanda
+      name: redpanda
+      namespace: redpanda-example
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: redpanda
+                  app.kubernetes.io/instance: redpanda
+                  app.kubernetes.io/name: redpanda
+              namespaces:
+              - redpanda-example
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/component: redpanda
+                app.kubernetes.io/instance: redpanda
+                app.kubernetes.io/name: redpanda
+            namespaces:
+            - redpanda-example
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - args:
+        - redpanda
+        - start
+        - --check=false
+        - --advertise-rpc-addr=$(POD_NAME).redpanda.redpanda-example.svc.cluster.local.:33145
+        - --overprovisioned
+        - --reserve-memory 1M
+        - --kernel-page-cache=true
+        - --default-log-level=debug
+        - --smp=1
+        env:
+        - name: REDPANDA_ENVIRONMENT
+          value: kubernetes
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        image: vectorized/redpanda:latest
+        imagePullPolicy: Always
+        name: redpanda
+        ports:
+        - containerPort: 33145
+          name: rpc
+          protocol: TCP
+        - containerPort: 9644
+          name: admin
+          protocol: TCP
+        - containerPort: 9092
+          name: kafka
+          protocol: TCP
+        - containerPort: 8082
+          name: proxy
+          protocol: TCP
+        - containerPort: 9093
+          hostPort: 30670
+          name: kafka-external
+          protocol: TCP
+        - containerPort: 8083
+          hostPort: 31289
+          name: proxy-external
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2Gi
+          requests:
+            cpu: "1"
+            memory: 2Gi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/redpanda/data
+          name: datadir
+        - mountPath: /etc/redpanda
+          name: config-dir
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - env:
+        - name: SERVICE_FQDN
+          value: redpanda.redpanda-example.svc.cluster.local.
+        - name: CONFIG_SOURCE_DIR
+          value: /mnt/operator
+        - name: CONFIG_DESTINATION
+          value: /etc/redpanda/redpanda.yaml
+        - name: REDPANDA_RPC_PORT
+          value: "33145"
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        - name: EXTERNAL_CONNECTIVITY
+          value: "true"
+        - name: EXTERNAL_CONNECTIVITY_SUBDOMAIN
+        - name: HOST_PORT
+          value: "30670"
+        - name: PROXY_HOST_PORT
+          value: "31289"
+        image: vectorized/configurator:v21.7.6
+        imagePullPolicy: IfNotPresent
+        name: redpanda-configurator
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2Gi
+          requests:
+            cpu: "1"
+            memory: 2Gi
+        securityContext:
+          runAsGroup: 101
+          runAsUser: 101
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/redpanda
+          name: config-dir
+        - mountPath: /mnt/operator
+          name: configmap-dir
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 101
+      serviceAccount: redpanda
+      serviceAccountName: redpanda
+      terminationGracePeriodSeconds: 30
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: redpanda
+            app.kubernetes.io/instance: redpanda
+            app.kubernetes.io/name: redpanda
+        maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+      volumes:
+      - name: datadir
+        persistentVolumeClaim:
+          claimName: datadir
+      - configMap:
+          defaultMode: 420
+          name: redpanda-base
+        name: configmap-dir
+      - emptyDir: {}
+        name: config-dir
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: redpanda
+        app.kubernetes.io/instance: redpanda
+        app.kubernetes.io/managed-by: redpanda-operator
+        app.kubernetes.io/name: redpanda
+        app.kubernetes.io/part-of: redpanda
+      name: datadir
+      namespace: redpanda-example
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Gi
+      volumeMode: Filesystem
+    status:
+      phase: Pending
+status:
+  collisionCount: 0
+  currentReplicas: 3
+  currentRevision: redpanda-5b8f8c8747
+  observedGeneration: 1
+  readyReplicas: 2
+  replicas: 3
+  updateRevision: redpanda-5b8f8c8747
+  updatedReplicas: 3

@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWy8k0Fz2jAQhf/LnmUKKVDsW5teckmZtNNLJ4e1tCQaZK1mtaahGf/3joAQmjLDLTfP+n1Pq/fsZ8Dkf5JkzxEa2EzAwNpHBw18J9l4S2CgI0WHitA8Q8CWQi5PmNJo3bckkZTyyPMHy13iSFGhASGXMDoEc0boY1aMli7pOoz4QK5qtyfKihMJKstZJGJ30TahaMWrU9lg4H+yTHLCf/as6Am7FEos/DuS3NGKhKKlDM2vN2m+MKMNWWXxf8iV4zcTDOkRS9RtYLv+Vny+UiDdYSo9GbAcVTgEkpfJoZbr0GclgXML974o8BPN5nbhqnZl22pqZ/OqxfmkIsLxrKa6/rggGO4HAzmRLVXavefNEhq45Vgul1h0f6XDMeg6Hw8voKnn06mBJKxsOUADP66XYEBRHkiXR8lgjvwaV2t85cf11SV+XF+d8En4aXvkF+PFJb5IhnsDqW+Dz4+3rHeEbvvZOaGcS1/7XDOFXT3v9E2/bW0woNtEr83eLMssK2q/+88Co/uCoXiXHYdh+BsAAP//UEsHCFcOhBqTAQAAtQMAAFBLAQIUABQACAAIAAAAAABXDoQakwEAALUDAAAIAAAAAAAAAAAAAAAAAAAAAABvcmlnaW5hbFBLBQYAAAAAAQABADYAAADJAQAAAAA=
+  creationTimestamp: "2021-07-27T15:56:38Z"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: redpanda-operator
+    app.kubernetes.io/name: redpanda
+    app.kubernetes.io/part-of: redpanda
+  name: redpanda
+  namespace: redpanda-example
+  ownerReferences:
+  - apiVersion: redpanda.vectorized.io/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: redpanda
+    uid: a7e56c8d-bfcb-4c56-ba61-eea059e9938e
+  resourceVersion: "14870"
+  uid: 12bf9fc7-1951-4c08-98e8-4f2b6c32c615
+spec:
+  clusterIP: None
+  clusterIPs:
+  - None
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: admin
+    port: 9644
+    protocol: TCP
+    targetPort: 9644
+  - name: kafka
+    port: 9092
+    protocol: TCP
+    targetPort: 9092
+  - name: proxy
+    port: 8082
+    protocol: TCP
+    targetPort: 8082
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/name: redpanda
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

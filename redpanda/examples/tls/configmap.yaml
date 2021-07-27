@@ -1,0 +1,89 @@
+apiVersion: v1
+data:
+  redpanda.yaml: |
+    config_file: /etc/redpanda/redpanda.yaml
+    redpanda:
+        data_directory: /var/lib/redpanda/data
+        rpc_server:
+            address: 0.0.0.0
+            port: 33145
+        advertised_rpc_api:
+            address: 0.0.0.0
+            port: 33145
+        kafka_api:
+            - address: 0.0.0.0
+              port: 9092
+              name: kafka
+        kafka_api_tls:
+            - name: kafka
+              key_file: /etc/tls/certs/tls.key
+              cert_file: /etc/tls/certs/tls.crt
+              enabled: true
+        admin:
+            - address: 0.0.0.0
+              port: 9644
+              name: admin
+        node_id: 0
+        seed_servers:
+            - host:
+                address: redpanda-0.redpanda.redpanda-example.svc.cluster.local.
+                port: 33145
+        developer_mode: true
+        log_segment_size: 536870912
+        auto_create_topics_enabled: false
+        enable_idempotence: true
+        enable_transactions: true
+    rpk:
+        enable_usage_stats: false
+        tune_network: false
+        tune_disk_scheduler: false
+        tune_disk_nomerges: false
+        tune_disk_write_cache: false
+        tune_disk_irq: false
+        tune_fstrim: false
+        tune_cpu: false
+        tune_aio_events: false
+        tune_clocksource: false
+        tune_swappiness: false
+        tune_transparent_hugepages: false
+        enable_memory_locking: false
+        tune_coredump: false
+        coredump_dir: /var/lib/redpanda/coredump
+        overprovisioned: false
+    pandaproxy:
+        pandaproxy_api:
+            - address: 0.0.0.0
+              port: 8082
+              name: proxy
+        pandaproxy_api_tls:
+            - name: proxy
+              key_file: /etc/tls/certs/pandaproxy/tls.key
+              cert_file: /etc/tls/certs/pandaproxy/tls.crt
+              enabled: true
+    pandaproxy_client:
+        brokers:
+            - address: redpanda-0.redpanda.redpanda-example.svc.cluster.local.
+              port: 9092
+    schema_registry: {}
+kind: ConfigMap
+metadata:
+  annotations:
+    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWysVsGSozYQ/RVKZ4M9Y4/DcE2uqVTlkEsmpWqkNlYhJKUlmPVO+d9TAuMBG+/WbgVfcL/XT1K3eNIHA6f+QvLKGlaw7omtmIQArPhghNKBkZCdoNGsYMKag6r4QWkskjUGsR4Z6xn1zYx/izeTJEkSBblUhCJYOhXJugNaa1V+5kfGwCUnuEfqkC7J8QEpCb0vkk3W/z4RZykUyXb7tHsZgiA7pKA8Sh6lwKmf06nhUMNNevoNgVHidfP6PI0aaLAY1G6EedB+Jn5HHZ4aT9OaB+3XAin4+JbVeJpyI/CYLChMyWig1CiLJFCLY/UaZX50xfvd7n7FvdIQNlYiV7JILskeUV56PC/A0fpQTKUmHRu3SrrJrpvtGsMv0DiNme9EJnTrA1KmrQCdzdXuuiyxQ20dEm+sxGkltK24x6pBE7hXX7FIXrb7/JfN69OlvdAGywUhBOTBOiU8vxb0ANpfdIYYVxIbZwMaMRvlggYC40EEZY0fYXJ1MSO1HirkPkDwsxFCa5AbDO+W6ntAKl9zL44oW430ADe2QapwQbeH30kF5ALEER8wFP17jxx8INXcx4Vr74OgLMcOzdLihLai9rYlsTC+fwfnlOk3yS3W19UBxSYe2wod3C7yUtsGG0snHsdRplqYgSWUbeNmyBiM1rZkaiM+sG2H5Mh2KlrtZJP0XEf2y+nS7s/AT9hPvskX7KdXW1J/4EET/vA89KBPuR+zo5u8bzvTZM5CKzSjSZRk61sP+T8NY+ro8RNqgBNWyod4iH2c3ww7r1itjGQF+7U/HH8Hx1aswQDjIaqhRO3jGziX1W2JZDCgz5RdC9s4a9AEVlwPW7ZaICrjAxiB3+M1YKBCmZanCTON/gbB0mJKbPj3ZB1QSO1hSjuv2E1mWoJHNoS9g9lkx3qzFbPvBulPPCBFL/Ss+PvmCnJtVtdfF9RXlHEO3RNod4R4PynjZ/pH1PkNNYY+LW6UVbyhBLJaI42RsTtDj9ndrNmKtSoy4BnyHGSe7vL9Jt2hzNO8LLcpPG/F68sey/0TsPM/5/N/AQAA//9QSwcIUnZQgRgDAAAyCQAAUEsBAhQAFAAIAAgAAAAAAFJ2UIEYAwAAMgkAAAgAAAAAAAAAAAAAAAAAAAAAAG9yaWdpbmFsUEsFBgAAAAABAAEANgAAAE4DAAAAAA==
+  creationTimestamp: "2021-07-27T15:57:15Z"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: redpanda
+    app.kubernetes.io/managed-by: redpanda-operator
+    app.kubernetes.io/name: redpanda
+    app.kubernetes.io/part-of: redpanda
+  name: redpanda-base
+  namespace: redpanda-example
+  ownerReferences:
+  - apiVersion: redpanda.vectorized.io/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: redpanda
+    uid: a2a88ad8-4860-4ed8-8bb3-a23c956eb61a
+  resourceVersion: "15232"
+  uid: 7bcb18f4-0ae5-42a7-b9e2-f67fd3804450
