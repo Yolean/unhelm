@@ -5,5 +5,7 @@ server:
       enabled: true
   authDelegator:
     enabled: false
+  dataStorage:
+    size: 1Gi
 injector:
   enabled: false
