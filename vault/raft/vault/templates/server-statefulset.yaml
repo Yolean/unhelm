@@ -117,6 +117,9 @@ spec:
             
           volumeMounts:
           
+            - name: audit
+              mountPath: /vault/audit
+  
   
     
             - name: data
@@ -168,6 +171,16 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: data
+      
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+      
+    - metadata:
+        name: audit
       
       spec:
         accessModes:
