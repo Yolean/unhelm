@@ -3,5 +3,7 @@ server:
     enabled: true
     raft:
       enabled: true
+  authDelegator:
+    enabled: false
 injector:
   enabled: false

@@ -2,7 +2,6 @@ resources:
 - ./vault/templates/server-disruptionbudget.yaml
 - ./vault/templates/server-serviceaccount.yaml
 - ./vault/templates/server-config-configmap.yaml
-- ./vault/templates/server-clusterrolebinding.yaml
 - ./vault/templates/server-discovery-role.yaml
 - ./vault/templates/server-discovery-rolebinding.yaml
 - ./vault/templates/server-ha-active-service.yaml
