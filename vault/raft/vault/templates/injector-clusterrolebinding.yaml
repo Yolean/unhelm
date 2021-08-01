@@ -15,4 +15,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: vault-agent-injector
-  namespace: default
+  #namespace: unhelm-namespace-placeholder

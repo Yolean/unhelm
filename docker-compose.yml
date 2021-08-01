@@ -94,7 +94,8 @@ services:
       helm search repo vault --versions
       mkdir -p /tmp/unhelm/vault/raft
       echo 'resources:' > /tmp/unhelm/vault/raft/kustomization.yaml
-      helm template vault hashicorp/vault -f /workspace/vault/vault-raft.values.yaml --output-dir /tmp/unhelm/vault/raft | sed 's|wrote /tmp/unhelm/vault/raft/vault/|- ./vault/|' | tee -a /tmp/unhelm/vault/raft/kustomization.yaml
+      helm template vault hashicorp/vault -n unhelm-namespace-placeholder -f /workspace/vault/vault-raft.values.yaml --output-dir /tmp/unhelm/vault/raft | sed 's|wrote /tmp/unhelm/vault/raft/vault/|- ./vault/|' | tee -a /tmp/unhelm/vault/raft/kustomization.yaml
+      sed -i 's/  namespace: unhelm-namespace-placeholder/  #namespace: unhelm-namespace-placeholder/' /tmp/unhelm/vault/raft/vault/templates/*.yaml
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/vault/* ./vault/"
