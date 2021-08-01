@@ -6,4 +6,5 @@ For example
 mkdir /tmp/unhelm && chmod a+rxw /tmp/unhelm
 docker-compose up --build --exit-code-from logs logs
 docker-compose up --build --exit-code-from mysql mysql
+docker-compose up --build --exit-code-from vault vault
 ```

@@ -75,3 +75,26 @@ services:
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/redpanda/* ./redpanda/"
+
+  vault:
+    image: docker.io/yolean/ystack-runner:6e0024f0386b9aeff890f5d507178b684cc80aaa@sha256:06770d55312fff7e79475e30b9f866f144a27b6786fe0aae83dd3b49136249eb
+    working_dir: /tmp
+    volumes:
+    - /tmp/unhelm:/tmp/unhelm:rw
+    - ./vault:/workspace/vault:ro
+    # https://learn.hashicorp.com/tutorials/vault/kubernetes-google-cloud-gke
+    command:
+    - /bin/bash
+    - -cx
+    - |
+      set -eo pipefail
+      helm version
+      helm repo add hashicorp https://helm.releases.hashicorp.com
+      helm repo update
+      helm search repo vault --versions
+      mkdir -p /tmp/unhelm/vault/raft
+      echo 'resources:' > /tmp/unhelm/vault/raft/kustomization.yaml
+      helm template vault hashicorp/vault -f /workspace/vault/vault-raft.values.yaml --output-dir /tmp/unhelm/vault/raft | sed 's|wrote /tmp/unhelm/vault/raft/vault/|- ./vault/|' | tee -a /tmp/unhelm/vault/raft/kustomization.yaml
+      set +x
+      echo "Done. To extract the results:"
+      echo "rsync -av --delete /tmp/unhelm/vault/* ./vault/"
