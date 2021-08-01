@@ -3,3 +3,5 @@ server:
     enabled: true
     raft:
       enabled: true
+injector:
+  enabled: false
