@@ -12,3 +12,6 @@ server:
     size: 1Gi
 injector:
   enabled: false
+ui:
+  enabled: true
+  publishNotReadyAddresses: false

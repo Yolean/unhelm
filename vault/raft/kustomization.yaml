@@ -8,6 +8,7 @@ resources:
 - ./vault/templates/server-ha-standby-service.yaml
 - ./vault/templates/server-headless-service.yaml
 - ./vault/templates/server-service.yaml
+- ./vault/templates/ui-service.yaml
 - ./vault/templates/server-statefulset.yaml
 - ./vault/templates/tests/server-test.yaml
 

@@ -1,0 +1,23 @@
+---
+# Source: vault/templates/ui-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault-ui
+  #namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: vault-0.14.0
+    app.kubernetes.io/name: vault-ui
+    app.kubernetes.io/instance: vault
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: vault
+    component: server
+  publishNotReadyAddresses: false
+  ports:
+    - name: http
+      port: 8200
+      targetPort: 8200
+  type: ClusterIP
