@@ -10,6 +10,9 @@ server:
   auditStorage:
     enabled: true
     size: 1Gi
+  postStart:
+  - echo
+  - "postStart goes here"
 injector:
   enabled: false
 ui:
