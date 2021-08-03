@@ -10,5 +10,4 @@ resources:
 - ./vault/templates/server-service.yaml
 - ./vault/templates/ui-service.yaml
 - ./vault/templates/server-statefulset.yaml
-- ./vault/templates/tests/server-test.yaml
 
