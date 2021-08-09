@@ -19,7 +19,7 @@ services:
       echo 'resources:' > /tmp/unhelm/logs/grafana/kustomization.yaml
       echo 'resources:' > /tmp/unhelm/logs/loki/kustomization.yaml
       echo 'resources:' > /tmp/unhelm/logs/fluent-bit/kustomization.yaml
-      helm template logs grafana/grafana -f logs/grafana.yaml --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/grafana/|- ./|'  | tee -a /tmp/unhelm/logs/grafana/kustomization.yaml
+      helm template logs grafana/grafana -f /workspace/logs/grafana.yaml --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/grafana/|- ./|'  | tee -a /tmp/unhelm/logs/grafana/kustomization.yaml
       helm template logs grafana/loki                         --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/loki/|- ./|'     | tee -a /tmp/unhelm/logs/loki/kustomization.yaml
       helm template logs grafana/fluent-bit                   --namespace monitoring --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/fluent-bit/|- ./|' | tee -a /tmp/unhelm/logs/fluent-bit/kustomization.yaml
       set +x
