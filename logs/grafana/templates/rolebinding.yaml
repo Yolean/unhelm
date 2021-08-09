@@ -6,10 +6,10 @@ metadata:
   name: logs-grafana
   namespace: monitoring
   labels:
-    helm.sh/chart: grafana-6.13.2
+    helm.sh/chart: grafana-6.15.0
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: logs
-    app.kubernetes.io/version: "8.0.3"
+    app.kubernetes.io/version: "8.1.0"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io

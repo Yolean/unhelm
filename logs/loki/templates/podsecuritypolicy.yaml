@@ -6,7 +6,7 @@ metadata:
   name: logs-loki
   labels:
     app: loki
-    chart: loki-2.5.0
+    chart: loki-2.6.0
     heritage: Helm
     release: logs
 spec:

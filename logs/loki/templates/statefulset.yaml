@@ -7,7 +7,7 @@ metadata:
   namespace: monitoring
   labels:
     app: loki
-    chart: loki-2.5.0
+    chart: loki-2.6.0
     release: logs
     heritage: Helm
   annotations:
@@ -29,7 +29,7 @@ spec:
         name: loki
         release: logs
       annotations:
-        checksum/config: cb7caf3124e7dd3ef4fd802d4aa1dbecd94b164b9581c01faf50b6d3c0507551
+        checksum/config: f7402f9775076322ee1fd426648bbccddc4c74fd7c6afaca960b015e23ee25ca
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
@@ -43,7 +43,7 @@ spec:
         []
       containers:
         - name: loki
-          image: "grafana/loki:2.2.0"
+          image: "grafana/loki:2.3.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/loki/loki.yaml"
