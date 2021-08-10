@@ -99,3 +99,26 @@ services:
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/vault/* ./vault/"
+
+  fluent-bit:
+    image: docker.io/yolean/ystack-runner:6e0024f0386b9aeff890f5d507178b684cc80aaa@sha256:06770d55312fff7e79475e30b9f866f144a27b6786fe0aae83dd3b49136249eb
+    working_dir: /tmp
+    volumes:
+    - /tmp/unhelm:/tmp/unhelm:rw
+    - ./fluent-bit:/workspace/fluent-bit:ro
+    command:
+    - /bin/bash
+    - -cx
+    - |
+      set -eo pipefail
+      helm version
+      helm repo add fluent https://fluent.github.io/helm-charts
+      helm repo update
+      helm search repo fluent-bit --versions
+      mkdir -p /tmp/unhelm/fluent-bit
+      echo 'resources:' > /tmp/unhelm/fluent-bit/kustomization.yaml
+      helm template fluent-bit fluent/fluent-bit -f /workspace/fluent-bit/fluent-bit.values.yaml -n unhelm-namespace-placeholder --output-dir /tmp/unhelm | sed 's|wrote /tmp/unhelm/fluent-bit/|- ./|' | tee -a /tmp/unhelm/fluent-bit/kustomization.yaml
+      sed -i 's/  namespace: unhelm-namespace-placeholder/  #namespace: unhelm-namespace-placeholder/' /tmp/unhelm/fluent-bit/templates/*.yaml
+      set +x
+      echo "Done. To extract the results:"
+      echo "rsync -av --delete /tmp/unhelm/fluent-bit/* ./fluent-bit/"
