@@ -1,0 +1,9 @@
+resources:
+- ./templates/serviceaccount.yaml
+- ./templates/configmap.yaml
+- ./templates/clusterrole.yaml
+- ./templates/clusterrolebinding.yaml
+- ./templates/service.yaml
+- ./templates/daemonset.yaml
+- ./templates/tests/test-connection.yaml
+
