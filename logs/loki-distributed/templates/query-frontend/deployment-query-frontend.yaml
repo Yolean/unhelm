@@ -1,0 +1,90 @@
+---
+# Source: loki-distributed/templates/query-frontend/deployment-query-frontend.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logs-loki-distributed-query-frontend
+  labels:
+    helm.sh/chart: loki-distributed-0.36.0
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: logs
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: query-frontend
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: logs
+      app.kubernetes.io/component: query-frontend
+  template:
+    metadata:
+      annotations:
+        checksum/config: 7882d0f4449488f26330773add9b6802f92bc0ab2507d76511b7c23ea0c5592d
+      labels:
+        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/instance: logs
+        app.kubernetes.io/component: query-frontend
+    spec:
+      serviceAccountName: logs-loki-distributed
+      
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: loki
+          image: docker.io/grafana/loki:2.3.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - -config.file=/etc/loki/config/config.yaml
+            - -target=query-frontend
+          ports:
+            - name: http
+              containerPort: 3100
+              protocol: TCP
+            - name: grpc
+              containerPort: 9095
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: config
+              mountPath: /etc/loki/config
+          resources:
+            {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: loki-distributed
+                  app.kubernetes.io/instance: logs
+                  app.kubernetes.io/component: query-frontend
+              topologyKey: kubernetes.io/hostname
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: loki-distributed
+                    app.kubernetes.io/instance: logs
+                    app.kubernetes.io/component: query-frontend
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+        
+      volumes:
+        - name: config
+          configMap:
+            name: logs-loki-distributed

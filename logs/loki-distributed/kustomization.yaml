@@ -1,0 +1,18 @@
+resources:
+- ./templates/serviceaccount.yaml
+- ./templates/configmap.yaml
+- ./templates/gateway/configmap-gateway.yaml
+- ./templates/distributor/service-distributor.yaml
+- ./templates/gateway/service-gateway.yaml
+- ./templates/ingester/service-ingester-headless.yaml
+- ./templates/ingester/service-ingester.yaml
+- ./templates/querier/service-querier-headless.yaml
+- ./templates/querier/service-querier.yaml
+- ./templates/query-frontend/service-query-frontend.yaml
+- ./templates/service-memberlist.yaml
+- ./templates/distributor/deployment-distributor.yaml
+- ./templates/gateway/deployment-gateway.yaml
+- ./templates/query-frontend/deployment-query-frontend.yaml
+- ./templates/ingester/statefulset-ingester.yaml
+- ./templates/querier/statefulset-querier.yaml
+

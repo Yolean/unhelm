@@ -1,0 +1,28 @@
+---
+# Source: loki-distributed/templates/ingester/service-ingester.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: logs-loki-distributed-ingester
+  labels:
+    helm.sh/chart: loki-distributed-0.36.0
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: logs
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: ingester
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3100
+      targetPort: http
+      protocol: TCP
+    - name: grpc
+      port: 9095
+      targetPort: grpc
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: logs
+    app.kubernetes.io/component: ingester
