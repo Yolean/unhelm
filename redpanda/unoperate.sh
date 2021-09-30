@@ -3,7 +3,7 @@ set -x
 set -e
 
 echo "Please confirm that this is an ephemeral test cluster"
-kubectl context current-context
+kubectl config current-context
 read -p "Ok? [y/n] " ok && [ "$ok" = "y" ] || exit 1
 
 # meant to run from the unhelp root dir
@@ -21,20 +21,26 @@ kubectl -n redpanda-system rollout status deploy unhelm-redpanda-operator
 
 kubectl create namespace redpanda-example
 for example in \
+    development.yaml \
+    notdevelopment.yaml \
     https://github.com/vectorizedio/redpanda/raw/dev/src/go/k8s/config/samples/one_node_cluster.yaml \
     https://github.com/vectorizedio/redpanda/raw/dev/src/go/k8s/config/samples/tls.yaml \
     https://github.com/vectorizedio/redpanda/raw/dev/src/go/k8s/config/samples/external_connectivity.yaml \
   ; do
   name=$(basename $example | cut -d. -f1)
   echo "# trying $name ..."
-  
+
   exampledir=redpanda/examples/$name
-  rm -r $exampledir 2>/dev/null || true
+  rm redpanda/examples/$name/* 2>/dev/null || true
   mkdir -p $exampledir
-  
-  curl -L $example \
-    | sed 's/^  name: .*/  name: redpanda/' \
-    > $exampledir/example.yaml
+
+  if [ -f redpanda/examples/$example ]; then
+    cp redpanda/examples/$example $exampledir/example.yaml
+  else
+    curl -L $example \
+      | sed 's/^  name: .*/  name: redpanda/' \
+      > $exampledir/example.yaml
+  fi
 
   kubectl -n redpanda-example apply -f $exampledir/example.yaml
   sleep 5
