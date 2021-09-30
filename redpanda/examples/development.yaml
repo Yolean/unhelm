@@ -27,3 +27,5 @@ spec:
     adminApi:
     - port: 9644
     developerMode: true
+  storage:
+    capacity: 1Gi
