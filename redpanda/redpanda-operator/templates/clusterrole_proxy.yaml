@@ -6,9 +6,9 @@ metadata:
   name: unhelm-redpanda-operator-proxy-role
   labels:
     app.kubernetes.io/name: redpanda-operator
-    helm.sh/chart: redpanda-operator-v21.7.6
+    helm.sh/chart: redpanda-operator-v21.9.2
     app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "v21.7.6"
+    app.kubernetes.io/version: "v21.9.2"
     app.kubernetes.io/managed-by: Helm
 rules:
 - apiGroups:
