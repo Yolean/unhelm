@@ -5,10 +5,10 @@ kind: Deployment
 metadata:
   name: logs-loki-distributed-gateway
   labels:
-    helm.sh/chart: loki-distributed-0.36.0
+    helm.sh/chart: loki-distributed-0.39.0
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: logs
-    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
 spec:
@@ -24,7 +24,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 39377c2f518e67fd379fea59e59cd3494c63fa366dfc494cfb0195fd2638d450
+        checksum/config: 10073e1463cd5a7434be41cbbcc91612113d2816f8b8d4ed3093e5d50ebd93b5
       labels:
         app.kubernetes.io/name: loki-distributed
         app.kubernetes.io/instance: logs

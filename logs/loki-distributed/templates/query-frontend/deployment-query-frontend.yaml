@@ -5,10 +5,10 @@ kind: Deployment
 metadata:
   name: logs-loki-distributed-query-frontend
   labels:
-    helm.sh/chart: loki-distributed-0.36.0
+    helm.sh/chart: loki-distributed-0.39.0
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: logs
-    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: query-frontend
 spec:
@@ -26,7 +26,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7882d0f4449488f26330773add9b6802f92bc0ab2507d76511b7c23ea0c5592d
+        checksum/config: 5d1c38f155877c0a0ea966d44e40e6c0cc64408f288cdf04d58f008d3eba8187
       labels:
         app.kubernetes.io/name: loki-distributed
         app.kubernetes.io/instance: logs
@@ -42,7 +42,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: loki
-          image: docker.io/grafana/loki:2.3.0
+          image: docker.io/grafana/loki:2.4.0
           imagePullPolicy: IfNotPresent
           args:
             - -config.file=/etc/loki/config/config.yaml
