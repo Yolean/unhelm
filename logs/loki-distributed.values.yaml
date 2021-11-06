@@ -6,7 +6,7 @@ distributor:
 gateway:
   enabled: false
 indexGateway:
-  enabled: false
+  enabled: true
 querier:
   autoscaling:
     enabled: true
