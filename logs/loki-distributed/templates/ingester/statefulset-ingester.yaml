@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/component: ingester
     app.kubernetes.io/part-of: memberlist
 spec:
-  replicas: 1
+  replicas: 3
   podManagementPolicy: Parallel
   updateStrategy:
     rollingUpdate:

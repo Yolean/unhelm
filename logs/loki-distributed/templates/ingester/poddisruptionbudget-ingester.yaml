@@ -1,0 +1,20 @@
+---
+# Source: loki/templates/ingester/poddisruptionbudget-ingester.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: loki-ingester
+  labels:
+    helm.sh/chart: loki-0.39.0
+    app.kubernetes.io/name: loki
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/version: "2.4.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: ingester
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki
+      #app.kubernetes.io/instance: unhelm
+      app.kubernetes.io/component: ingester
+  maxUnavailable: 1

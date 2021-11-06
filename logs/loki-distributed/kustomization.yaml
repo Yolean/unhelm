@@ -1,4 +1,6 @@
 resources:
+- ./templates/index-gateway/poddisruptionbudget-index-gateway.yaml
+- ./templates/ingester/poddisruptionbudget-ingester.yaml
 - ./templates/serviceaccount.yaml
 - ./templates/configmap.yaml
 - ./templates/distributor/service-distributor.yaml
