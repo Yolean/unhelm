@@ -1,5 +1,3 @@
-admin:
-  existingSecret: logs-grafana
 datasources:
   datasources.yaml:
     apiVersion: 1
@@ -7,9 +5,4 @@ datasources:
     - name: Loki-logs
       type: loki
       access: proxy
-      url: http://logs-loki:3100
-imageRenderer:
-  enabled: true
-sidecar:
-  dashboards:
-    enabled: true
+      url: http://loki-query-frontend:3100

@@ -1,10 +1,9 @@
 resources:
-- ./templates/image-renderer-network-policy.yaml
 - ./templates/podsecuritypolicy.yaml
 - ./templates/tests/test-podsecuritypolicy.yaml
 - ./templates/serviceaccount.yaml
 - ./templates/tests/test-serviceaccount.yaml
-- ./templates/configmap-dashboard-provider.yaml
+- ./templates/secret.yaml
 - ./templates/configmap.yaml
 - ./templates/tests/test-configmap.yaml
 - ./templates/clusterrole.yaml
@@ -13,9 +12,7 @@ resources:
 - ./templates/tests/test-role.yaml
 - ./templates/rolebinding.yaml
 - ./templates/tests/test-rolebinding.yaml
-- ./templates/image-renderer-service.yaml
 - ./templates/service.yaml
 - ./templates/deployment.yaml
-- ./templates/image-renderer-deployment.yaml
 - ./templates/tests/test.yaml
 

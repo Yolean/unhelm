@@ -24,7 +24,7 @@ spec:
         app.kubernetes.io/name: grafana-image-renderer
         #app.kubernetes.io/instance: unhelm
       annotations:
-        checksum/config: 6e6cf5be2330d3cbd4944ba386377d44490a4de145c5f4aebd5c1fd47ce5c3c2
+        checksum/config: 4dcb743e8bee4d4281bc0067a1982deed7a51fd3b9838027d09aaa86c4ea7602
     spec:
       containers:
         - name: grafana-image-renderer

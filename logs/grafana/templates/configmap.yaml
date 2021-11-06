@@ -31,4 +31,4 @@ data:
     - access: proxy
       name: Loki-logs
       type: loki
-      url: http://logs-loki:3100
+      url: http://loki-query-frontend:3100
