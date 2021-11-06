@@ -6,6 +6,7 @@ distributor:
 gateway:
   enabled: false
 indexGateway:
+  replicas: 3
   enabled: true
 querier:
   autoscaling:
@@ -17,6 +18,8 @@ tableManager:
   enabled: false
 ruler:
   enabled: false
+ingester:
+  replicas: 3
 
 serviceMonitor:
   enabled: false
@@ -41,6 +44,8 @@ loki:
         - {{ include "loki.fullname" . }}-memberlist
 
     ingester:
+      wal:
+        dir: /var/loki/wal
       # Disable chunk transfer which is not possible with statefulsets
       # and unnecessary for boltdb-shipper
       max_transfer_retries: 0

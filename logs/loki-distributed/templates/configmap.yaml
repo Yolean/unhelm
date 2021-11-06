@@ -29,6 +29,8 @@ data:
         - loki-memberlist
     
     ingester:
+      wal:
+        dir: /var/loki/wal
       # Disable chunk transfer which is not possible with statefulsets
       # and unnecessary for boltdb-shipper
       max_transfer_retries: 0

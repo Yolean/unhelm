@@ -25,7 +25,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a635b8d32062965167f121ba7f7075070d9259c8daea5d9c5c969eb6c0233f4c
+        checksum/config: f3faefbcf53e4fe35e79e7f638c5bb8a07e0b584f87ea15b3cf6f24818aa70cc
       labels:
         app.kubernetes.io/name: loki
         #app.kubernetes.io/instance: unhelm
