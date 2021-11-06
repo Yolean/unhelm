@@ -15,15 +15,13 @@ services:
       set -eo pipefail
       helm version
       helm repo add grafana https://grafana.github.io/helm-charts
-      mkdir -p /tmp/unhelm/logs/{grafana,loki,loki-distributed,fluent-bit}
+      mkdir -p /tmp/unhelm/logs/{grafana,loki,loki-distributed}
       echo 'resources:' > /tmp/unhelm/logs/grafana/kustomization.yaml
       echo 'resources:' > /tmp/unhelm/logs/loki/kustomization.yaml
       echo 'resources:' > /tmp/unhelm/logs/loki-distributed/kustomization.yaml
-      echo 'resources:' > /tmp/unhelm/logs/fluent-bit/kustomization.yaml
       helm template unhelm grafana/grafana -f /workspace/logs/grafana.values.yaml --namespace logs --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/grafana/|- ./|'  | tee -a /tmp/unhelm/logs/grafana/kustomization.yaml
       helm template unhelm grafana/loki    -f /workspace/logs/loki.values.yaml    --namespace logs --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/loki/|- ./|'     | tee -a /tmp/unhelm/logs/loki/kustomization.yaml
       helm template unhelm grafana/loki-distributed -f /workspace/logs/loki-distributed.values.yaml    --namespace logs --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/loki-distributed/|- ./|'     | tee -a /tmp/unhelm/logs/loki-distributed/kustomization.yaml
-      helm template unhelm grafana/fluent-bit                   --namespace logs --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/fluent-bit/|- ./|' | tee -a /tmp/unhelm/logs/fluent-bit/kustomization.yaml
       find /tmp/unhelm/logs/ -type f -exec sed -i 's|unhelm-||g' '{}' \;
       find /tmp/unhelm/logs/ -type f -exec sed -i 's| app.kubernetes.io/instance: unhelm| #app.kubernetes.io/instance: unhelm|g' '{}' \;
       set +x
