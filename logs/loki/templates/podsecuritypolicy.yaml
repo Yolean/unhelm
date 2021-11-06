@@ -3,12 +3,12 @@
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: logs-loki
+  name: loki
   labels:
     app: loki
     chart: loki-2.8.0
     heritage: Helm
-    release: logs
+    release: unhelm
 spec:
   privileged: false
   allowPrivilegeEscalation: false

@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: logs-loki
-  namespace: monitoring
+  name: loki
+  namespace: logs
   labels:
     app: loki
     chart: loki-2.8.0
-    release: logs
+    release: unhelm
     heritage: Helm
   annotations:
     {}
@@ -21,4 +21,4 @@ spec:
       targetPort: http-metrics
   selector:
     app: loki
-    release: logs
+    release: unhelm

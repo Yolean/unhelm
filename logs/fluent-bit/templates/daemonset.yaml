@@ -3,12 +3,12 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: logs-fluent-bit-loki
-  namespace: monitoring
+  name: fluent-bit-loki
+  namespace: logs
   labels:
     app: fluent-bit-loki
     chart: fluent-bit-2.3.0
-    release: logs
+    release: unhelm
     heritage: Helm
   annotations:
     {}
@@ -16,21 +16,21 @@ spec:
   selector:
     matchLabels:
       app: fluent-bit-loki
-      release: logs
+      release: unhelm
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
         app: fluent-bit-loki
-        release: logs
+        release: unhelm
       annotations:
-        checksum/config: 53c72c46d301a1c5d54910b3216d80c251b61587f7fa673f2449b6a6944c381d
+        checksum/config: 6656c363d05ba3f22436f77088ff0f5e278e7cd37bca4cf1c66fedfb7bb0b926
         prometheus.io/path: /api/v1/metrics/prometheus
         prometheus.io/port: "2020"
         prometheus.io/scrape: "true"
     spec:
-      serviceAccountName: logs-fluent-bit-loki
+      serviceAccountName: fluent-bit-loki
       containers:
         - name: fluent-bit-loki
           image: "grafana/fluent-bit-plugin-loki:2.1.0-amd64"
@@ -65,7 +65,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: logs-fluent-bit-loki
+            name: fluent-bit-loki
         - name: run
           hostPath:
             path: /run/fluent-bit

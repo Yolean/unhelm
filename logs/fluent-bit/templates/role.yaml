@@ -3,15 +3,15 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: logs-fluent-bit-loki
-  namespace: monitoring
+  name: fluent-bit-loki
+  namespace: logs
   labels:
     app: fluent-bit-loki
     chart: fluent-bit-2.3.0
     heritage: Helm
-    release: logs
+    release: unhelm
 rules:
 - apiGroups:      ['extensions']
   resources:      ['podsecuritypolicies']
   verbs:          ['use']
-  resourceNames:  [logs-fluent-bit-loki]
+  resourceNames:  [fluent-bit-loki]

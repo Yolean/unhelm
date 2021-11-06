@@ -6,9 +6,9 @@ metadata:
   labels:
     app: fluent-bit-loki
     chart: fluent-bit-2.3.0
-    release: logs
+    release: unhelm
     heritage: Helm
-  name: logs-fluent-bit-loki-clusterrole
+  name: fluent-bit-loki-clusterrole
 rules:
 - apiGroups: [""] # "" indicates the core API group
   resources:

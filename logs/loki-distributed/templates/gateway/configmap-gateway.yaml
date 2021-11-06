@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: logs-loki-distributed-gateway
+  name: loki-distributed-gateway
   labels:
     helm.sh/chart: loki-distributed-0.39.0
     app.kubernetes.io/name: loki-distributed
-    app.kubernetes.io/instance: logs
+    #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
@@ -34,6 +34,7 @@ data:
             '"$request" $body_bytes_sent "$http_referer" '
             '"$http_user_agent" "$http_x_forwarded_for"';
       access_log   /dev/stderr  main;
+    
       sendfile     on;
       tcp_nopush   on;
       resolver kube-dns.kube-system.svc.cluster.local;
@@ -47,31 +48,31 @@ data:
         }
     
         location = /api/prom/push {
-          proxy_pass       http://logs-loki-distributed-distributor.monitoring.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-distributed-distributor.logs.svc.cluster.local:3100$request_uri;
         }
     
         location = /api/prom/tail {
-          proxy_pass       http://logs-loki-distributed-querier.monitoring.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-distributed-querier.logs.svc.cluster.local:3100$request_uri;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
         }
     
         location ~ /api/prom/.* {
-          proxy_pass       http://logs-loki-distributed-query-frontend.monitoring.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-distributed-query-frontend.logs.svc.cluster.local:3100$request_uri;
         }
     
         location = /loki/api/v1/push {
-          proxy_pass       http://logs-loki-distributed-distributor.monitoring.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-distributed-distributor.logs.svc.cluster.local:3100$request_uri;
         }
     
         location = /loki/api/v1/tail {
-          proxy_pass       http://logs-loki-distributed-querier.monitoring.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-distributed-querier.logs.svc.cluster.local:3100$request_uri;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
         }
     
         location ~ /loki/api/.* {
-          proxy_pass       http://logs-loki-distributed-query-frontend.monitoring.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-distributed-query-frontend.logs.svc.cluster.local:3100$request_uri;
         }
       }
     }

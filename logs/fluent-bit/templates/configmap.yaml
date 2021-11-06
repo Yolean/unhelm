@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: logs-fluent-bit-loki
-  namespace: monitoring
+  name: fluent-bit-loki
+  namespace: logs
   labels:
     app: fluent-bit-loki
     chart: fluent-bit-2.3.0
-    release: logs
+    release: unhelm
     heritage: Helm
 data:
   fluent-bit.conf: |-
@@ -37,7 +37,7 @@ data:
     [Output]
         Name grafana-loki
         Match *
-        Url http://logs-loki:3100/api/prom/push
+        Url http://loki:3100/api/prom/push
         TenantID ""
         BatchWait 1
         BatchSize 1048576

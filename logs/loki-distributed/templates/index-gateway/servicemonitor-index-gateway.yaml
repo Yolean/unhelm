@@ -1,0 +1,22 @@
+---
+# Source: loki-distributed/templates/index-gateway/servicemonitor-index-gateway.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-distributed-index-gateway
+  labels:
+    helm.sh/chart: loki-distributed-0.39.0
+    app.kubernetes.io/name: loki-distributed
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/version: "2.4.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: index-gateway
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      #app.kubernetes.io/instance: unhelm
+      app.kubernetes.io/component: index-gateway
+  endpoints:
+    - port: http
+      scheme: http

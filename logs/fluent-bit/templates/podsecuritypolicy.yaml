@@ -3,12 +3,12 @@
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: logs-fluent-bit-loki
+  name: fluent-bit-loki
   labels:
     app: fluent-bit-loki
     chart: fluent-bit-2.3.0
     heritage: Helm
-    release: logs
+    release: unhelm
 spec:
   privileged: false
   allowPrivilegeEscalation: false
