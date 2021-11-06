@@ -1,3 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+patchesJson6902:
+- target:
+    version: v1
+    kind: Service
+    name: loki-query-frontend
+  patch: |-
+    - op: remove
+      path: /spec/clusterIP
 resources:
 - ./templates/index-gateway/poddisruptionbudget-index-gateway.yaml
 - ./templates/ingester/poddisruptionbudget-ingester.yaml

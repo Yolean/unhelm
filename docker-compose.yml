@@ -18,7 +18,19 @@ services:
       mkdir -p /tmp/unhelm/logs/{grafana,loki,loki-distributed}
       echo 'resources:' > /tmp/unhelm/logs/grafana/kustomization.yaml
       echo 'resources:' > /tmp/unhelm/logs/loki/kustomization.yaml
-      echo 'resources:' > /tmp/unhelm/logs/loki-distributed/kustomization.yaml
+      cat <<EOF > /tmp/unhelm/logs/loki-distributed/kustomization.yaml
+      apiVersion: kustomize.config.k8s.io/v1beta1
+      kind: Kustomization
+      patchesJson6902:
+      - target:
+          version: v1
+          kind: Service
+          name: loki-query-frontend
+        patch: |-
+          - op: remove
+            path: /spec/clusterIP
+      resources:
+      EOF
       helm template unhelm grafana/grafana -f /workspace/logs/grafana.values.yaml --namespace logs --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/grafana/|- ./|'  | tee -a /tmp/unhelm/logs/grafana/kustomization.yaml
       helm template unhelm grafana/loki    -f /workspace/logs/loki.values.yaml    --namespace logs --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/loki/|- ./|'     | tee -a /tmp/unhelm/logs/loki/kustomization.yaml
       helm template unhelm grafana/loki-distributed -f /workspace/logs/loki-distributed.values.yaml    --namespace logs --output-dir /tmp/unhelm/logs | sed 's|wrote /tmp/unhelm/logs/loki-distributed/|- ./|'     | tee -a /tmp/unhelm/logs/loki-distributed/kustomization.yaml
