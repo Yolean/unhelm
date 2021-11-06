@@ -20,9 +20,6 @@ ruler:
   enabled: false
 ingester:
   replicas: 3
-  persistence:
-    enabled: true
-    size: 1Gi
 
 serviceMonitor:
   enabled: false
