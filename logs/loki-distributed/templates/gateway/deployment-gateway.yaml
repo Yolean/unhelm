@@ -1,12 +1,12 @@
 ---
-# Source: loki-distributed/templates/gateway/deployment-gateway.yaml
+# Source: loki/templates/gateway/deployment-gateway.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loki-distributed-gateway
+  name: loki-gateway
   labels:
-    helm.sh/chart: loki-distributed-0.39.0
-    app.kubernetes.io/name: loki-distributed
+    helm.sh/chart: loki-0.39.0
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
@@ -18,7 +18,7 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/name: loki
       #app.kubernetes.io/instance: unhelm
       app.kubernetes.io/component: gateway
   template:
@@ -26,11 +26,11 @@ spec:
       annotations:
         checksum/config: 253a0d8ff21c1592fe17306d8a8c74c179eb40d0f57388f023acff62d5a1f9f9
       labels:
-        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/name: loki
         #app.kubernetes.io/instance: unhelm
         app.kubernetes.io/component: gateway
     spec:
-      serviceAccountName: loki-distributed
+      serviceAccountName: loki
       
       securityContext:
         fsGroup: 101
@@ -72,7 +72,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  app.kubernetes.io/name: loki-distributed
+                  app.kubernetes.io/name: loki
                   #app.kubernetes.io/instance: unhelm
                   app.kubernetes.io/component: gateway
               topologyKey: kubernetes.io/hostname
@@ -81,7 +81,7 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app.kubernetes.io/name: loki-distributed
+                    app.kubernetes.io/name: loki
                     #app.kubernetes.io/instance: unhelm
                     app.kubernetes.io/component: gateway
                 topologyKey: failure-domain.beta.kubernetes.io/zone
@@ -89,7 +89,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: loki-distributed-gateway
+            name: loki-gateway
         - name: tmp
           emptyDir: {}
         - name: docker-entrypoint-d-override

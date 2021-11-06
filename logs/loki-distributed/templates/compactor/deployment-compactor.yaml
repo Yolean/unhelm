@@ -1,12 +1,12 @@
 ---
-# Source: loki-distributed/templates/compactor/deployment-compactor.yaml
+# Source: loki/templates/compactor/deployment-compactor.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loki-distributed-compactor
+  name: loki-compactor
   labels:
-    helm.sh/chart: loki-distributed-0.39.0
-    app.kubernetes.io/name: loki-distributed
+    helm.sh/chart: loki-0.39.0
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
@@ -18,7 +18,7 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/name: loki
       #app.kubernetes.io/instance: unhelm
       app.kubernetes.io/component: compactor
   template:
@@ -26,11 +26,11 @@ spec:
       annotations:
         checksum/config: 22be4dd4cb386f27a370c56afca450c437b223c2d84650032b987af9b9e90aa4
       labels:
-        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/name: loki
         #app.kubernetes.io/instance: unhelm
         app.kubernetes.io/component: compactor
     spec:
-      serviceAccountName: loki-distributed
+      serviceAccountName: loki
       
       securityContext:
         fsGroup: 10001
@@ -76,6 +76,6 @@ spec:
           emptyDir: {}
         - name: config
           configMap:
-            name: loki-distributed
+            name: loki
         - name: data
           emptyDir: {}

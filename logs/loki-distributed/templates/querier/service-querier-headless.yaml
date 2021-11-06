@@ -1,11 +1,11 @@
 ---
-# Source: loki-distributed/templates/querier/service-querier-headless.yaml
+# Source: loki/templates/querier/service-querier-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: loki-distributed-querier-headless
+  name: loki-querier-headless
   labels:
-    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: querier
 spec:
@@ -21,6 +21,6 @@ spec:
       targetPort: grpc
       protocol: TCP
   selector:
-    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: querier

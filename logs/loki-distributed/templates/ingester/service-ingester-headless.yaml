@@ -1,11 +1,11 @@
 ---
-# Source: loki-distributed/templates/ingester/service-ingester-headless.yaml
+# Source: loki/templates/ingester/service-ingester-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: loki-distributed-ingester-headless
+  name: loki-ingester-headless
   labels:
-    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ingester
 spec:
@@ -21,6 +21,6 @@ spec:
       targetPort: grpc
       protocol: TCP
   selector:
-    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ingester

@@ -1,12 +1,12 @@
 ---
-# Source: loki-distributed/templates/gateway/configmap-gateway.yaml
+# Source: loki/templates/gateway/configmap-gateway.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: loki-distributed-gateway
+  name: loki-gateway
   labels:
-    helm.sh/chart: loki-distributed-0.39.0
-    app.kubernetes.io/name: loki-distributed
+    helm.sh/chart: loki-0.39.0
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
@@ -48,31 +48,31 @@ data:
         }
     
         location = /api/prom/push {
-          proxy_pass       http://loki-distributed-distributor.logs.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-distributor.logs.svc.cluster.local:3100$request_uri;
         }
     
         location = /api/prom/tail {
-          proxy_pass       http://loki-distributed-querier.logs.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-querier.logs.svc.cluster.local:3100$request_uri;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
         }
     
         location ~ /api/prom/.* {
-          proxy_pass       http://loki-distributed-query-frontend.logs.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-query-frontend.logs.svc.cluster.local:3100$request_uri;
         }
     
         location = /loki/api/v1/push {
-          proxy_pass       http://loki-distributed-distributor.logs.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-distributor.logs.svc.cluster.local:3100$request_uri;
         }
     
         location = /loki/api/v1/tail {
-          proxy_pass       http://loki-distributed-querier.logs.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-querier.logs.svc.cluster.local:3100$request_uri;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
         }
     
         location ~ /loki/api/.* {
-          proxy_pass       http://loki-distributed-query-frontend.logs.svc.cluster.local:3100$request_uri;
+          proxy_pass       http://loki-query-frontend.logs.svc.cluster.local:3100$request_uri;
         }
       }
     }

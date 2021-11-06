@@ -1,11 +1,11 @@
 ---
-# Source: loki-distributed/templates/index-gateway/service-index-gateway-headless.yaml
+# Source: loki/templates/index-gateway/service-index-gateway-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: loki-distributed-index-gateway-headless
+  name: loki-index-gateway-headless
   labels:
-    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: index-gateway
 spec:
@@ -21,6 +21,6 @@ spec:
       targetPort: grpc
       protocol: TCP
   selector:
-    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: index-gateway

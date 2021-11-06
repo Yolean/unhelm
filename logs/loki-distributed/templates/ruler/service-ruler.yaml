@@ -1,11 +1,11 @@
 ---
-# Source: loki-distributed/templates/ruler/service-ruler.yaml
+# Source: loki/templates/ruler/service-ruler.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: loki-distributed-ruler
+  name: loki-ruler
   labels:
-    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ruler
 spec:
@@ -21,6 +21,6 @@ spec:
       targetPort: grpc
       protocol: TCP
   selector:
-    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ruler

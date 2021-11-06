@@ -1,12 +1,12 @@
 ---
-# Source: loki-distributed/templates/compactor/service-compactor.yaml
+# Source: loki/templates/compactor/service-compactor.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: loki-distributed-compactor
+  name: loki-compactor
   labels:
-    helm.sh/chart: loki-distributed-0.39.0
-    app.kubernetes.io/name: loki-distributed
+    helm.sh/chart: loki-0.39.0
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
@@ -19,6 +19,6 @@ spec:
       targetPort: http
       protocol: TCP
   selector:
-    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: compactor

@@ -1,12 +1,12 @@
 ---
-# Source: loki-distributed/templates/table-manager/deployment-table-manager.yaml
+# Source: loki/templates/table-manager/deployment-table-manager.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loki-distributed-table-manager
+  name: loki-table-manager
   labels:
-    helm.sh/chart: loki-distributed-0.39.0
-    app.kubernetes.io/name: loki-distributed
+    helm.sh/chart: loki-0.39.0
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
@@ -16,7 +16,7 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/name: loki
       #app.kubernetes.io/instance: unhelm
       app.kubernetes.io/component: table-manager
   template:
@@ -24,11 +24,11 @@ spec:
       annotations:
         checksum/config: 22be4dd4cb386f27a370c56afca450c437b223c2d84650032b987af9b9e90aa4
       labels:
-        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/name: loki
         #app.kubernetes.io/instance: unhelm
         app.kubernetes.io/component: table-manager
     spec:
-      serviceAccountName: loki-distributed
+      serviceAccountName: loki
       
       securityContext:
         fsGroup: 10001
@@ -72,7 +72,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  app.kubernetes.io/name: loki-distributed
+                  app.kubernetes.io/name: loki
                   #app.kubernetes.io/instance: unhelm
                   app.kubernetes.io/component: table-manager
               topologyKey: kubernetes.io/hostname
@@ -81,7 +81,7 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app.kubernetes.io/name: loki-distributed
+                    app.kubernetes.io/name: loki
                     #app.kubernetes.io/instance: unhelm
                     app.kubernetes.io/component: table-manager
                 topologyKey: failure-domain.beta.kubernetes.io/zone
@@ -89,4 +89,4 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: loki-distributed
+            name: loki

@@ -1,12 +1,12 @@
 ---
-# Source: loki-distributed/templates/query-frontend/hpa.yaml
+# Source: loki/templates/query-frontend/hpa.yaml
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: loki-distributed-query-frontend
+  name: loki-query-frontend
   labels:
-    helm.sh/chart: loki-distributed-0.39.0
-    app.kubernetes.io/name: loki-distributed
+    helm.sh/chart: loki-0.39.0
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
@@ -15,7 +15,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: loki-distributed-query-frontend
+    name: loki-query-frontend
   minReplicas: 1
   maxReplicas: 3
   metrics:

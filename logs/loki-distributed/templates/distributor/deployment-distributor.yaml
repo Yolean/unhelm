@@ -1,12 +1,12 @@
 ---
-# Source: loki-distributed/templates/distributor/deployment-distributor.yaml
+# Source: loki/templates/distributor/deployment-distributor.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loki-distributed-distributor
+  name: loki-distributor
   labels:
-    helm.sh/chart: loki-distributed-0.39.0
-    app.kubernetes.io/name: loki-distributed
+    helm.sh/chart: loki-0.39.0
+    app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
@@ -20,7 +20,7 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/name: loki
       #app.kubernetes.io/instance: unhelm
       app.kubernetes.io/component: distributor
   template:
@@ -28,12 +28,12 @@ spec:
       annotations:
         checksum/config: a635b8d32062965167f121ba7f7075070d9259c8daea5d9c5c969eb6c0233f4c
       labels:
-        app.kubernetes.io/name: loki-distributed
+        app.kubernetes.io/name: loki
         #app.kubernetes.io/instance: unhelm
         app.kubernetes.io/component: distributor
         app.kubernetes.io/part-of: memberlist
     spec:
-      serviceAccountName: loki-distributed
+      serviceAccountName: loki
       
       securityContext:
         fsGroup: 10001
@@ -80,7 +80,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  app.kubernetes.io/name: loki-distributed
+                  app.kubernetes.io/name: loki
                   #app.kubernetes.io/instance: unhelm
                   app.kubernetes.io/component: distributor
               topologyKey: kubernetes.io/hostname
@@ -89,7 +89,7 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app.kubernetes.io/name: loki-distributed
+                    app.kubernetes.io/name: loki
                     #app.kubernetes.io/instance: unhelm
                     app.kubernetes.io/component: distributor
                 topologyKey: failure-domain.beta.kubernetes.io/zone
@@ -97,4 +97,4 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: loki-distributed
+            name: loki
