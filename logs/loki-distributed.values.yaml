@@ -1,12 +1,12 @@
 compactor:
-  enabled: true
+  enabled: false
 distributor:
   autoscaling:
     enabled: true
 gateway:
-  enabled: true
+  enabled: false
 indexGateway:
-  enabled: true
+  enabled: false
 querier:
   autoscaling:
     enabled: true
@@ -14,12 +14,12 @@ queryFrontend:
   autoscaling:
     enabled: true
 tableManager:
-  enabled: true
+  enabled: false
 ruler:
-  enabled: true
+  enabled: false
 
 serviceMonitor:
-  enabled: true
+  enabled: false
 
 # https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed#example-configuration-using-memberlist-boltdb-shipper-and-s3-for-storage
 loki:
