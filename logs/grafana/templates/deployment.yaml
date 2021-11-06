@@ -28,7 +28,7 @@ spec:
       annotations:
         checksum/config: 3fa76af2ac5032e6c84d2c9e1c93f22a16a73076ff5e3bad030364565274be0f
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+        checksum/sc-dashboard-provider-config: f02c84e430b929ce3d930777b32805d5482dd980c25c1c6914c2f7504885cd6f
     spec:
       
       serviceAccountName: logs-grafana
@@ -39,6 +39,23 @@ spec:
         runAsUser: 472
       enableServiceLinks: true
       containers:
+        - name: grafana-sc-dashboard
+          image: "quay.io/kiwigrid/k8s-sidecar:1.14.2"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: METHOD
+              value: 
+            - name: LABEL
+              value: "grafana_dashboard"
+            - name: FOLDER
+              value: "/tmp/dashboards"
+            - name: RESOURCE
+              value: "both"
+          resources:
+            {}
+          volumeMounts:
+            - name: sc-dashboard-volume
+              mountPath: "/tmp/dashboards"
         - name: grafana
           image: "grafana/grafana:8.2.3"
           imagePullPolicy: IfNotPresent
@@ -51,6 +68,12 @@ spec:
             - name: config
               mountPath: "/etc/grafana/provisioning/datasources/datasources.yaml"
               subPath: "datasources.yaml"
+            - name: sc-dashboard-volume
+              mountPath: "/tmp/dashboards"
+      
+            - name: sc-dashboard-provider
+              mountPath: "/etc/grafana/provisioning/dashboards/sc-dashboardproviders.yaml"
+              subPath: provider.yaml
           ports:
             - name: service
               containerPort: 80
@@ -69,6 +92,11 @@ spec:
                 secretKeyRef:
                   name: logs-grafana
                   key: admin-password
+            
+            - name: GF_RENDERING_SERVER_URL
+              value: http://logs-grafana-image-renderer.monitoring:8081/render
+            - name: GF_RENDERING_CALLBACK_URL
+              value: http://logs-grafana.monitoring:80/
             
             - name: GF_PATHS_DATA
               value: /var/lib/grafana/
@@ -97,3 +125,8 @@ spec:
             name: logs-grafana
         - name: storage
           emptyDir: {}
+        - name: sc-dashboard-volume
+          emptyDir: {}
+        - name: sc-dashboard-provider
+          configMap:
+            name: logs-grafana-config-dashboards

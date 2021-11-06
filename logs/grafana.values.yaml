@@ -8,3 +8,8 @@ datasources:
       type: loki
       access: proxy
       url: http://logs-loki:3100
+imageRenderer:
+  enabled: true
+sidecar:
+  dashboards:
+    enabled: true
