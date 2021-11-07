@@ -8,11 +8,17 @@ patchesJson6902:
   patch: |-
     - op: remove
       path: /spec/clusterIP
+# TODO extract config.yaml from the loki configmap resource
+# Get rid of checksum/config annotations and use kustomize content suffix hashes instead
+configMapGenerator:
+- name: loki
+  literals:
+  - config.yaml=TODO
 resources:
 - ./templates/index-gateway/poddisruptionbudget-index-gateway.yaml
 - ./templates/ingester/poddisruptionbudget-ingester.yaml
 - ./templates/serviceaccount.yaml
-- ./templates/configmap.yaml
+#- ./templates/configmap.yaml
 - ./templates/distributor/service-distributor.yaml
 - ./templates/index-gateway/service-index-gateway-headless.yaml
 - ./templates/index-gateway/service-index-gateway.yaml
