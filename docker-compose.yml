@@ -161,7 +161,7 @@ services:
       kind: Kustomization
       resources:
       EOF
-      find examples/all/manifests -name '*.yaml' | sed 's/^/- /' >>kustomization.yaml
+      find manifests -name '*.yaml' | sed 's/^/- /' >>kustomization.yaml
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/thanos/* ./thanos/"
