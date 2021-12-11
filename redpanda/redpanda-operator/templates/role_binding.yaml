@@ -6,9 +6,9 @@ metadata:
   name: unhelm-redpanda-operator-election-rolebinding
   labels:
     app.kubernetes.io/name: redpanda-operator
-    helm.sh/chart: redpanda-operator-v21.9.2
+    helm.sh/chart: redpanda-operator-v21.11.2
     app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "v21.9.2"
+    app.kubernetes.io/version: "v21.11.2"
     app.kubernetes.io/managed-by: Helm
 subjects:
 - kind: ServiceAccount
