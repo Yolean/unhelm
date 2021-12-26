@@ -152,7 +152,7 @@ services:
       cd /tmp/unhelm/thanos
       jb init
       jb install github.com/thanos-io/kube-thanos/jsonnet/kube-thanos@main
-      cp /workspace/thanos/* .
+      cp /workspace/thanos/example.jsonnet .
       git --no-pager diff
       . build.sh
       git --no-pager diff
