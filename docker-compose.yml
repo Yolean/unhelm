@@ -82,7 +82,7 @@ services:
       helm version
       helm repo add redpanda https://charts.vectorized.io/
       helm search repo redpanda
-      export VERSION=$$(curl -s https://api.github.com/repos/vectorizedio/redpanda/releases/latest | jq -r .tag_name)
+      export VERSION=$$(curl -sL https://api.github.com/repos/vectorizedio/redpanda/releases/latest | jq -r .tag_name)
       mkdir -p /tmp/unhelm/redpanda/redpanda-operator-crd /tmp/unhelm/redpanda/redpanda-operator /tmp/unhelm/redpanda/redpanda
       kubectl kustomize https://github.com/vectorizedio/redpanda/src/go/k8s/config/crd?ref=$${VERSION} > /tmp/unhelm/redpanda/redpanda-operator-crd/redpanda-operator-crd.yaml
       echo 'resources:' > /tmp/unhelm/redpanda/redpanda-operator/kustomization.yaml
