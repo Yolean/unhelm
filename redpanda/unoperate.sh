@@ -2,6 +2,11 @@
 set -x
 set -e
 
+echo "WARNING Current operator creates a statefulset with"
+echo "  updateStrategy:"
+echo "    type: OnDelete"
+echo "which is an indication that it can no longer run without the operator"
+
 echo "Please confirm that this is an ephemeral test cluster"
 kubectl config current-context
 read -p "Ok? [y/n] " ok && [ "$ok" = "y" ] || exit 1
