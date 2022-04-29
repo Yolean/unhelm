@@ -2,6 +2,34 @@ version: '2'
 
 services:
 
+  mimir:
+    image: docker.io/yolean/ystack-runner:a9dd9d3d0df8307651c204a8e4f50e26fb625dc3@sha256:86ee1a84100286d9bad3aebea97d9c4b4965b274f568d6113e64d0a2b46e8bd4
+    working_dir: /tmp
+    volumes:
+    - /tmp/unhelm:/tmp/unhelm:rw
+    - ./mimir:/workspace/mimir:ro
+    command:
+    - /bin/bash
+    - -cx
+    - |
+      set -eo pipefail
+      helm version
+      helm repo add grafana https://grafana.github.io/helm-charts
+      mkdir -p /tmp/unhelm/mimir/mimir-distributed
+      echo 'resources:' > /tmp/unhelm/mimir/mimir-distributed/kustomization.yaml
+      cat <<EOF > /tmp/unhelm/mimir/mimir-distributed/kustomization.yaml
+      apiVersion: kustomize.config.k8s.io/v1beta1
+      kind: Kustomization
+      resources:
+      EOF
+      helm template unhelm grafana/mimir-distributed -f /workspace/mimir/mimir-distributed.values.yaml    --namespace mimir --output-dir /tmp/unhelm/mimir | sed 's|wrote /tmp/unhelm/mimir/mimir-distributed/|- ./|'     | tee -a /tmp/unhelm/mimir/mimir-distributed/kustomization.yaml
+      find /tmp/unhelm/mimir/ -type f -exec sed -i 's|unhelm-||g' '{}' \;
+      find /tmp/unhelm/mimir/ -type f -exec sed -i 's| app.kubernetes.io/instance: unhelm| #app.kubernetes.io/instance: unhelm|g' '{}' \;
+      find /tmp/unhelm/mimir/ -type f -exec sed -i 's|-distributed||g' '{}' \;
+      set +x
+      echo "Done. To extract the results:"
+      echo "rsync -av --delete /tmp/unhelm/mimir/* ./mimir/"
+
   logs:
     image: docker.io/yolean/ystack-runner:a9dd9d3d0df8307651c204a8e4f50e26fb625dc3@sha256:86ee1a84100286d9bad3aebea97d9c4b4965b274f568d6113e64d0a2b46e8bd4
     working_dir: /tmp
