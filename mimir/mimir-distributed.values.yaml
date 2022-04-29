@@ -8,6 +8,9 @@ minio:
 nginx:
   enabled: false
 
+overrides_exporter:
+  enabled: false
+
 rbac:
   # https://github.com/grafana/helm-charts/issues/1282
   pspEnabled: false

@@ -15,7 +15,6 @@ resources:
 - ./templates/gossip-ring/gossip-ring-svc.yaml
 - ./templates/ingester/ingester-svc-headless.yaml
 - ./templates/ingester/ingester-svc.yaml
-- ./templates/overrides-exporter/overrides-exporter-svc.yaml
 - ./templates/querier/querier-svc.yaml
 - ./templates/query-frontend/query-frontend-svc-headless.yaml
 - ./templates/query-frontend/query-frontend-svc.yaml
@@ -23,7 +22,6 @@ resources:
 - ./templates/store-gateway/store-gateway-svc-headless.yaml
 - ./templates/store-gateway/store-gateway-svc.yaml
 - ./templates/distributor/distributor-dep.yaml
-- ./templates/overrides-exporter/overrides-exporter-dep.yaml
 - ./templates/querier/querier-dep.yaml
 - ./templates/query-frontend/query-frontend-dep.yaml
 - ./templates/ruler/ruler-dep.yaml
