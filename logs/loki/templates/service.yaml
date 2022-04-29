@@ -7,7 +7,7 @@ metadata:
   namespace: logs
   labels:
     app: loki
-    chart: loki-2.8.0
+    chart: loki-2.11.1
     release: unhelm
     heritage: Helm
   annotations:

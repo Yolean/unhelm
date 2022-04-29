@@ -5,91 +5,76 @@ kind: ConfigMap
 metadata:
   name: loki
   labels:
-    helm.sh/chart: loki-0.39.0
+    helm.sh/chart: loki-0.48.3
     app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "2.4.0"
+    app.kubernetes.io/version: "2.5.0"
     app.kubernetes.io/managed-by: Helm
 data:
   config.yaml: |
     auth_enabled: false
-    
-    server:
-      log_level: info
-      # Must be set to 3100
-      http_listen_port: 3100
-    
     distributor:
       ring:
         kvstore:
           store: memberlist
-    
-    memberlist:
-      join_members:
-        - loki-memberlist
-    
+    frontend:
+      compress_responses: true
+      log_queries_longer_than: 5s
+      tail_proxy_url: http://loki-querier:3100
+    frontend_worker:
+      frontend_address: loki-query-frontend:9095
     ingester:
-      wal:
-        dir: /var/loki/wal
-      # Disable chunk transfer which is not possible with statefulsets
-      # and unnecessary for boltdb-shipper
-      max_transfer_retries: 0
       chunk_idle_period: 1h
       chunk_target_size: 1536000
-      max_chunk_age: 1h
       lifecycler:
         join_after: 0s
         ring:
           kvstore:
             store: memberlist
-    
+      max_chunk_age: 1h
+      max_transfer_retries: 0
+      wal:
+        dir: /var/loki/wal
     limits_config:
-      ingestion_rate_mb: 10
       ingestion_burst_size_mb: 20
-      max_concurrent_tail_requests: 20
+      ingestion_rate_mb: 10
       max_cache_freshness_per_query: 10m
-    
-    schema_config:
-      configs:
-        - from: 2021-11-01
-          store: boltdb-shipper
-          object_store: aws
-          schema: v11
-          index:
-            prefix: loki_index_
-            period: 24h
-    
-    storage_config:
-      aws:
-        endpoint: minio:9000
-        s3: s3://minioadmin:minioadmin@minio:9000/testbucket001
-        s3forcepathstyle: true
-        insecure: true
-      boltdb_shipper:
-        active_index_directory: /var/loki/index
-        shared_store: s3
-        cache_location: /var/loki/cache
-        index_gateway_client:
-          server_address: dns:///loki-index-gateway:9095
-    
+      max_concurrent_tail_requests: 20
+    memberlist:
+      join_members:
+      - loki-memberlist
     query_range:
-      # make queries more cache-able by aligning them with their step intervals
       align_queries_with_step: true
-      max_retries: 5
-      # parallelize queries in 15min intervals
-      split_queries_by_interval: 15m
       cache_results: true
+      max_retries: 5
       results_cache:
         cache:
           enable_fifocache: true
           fifocache:
             max_size_items: 1024
             validity: 24h
-    
-    frontend_worker:
-      frontend_address: loki-query-frontend:9095
-    
-    frontend:
-      log_queries_longer_than: 5s
-      compress_responses: true
-      tail_proxy_url: http://loki-querier:3100
+      split_queries_by_interval: 15m
+    schema_config:
+      configs:
+      - from: "2021-11-01"
+        index:
+          period: 24h
+          prefix: loki_index_
+        object_store: aws
+        schema: v11
+        store: boltdb-shipper
+    server:
+      http_listen_port: 3100
+      log_level: info
+    storage_config:
+      aws:
+        endpoint: minio:9000
+        insecure: true
+        s3: s3://minioadmin:minioadmin@minio:9000/testbucket001
+        s3forcepathstyle: true
+      boltdb_shipper:
+        active_index_directory: /var/loki/index
+        cache_location: /var/loki/cache
+        index_gateway_client:
+          server_address: dns:///loki-index-gateway:9095
+        shared_store: s3

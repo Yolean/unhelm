@@ -7,7 +7,7 @@ metadata:
   namespace: logs
   labels:
     app: loki
-    chart: loki-2.8.0
+    chart: loki-2.11.1
     release: unhelm
     heritage: Helm
   annotations:
@@ -29,7 +29,7 @@ spec:
         name: loki
         release: unhelm
       annotations:
-        checksum/config: e815df4c125abc93fa75176e46693a60545dd2a1fb584bfd836fd7e705a4e554
+        checksum/config: af9f45e687b759251d318e4f5d32d0c75d31d9650368690ad1c4b5c160c75fd0
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
@@ -43,11 +43,13 @@ spec:
         []
       containers:
         - name: loki
-          image: "grafana/loki:2.4.1"
+          image: "grafana/loki:2.5.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/loki/loki.yaml"
           volumeMounts:
+            - name: tmp
+              mountPath: /tmp
             - name: config
               mountPath: /etc/loki
             - name: storage
@@ -80,6 +82,8 @@ spec:
         []
       terminationGracePeriodSeconds: 4800
       volumes:
+        - name: tmp
+          emptyDir: {}
         - name: config
           secret:
             secretName: loki

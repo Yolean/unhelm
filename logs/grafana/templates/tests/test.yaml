@@ -5,13 +5,14 @@ kind: Pod
 metadata:
   name: grafana-test
   labels:
-    helm.sh/chart: grafana-6.17.5
+    helm.sh/chart: grafana-6.28.0
     app.kubernetes.io/name: grafana
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "8.2.3"
+    app.kubernetes.io/version: "8.5.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": test-success
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
   namespace: logs
 spec:
   serviceAccountName: grafana-test

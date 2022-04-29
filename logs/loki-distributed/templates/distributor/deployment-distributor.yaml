@@ -5,10 +5,10 @@ kind: Deployment
 metadata:
   name: loki-distributor
   labels:
-    helm.sh/chart: loki-0.39.0
+    helm.sh/chart: loki-0.48.3
     app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "2.4.0"
+    app.kubernetes.io/version: "2.5.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: distributor
     app.kubernetes.io/part-of: memberlist
@@ -26,7 +26,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: b5be739f6404e4d55504caf4a65e3ea3740bb3c7e89ab11ae708aef3a519b0a2
+        checksum/config: 8c6a537037eb657ef94c0aa05f3c6b1425da091a1caf82f68de927cf2cc9d71a
       labels:
         app.kubernetes.io/name: loki
         #app.kubernetes.io/instance: unhelm
@@ -42,8 +42,8 @@ spec:
         runAsUser: 10001
       terminationGracePeriodSeconds: 30
       containers:
-        - name: loki
-          image: docker.io/grafana/loki:2.4.1
+        - name: distributor
+          image: docker.io/grafana/loki:2.5.0
           imagePullPolicy: IfNotPresent
           args:
             - -config.file=/etc/loki/config/config.yaml
