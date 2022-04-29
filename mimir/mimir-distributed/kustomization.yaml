@@ -1,14 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ./templates/podsecuritypolicy.yaml
 - ./templates/ingester/ingester-pdb.yaml
 - ./templates/store-gateway/store-gateway-pdb.yaml
 - ./templates/serviceaccount.yaml
 - ./templates/secret.yaml
 - ./templates/runtime-configmap.yaml
-- ./templates/role.yaml
-- ./templates/rolebinding.yaml
 - ./templates/compactor/compactor-svc.yaml
 - ./templates/distributor/distributor-svc.yaml
 - ./templates/gossip-ring/gossip-ring-svc.yaml
