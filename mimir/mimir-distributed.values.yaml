@@ -1,0 +1,9 @@
+
+alertmanager:
+  enabled: false
+
+minio:
+  enabled: false
+
+nginx:
+  enabled: false

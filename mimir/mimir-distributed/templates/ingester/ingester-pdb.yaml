@@ -1,0 +1,21 @@
+---
+# Source: mimir/templates/ingester/ingester-pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mimir-ingester
+  labels:
+    helm.sh/chart: mimir-2.0.13
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: ingester
+    app.kubernetes.io/part-of: memberlist
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mimir
+      #app.kubernetes.io/instance: unhelm
+      app.kubernetes.io/component: ingester
+  maxUnavailable: 1

@@ -1,0 +1,116 @@
+---
+# Source: mimir/templates/compactor/compactor-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mimir-compactor
+  labels:
+    helm.sh/chart: mimir-2.0.13
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: compactor
+    app.kubernetes.io/part-of: memberlist
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    {}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mimir
+      #app.kubernetes.io/instance: unhelm
+      app.kubernetes.io/component: compactor
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: mimir-compactor
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+      spec:
+        accessModes:
+          
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "2Gi"
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: mimir-2.0.13
+        app.kubernetes.io/name: mimir
+        #app.kubernetes.io/instance: unhelm
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: compactor
+        app.kubernetes.io/part-of: memberlist
+      annotations:
+        checksum/config: 7db97a9f2aff238ae7cefa644af6467e4c6e03ee6938e6191bd01be05b0835e5
+    spec:
+      serviceAccountName: mimir
+      securityContext:
+        {}
+      initContainers:
+        []
+      nodeSelector:
+        {}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: target
+                  operator: In
+                  values:
+                  - compactor
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      tolerations:
+        []
+      terminationGracePeriodSeconds: 240
+      volumes:
+        - name: config
+          secret:
+            secretName: mimir-config
+        - name: runtime-config
+          configMap:
+            name: mimir-runtime
+      containers:
+        - name: compactor
+          image: "grafana/mimir:2.0.0"
+          imagePullPolicy: IfNotPresent
+          args:
+            - "-target=compactor"
+            - "-config.file=/etc/mimir/mimir.yaml"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/mimir
+            - name: runtime-config
+              mountPath: /var/mimir
+            - name: storage
+              mountPath: "/data"
+          ports:
+            - name: http-metrics
+              containerPort: 8080
+              protocol: TCP
+            - name: grpc
+              containerPort: 9095
+              protocol: TCP
+            - name: memberlist
+              containerPort: 7946
+              protocol: TCP
+          livenessProbe:
+            null
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http-metrics
+            initialDelaySeconds: 60
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+          env:

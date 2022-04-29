@@ -1,0 +1,19 @@
+---
+# Source: mimir/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: mimir
+  labels:
+    helm.sh/chart: mimir-2.0.13
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mimir
+subjects:
+- kind: ServiceAccount
+  name: mimir

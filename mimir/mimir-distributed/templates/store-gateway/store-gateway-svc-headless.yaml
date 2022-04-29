@@ -1,0 +1,28 @@
+---
+# Source: mimir/templates/store-gateway/store-gateway-svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mimir-store-gateway-headless
+  labels:
+    helm.sh/chart: mimir-2.0.13
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: store-gateway
+    app.kubernetes.io/part-of: memberlist
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    {}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - port: 9095
+      protocol: TCP
+      name: grpc
+      targetPort: grpc
+  selector:
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: store-gateway

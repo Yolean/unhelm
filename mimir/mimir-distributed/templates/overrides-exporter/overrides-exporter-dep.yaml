@@ -1,0 +1,99 @@
+---
+# Source: mimir/templates/overrides-exporter/overrides-exporter-dep.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    {}
+  labels:
+    helm.sh/chart: mimir-2.0.13
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: overrides-exporter
+    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/managed-by: Helm
+  name: mimir-overrides-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mimir
+      #app.kubernetes.io/instance: unhelm
+      app.kubernetes.io/component: overrides-exporter
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: mimir-2.0.13
+        app.kubernetes.io/name: mimir
+        #app.kubernetes.io/instance: unhelm
+        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: overrides-exporter
+      annotations:
+        checksum/config: 7db97a9f2aff238ae7cefa644af6467e4c6e03ee6938e6191bd01be05b0835e5
+    spec:
+      serviceAccountName: mimir
+      securityContext:
+        {}
+      initContainers:
+        []
+      containers:
+        - name: overrides-exporter
+          image: "grafana/mimir:2.0.0"
+          imagePullPolicy: IfNotPresent
+          args:
+            - "-target=overrides-exporter"
+            - "-config.file=/etc/mimir/mimir.yaml"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/mimir
+            - name: runtime-config
+              mountPath: /var/mimir
+            - name: storage
+              mountPath: "/data"
+              subPath: 
+          ports:
+            - name: http-metrics
+              containerPort: 8080
+              protocol: TCP
+            - name: grpc
+              containerPort: 9095
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: http-metrics
+            initialDelaySeconds: 45
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http-metrics
+            initialDelaySeconds: 45
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+          env:
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: config
+          secret:
+            secretName: mimir-config
+        - name: runtime-config
+          configMap:
+            name: mimir-runtime
+        - name: storage
+          emptyDir: {}

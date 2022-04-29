@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./templates/podsecuritypolicy.yaml
+- ./templates/ingester/ingester-pdb.yaml
+- ./templates/store-gateway/store-gateway-pdb.yaml
+- ./templates/serviceaccount.yaml
+- ./templates/secret.yaml
+- ./templates/runtime-configmap.yaml
+- ./templates/role.yaml
+- ./templates/rolebinding.yaml
+- ./templates/compactor/compactor-svc.yaml
+- ./templates/distributor/distributor-svc.yaml
+- ./templates/gossip-ring/gossip-ring-svc.yaml
+- ./templates/ingester/ingester-svc-headless.yaml
+- ./templates/ingester/ingester-svc.yaml
+- ./templates/overrides-exporter/overrides-exporter-svc.yaml
+- ./templates/querier/querier-svc.yaml
+- ./templates/query-frontend/query-frontend-svc-headless.yaml
+- ./templates/query-frontend/query-frontend-svc.yaml
+- ./templates/ruler/ruler-svc.yaml
+- ./templates/store-gateway/store-gateway-svc-headless.yaml
+- ./templates/store-gateway/store-gateway-svc.yaml
+- ./templates/distributor/distributor-dep.yaml
+- ./templates/overrides-exporter/overrides-exporter-dep.yaml
+- ./templates/querier/querier-dep.yaml
+- ./templates/query-frontend/query-frontend-dep.yaml
+- ./templates/ruler/ruler-dep.yaml
+- ./templates/compactor/compactor-statefulset.yaml
+- ./templates/ingester/ingester-statefulset.yaml
+- ./templates/store-gateway/store-gateway-statefulset.yaml
+
