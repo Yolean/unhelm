@@ -2,7 +2,7 @@ compactor:
   enabled: false
 distributor:
   autoscaling:
-    enabled: true
+    enabled: false
 gateway:
   enabled: false
 indexGateway:
@@ -10,10 +10,10 @@ indexGateway:
   enabled: true
 querier:
   autoscaling:
-    enabled: true
+    enabled: false
 queryFrontend:
   autoscaling:
-    enabled: true
+    enabled: false
 tableManager:
   enabled: false
 ruler:

@@ -13,6 +13,7 @@ metadata:
     app.kubernetes.io/component: distributor
     app.kubernetes.io/part-of: memberlist
 spec:
+  replicas: 1
   strategy:
     rollingUpdate:
       maxSurge: 0

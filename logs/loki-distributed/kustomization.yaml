@@ -28,9 +28,6 @@ resources:
 - ./templates/distributor/deployment-distributor.yaml
 - ./templates/querier/deployment-querier.yaml
 - ./templates/query-frontend/deployment-query-frontend.yaml
-- ./templates/distributor/hpa.yaml
-- ./templates/querier/hpa.yaml
-- ./templates/query-frontend/hpa.yaml
 - ./templates/index-gateway/statefulset-index-gateway.yaml
 - ./templates/ingester/statefulset-ingester.yaml
 
