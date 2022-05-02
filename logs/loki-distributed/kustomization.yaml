@@ -17,6 +17,7 @@ resources:
 - ./templates/ingester/poddisruptionbudget-ingester.yaml
 - ./templates/serviceaccount.yaml
 #- ./templates/configmap.yaml
+- ./templates/compactor/service-compactor.yaml
 - ./templates/distributor/service-distributor.yaml
 - ./templates/index-gateway/service-index-gateway-headless.yaml
 - ./templates/index-gateway/service-index-gateway.yaml
@@ -25,6 +26,7 @@ resources:
 - ./templates/querier/service-querier.yaml
 - ./templates/query-frontend/service-query-frontend.yaml
 - ./templates/service-memberlist.yaml
+- ./templates/compactor/deployment-compactor.yaml
 - ./templates/distributor/deployment-distributor.yaml
 - ./templates/querier/deployment-querier.yaml
 - ./templates/query-frontend/deployment-query-frontend.yaml

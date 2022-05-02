@@ -1,5 +1,5 @@
 compactor:
-  enabled: false
+  enabled: true
 distributor:
   autoscaling:
     enabled: false
