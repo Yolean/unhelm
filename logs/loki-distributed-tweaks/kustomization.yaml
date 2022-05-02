@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../loki-distributed
+
+patchesJson6902:
+# https://grafana.com/docs/loki/latest/configuration/query-frontend/#grpc-mode-pull-model
+# https://github.com/grafana/helm-charts/blob/loki-distributed-0.48.3/charts/loki-distributed/values.yaml#L136
+- target:
+    version: v1
+    kind: Service
+    name: loki-query-frontend
+  patch: |-
+    - op: remove
+      path: /spec/type
+    - op: add
+      path: /spec/clusterIP
+      value: None
+    - op: add
+      path: /spec/publishNotReadyAddresses
+      value: true
