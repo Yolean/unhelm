@@ -32,8 +32,6 @@ redpanda:
   data_directory: /var/lib/redpanda/data
   default_topic_replications: 3
   developer_mode: true
-  enable_idempotence: true
-  enable_transactions: true
   id_allocator_replication: 3
   kafka_api:
   - address: 0.0.0.0

@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    banzaicloud.com/last-applied: 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
-  creationTimestamp: "2021-09-30T10:28:03Z"
+    banzaicloud.com/last-applied: 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
+  creationTimestamp: "2022-05-14T05:18:23Z"
   generation: 1
   labels:
     app.kubernetes.io/component: redpanda
@@ -19,9 +19,9 @@ metadata:
     controller: true
     kind: Cluster
     name: redpanda
-    uid: a249f42a-0dd1-47d2-afc4-83c5f8b7929f
-  resourceVersion: "2299"
-  uid: 49ca805b-54fb-47f5-89c7-d798222a82d1
+    uid: e18f140f-591e-4481-9758-a9a61f834f15
+  resourceVersion: "1158"
+  uid: d79917fc-92d7-4e06-8d01-348e3285c849
 spec:
   podManagementPolicy: Parallel
   replicas: 3
@@ -34,6 +34,8 @@ spec:
   serviceName: redpanda
   template:
     metadata:
+      annotations:
+        redpanda.vectorized.io/configmap-hash: b12823d9058ec86ef3ae14da7dddda4f
       creationTimestamp: null
       labels:
         app.kubernetes.io/component: redpanda
@@ -74,6 +76,8 @@ spec:
         - --kernel-page-cache=true
         - --default-log-level=debug
         - --smp=1
+        - --memory=94371840
+        - --reserve-memory=0M
         command:
         - /usr/bin/rpk
         env:
@@ -120,30 +124,10 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
+        - mountPath: /etc/redpanda
+          name: config-dir
         - mountPath: /var/lib/redpanda/data
           name: datadir
-        - mountPath: /etc/redpanda
-          name: config-dir
-      - command:
-        - /usr/local/bin/rpk-status.sh
-        env:
-        - name: REDPANDA_ENVIRONMENT
-          value: kubernetes
-        image: vectorized/redpanda:latest
-        imagePullPolicy: Always
-        name: rpk-status
-        resources:
-          limits:
-            cpu: 200m
-            memory: 10M
-          requests:
-            cpu: 200m
-            memory: 10M
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /etc/redpanda
-          name: config-dir
       dnsPolicy: ClusterFirst
       initContainers:
       - env:
@@ -163,8 +147,9 @@ spec:
         - name: EXTERNAL_CONNECTIVITY
           value: "false"
         - name: EXTERNAL_CONNECTIVITY_SUBDOMAIN
+        - name: EXTERNAL_CONNECTIVITY_ADDRESS_TYPE
         - name: HOST_PORT
-        image: vectorized/configurator:v21.9.2
+        image: vectorized/configurator:v22.1.3
         imagePullPolicy: IfNotPresent
         name: redpanda-configurator
         resources:
@@ -188,7 +173,7 @@ spec:
       schedulerName: default-scheduler
       securityContext:
         fsGroup: 101
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 120
       topologySpreadConstraints:
       - labelSelector:
           matchLabels:
@@ -199,17 +184,17 @@ spec:
         topologyKey: topology.kubernetes.io/zone
         whenUnsatisfiable: ScheduleAnyway
       volumes:
-      - name: datadir
-        persistentVolumeClaim:
-          claimName: datadir
       - configMap:
           defaultMode: 420
           name: redpanda-base
         name: configmap-dir
       - emptyDir: {}
         name: config-dir
+      - name: datadir
+        persistentVolumeClaim:
+          claimName: datadir
   updateStrategy:
-    type: RollingUpdate
+    type: OnDelete
   volumeClaimTemplates:
   - apiVersion: v1
     kind: PersistentVolumeClaim
@@ -235,9 +220,8 @@ spec:
 status:
   collisionCount: 0
   currentReplicas: 3
-  currentRevision: redpanda-89c755b98
+  currentRevision: redpanda-7bcc9b857
   observedGeneration: 1
-  readyReplicas: 3
   replicas: 3
-  updateRevision: redpanda-89c755b98
+  updateRevision: redpanda-7bcc9b857
   updatedReplicas: 3

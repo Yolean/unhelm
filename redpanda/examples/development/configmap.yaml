@@ -4,20 +4,6 @@ data:
     config_file: /etc/redpanda/redpanda.yaml
     redpanda:
         data_directory: /var/lib/redpanda/data
-        rpc_server:
-            address: 0.0.0.0
-            port: 33145
-        advertised_rpc_api:
-            address: 0.0.0.0
-            port: 33145
-        kafka_api:
-            - address: 0.0.0.0
-              port: 9092
-              name: kafka
-        admin:
-            - address: 0.0.0.0
-              port: 9644
-              name: admin
         node_id: 0
         seed_servers:
             - host:
@@ -29,13 +15,25 @@ data:
             - host:
                 address: redpanda-2.redpanda.redpanda-example.svc.cluster.local.
                 port: 33145
+        rpc_server:
+            address: 0.0.0.0
+            port: 33145
+        kafka_api:
+            - address: 0.0.0.0
+              port: 9092
+              name: kafka
+        admin:
+            - address: 0.0.0.0
+              port: 9644
+              name: admin
+        advertised_rpc_api:
+            address: 0.0.0.0
+            port: 33145
         developer_mode: true
-        log_segment_size: 536870912
         auto_create_topics_enabled: false
         default_topic_replications: 3
-        enable_idempotence: true
-        enable_transactions: true
         id_allocator_replication: 3
+        log_segment_size: 536870912
         transaction_coordinator_replication: 3
     rpk:
         enable_usage_stats: false
@@ -72,8 +70,8 @@ data:
 kind: ConfigMap
 metadata:
   annotations:
-    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWzEVsuO4zYQ/BWBZ8vv2bF5Ta5BgBxyyQREi2zZhCmSaVKa9Q787wH18Mi2NpsdLLD2xe6uruKjVeo3Bl7/iRS0s4yzZsVmTEEExt8YofJgFczPUBnGmXS21AdRaoM8W2CUiwGxuIG+2OEvf7FZlmWJUChNKKOjM88WDdDC6OK9PiE6LHkpAlKD1BenDyhFGALPlvP2+57xjiLPNpvV9qkLgmqQog6oRKICrz/Gc4LyBHfl+X8QDBT75X49jlqokHdswwIrbb+X9NN2+0jaMnVh6xQKrXjWFwdE1R9juNE6uhD5mGp0KMNt5Mv59T6vMfwMlTc4D42cS1OHiDQ3ToKZ37I9HOR36K5+ku76R+oqbNA4jyQqp5BnkWrsMsYdRMBDhTaKoL8gz542n3bPy/2q7xiooxOSECKK6LyWQaCFwqDiWQkm4KBQQm1iBxGE3mgJUTsbeLbpIF2Z0Aor7yJaebOQPhsJbADZV76ntRJg0l6jozH9lX1UKKRzpLSdxJI/8RvFOsABRYgQw82OYm1RWIyvjk6PCaXDSQR5RFUbpK/krauQDjjB26ZfSUcUEuQRv4LQ9M9jpgyRdPUYl75+DIJ2Ahu0U5uTxslTcDXJCf3wCt5r2zblfa49aw+UmuZYH9DD/Sb7s62wcnQWSUfbw8QKHKGqK3+TGYLJnad8eciPeAowBkLsXwMjLtcgeXKNTu+SUcu2TJ7c53PfDO+BD/jrbrmb8NeWbSwlpNFoh0e/IHe6d8IfaXtT1j+l8HGD+78KH7eysUJ62CoQhAcdYnpjv11eLLvM2ElbxTj7pZ0EfgPPZqzCCMPEYKBAE9Iv8H5+qgskixHDXLuFdJV3Fm1k/DpZsNkEUNsQwUr8Fq4CCwdUeXEeIfPkvMmMJktSs3yL1gPF3JVj2GXG7irzAgKyLhw83Cx2OG82Y+7VIv2BJVKy4MD4X3fz1vWymnY20l9QpTU0KzD+CGkYK9ID/Xvi+RUNxrYsWfUsjWORnDFIQ2S4ne6O2cOq2YzVOiFgvd2X2zXkS6VW+fZZrXMo5TbfbeRTuSue9+t9yS5/Xy7/BgAA//9QSwcICfyhzicDAAAfCgAAUEsBAhQAFAAIAAgAAAAAAAn8oc4nAwAAHwoAAAgAAAAAAAAAAAAAAAAAAAAAAG9yaWdpbmFsUEsFBgAAAAABAAEANgAAAF0DAAAAAA==
-  creationTimestamp: "2021-09-30T10:28:03Z"
+    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWzEVsFu4zYQ/RWBZ8u21nbW1rW9FgV66KUpiBE5kglRJDuklPUG/veCkuXItoJtggXqXKKZx/eGM+QMXxk49SeSV9awnHUZWzAJAVj+ygilAyNheYJGs5wJa0pV8VJpzJMVBrEaEasb6LMZP/NnkyRJEgm5VIQiWDrlyaoDWmlVvK2PiAFrrESuZJ6sh2+PKLlH6pD8hS7+0uRofZgY4g+kJPQ+T0bedL28Rna14TdonMal78RS6NYHpKW2AvTyls1ZCnmy2WTb3Yd1s/9J98vP1CUnLpmf6F4118v+783zsL6GsgYOTt3U7X2CkeKwPnyZWg00mA9sgxlko8xHSZ+220fSnmkk7ZCC8ih53Pht2B/YtcQOtXVIvLES8yRQixeFNlguCCEgD9Yp4TkaKDTKPClBexwJSmh1GCCc0GklIChrfJ5sBoiSHHSsYbA0RVwB2lbcY9WgCdyr75gnu83T/uv6kF0yGwiMBxEXcWEtSWVmycjVlzQMofLWQ4XcBwj+JurQGuQGw4ul+tEhla+5F0eUrUZ6x29sg1ThDG/vfiEVkAsQR3wHoeifR0/pA6nm0S5c+2gEZTl2aOY2J7QVtbctiRl9/wLOKdOfkXtfn2sHFItxbCt0cL/JS24bbCydeNRRppqJwBLKtnE3ntEYG+xcax39E54CtAYfLp18wmU7JEe2U3EcTI5lz+TIfjtdDsOb4RP3e7/ez9zvnm0qxYVWaMaeV5Ct70fAz+z3c61nTuHznf2/Kny+h08V4mVrgBNWyoc4dF/Pz4adF6xWRrKc/dIP89/AsQVrMMA49DUUqH38D5xb1m2BZDCgXyq7ErZx1qAJLL8+DthiBqiMD2AE/gjXgIEKZVqcJsg0Ns/YjGaXxMPyI1oHFFJbTmHnBbtbmRbgkQ1m7+Am2DHfbMHsi0H6A0skNAI9y/+6ezJdi9X1zxv1HWWMoctAuyPE91QRL/TvkedX1Bj6ZXEqLOKLKpDVGmm0jNUZasweomYL1qqIwGxfZtt1me4OGabb7T5LD193+xQO8JSV+822zHbs/Pf5/G8AAAD//1BLBwgpRSNxHQMAAOIJAABQSwECFAAUAAgACAAAAAAAKUUjcR0DAADiCQAACAAAAAAAAAAAAAAAAAAAAAAAb3JpZ2luYWxQSwUGAAAAAAEAAQA2AAAAUwMAAAAA
+  creationTimestamp: "2022-05-14T05:18:23Z"
   labels:
     app.kubernetes.io/component: redpanda
     app.kubernetes.io/instance: redpanda
@@ -88,6 +86,6 @@ metadata:
     controller: true
     kind: Cluster
     name: redpanda
-    uid: a249f42a-0dd1-47d2-afc4-83c5f8b7929f
-  resourceVersion: "1360"
-  uid: dacf13f4-3977-44fc-8ee3-d0c7b8229b20
+    uid: e18f140f-591e-4481-9758-a9a61f834f15
+  resourceVersion: "1127"
+  uid: f90d72eb-fe83-4b24-a0bc-b3a8a862a088
