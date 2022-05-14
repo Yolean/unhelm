@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWzcWG1v4rgW/itX1v1wr5TwUtqZFqkfuEDnoh0CC7Q7o1GFDs4JWDi213ZomYr/vrIDaUiZ7c6+zWi/Jc5zjo/Py3OO80RAsTvUhklB2gSUMvVNkwRkzURM2mRqwWKS8SlaEpAULcRggbSfCIcFcuOeQKnaOlugFmjR1JisU5kqKVBY0iYaYwUiBhKcADJhLAiKr+FSELDEOFxsS8hQKtRgpT4pIiB9Va0CbUOZlGG7gLyUdCtGwZGdIT5CqjiSgMgHgXqCCWoUFA1pf6q49SBT2yC1UrPPGLvtN03gagXO3Qsu6Xrk9PSQo/ViVmcYECqF1ZJz1IeVfWi6PDMWNTllcMYcotFqwNXbRitMWhcX4Tm9uggvE6DhxcX5IjmPW1eNOCa7+11AjELqQqlkPPSuTlHYseSMOoePQQPnyElANCrOKBjSbgXEIPfncZIpWLp6/3fmRPXUO3cO1BtGMXrhEIup4mDRm/qtsviFxV+da6VQQZIwwex2H7aOsKxTXtIuHzXGvUwzsZzSFcYZZ2I5WApZLPcfkWZ5tn3K1exVzFCnhX+m312cCye5YnvppvuAWKkkl8vtD+gy+FjjShrrte4C8oBsubKk3Ww0dvcuv3/O2Nd57R/uonunzJEQMIF6T256eaSVBMRY0K5FhCFdIV1fJ8AN+neIN6gtMxhqRUOIY3397/+MR7151Bn2/1sruLFqYs1saI3mJFfjkgKvtVut5vmF1yo3qJWWG+YoFmO/ptHVP4YpplJv/9Uc+tW1OxYPFSwxpEBXeO1o1H+KMYGM25DLZchxg/w6xkW29N9Mqq6bzk0oNv7QeydP+r1xJ+p15v3objAZRcN+NCMB2QDP8MiNZBcUQofjHoA3WvryShjyeIJJnieljuF7sP86Brsi7YK0anlUdieUT8ed7p+1Q85AL7YZjH+/fmPBZqamZDwYO833AWEpLJ3q57ZYP2RB27G1sSe7m5La5olY5OVYakvy9HiWUNTHoAK6enN+XmAgTpk4iWpcnRWoNSRrOIW6bFw+o5SWj9sv6GoFxJXU3szGm7eNY+UhPlrUAvgXdjmWb55dXh1vW5L3LGZkpn3pPxHOUmb9E1UZaZOmH+RchZA2OXvHHAs62kPz66hdQDaSZykOZSb2/k/d4z6+9Q3oOmeLIoR132QLO91bzLQ/4JEcWlqvNEDSdj5I2DL0Evc+WQSz3WMeqpTmtD+5G3T785sfe1GpJL+GYcpF2x1FN4N38+nodtLtz3uDSUlnPRW2XsyfL4V6/elsEHVmg1HZkqOjFg+1LaS8rKOgmMm4Ox+PJmV+yRmwBI5Gvf4f5BY3UtSEjPO56ajo+x9m/UnUeT/vjqKo350N7gazjyVzPJW+hp9Pb//XGw07g6gM/f9oOntxOlcZR8Q5GX34OD8JdUVAvsAiefJkPjrtzVmz9rb2huyR44zzYrQdJJG0Y9c4xAmuCct6yF9XVwZpppnduvTGR+vQOhMd807LTLnZpBnkC7fGXQOajearxfh6UVXL8CijKxIpqFIlnjA3Kdn6PId3KHU7nBjH96PHVGmEuCuFsRrY4SDf6USVwuN0jQ+k3azOToe3ipLPUrg542GF4lYYsMwkDBbcU1U+WWJHbB9g69M4j6cpE9qBMgOiXPUai8LeeViXA/NVTt1DVGHYfQ9J2HIIyqGqeb0Ag6XrRyXIwRPBVNltjznvV2GHRNgFJFMxWJxaDRaX/tpht8ozmORuar7130mRrN7q2f4qtk/ab3UZ+xa/FJ7jKX7rLY9SNGYo43yMnyDEP2lmceROWO30ZbYxVuqcFpuNRqV9x275hnE0W2Mx9fv54cxFO/8fcHgtXfgbu90vAQAA//9QSwcIJ09un3MFAAAuEgAAUEsBAhQAFAAIAAgAAAAAACdPbp9zBQAALhIAAAgAAAAAAAAAAAAAAAAAAAAAAG9yaWdpbmFsUEsFBgAAAAABAAEANgAAAKkFAAAAAA==
-  creationTimestamp: "2021-07-27T15:57:41Z"
+    banzaicloud.com/last-applied: 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
+  creationTimestamp: "2022-05-14T05:32:39Z"
   generation: 1
   labels:
     app.kubernetes.io/component: redpanda
@@ -19,9 +19,9 @@ metadata:
     controller: true
     kind: Cluster
     name: redpanda
-    uid: 030a9703-f355-4c95-8fac-554bf4d390dd
-  resourceVersion: "15688"
-  uid: 2460daad-20a8-4c4b-bf23-f07e9f6f693c
+    uid: 3e3b9bc1-42cb-40c8-bf8f-4e9ddcacdd03
+  resourceVersion: "3293"
+  uid: e89f4ab7-ac1a-4bc9-bc85-afe397826be8
 spec:
   podManagementPolicy: Parallel
   replicas: 3
@@ -34,6 +34,8 @@ spec:
   serviceName: redpanda
   template:
     metadata:
+      annotations:
+        redpanda.vectorized.io/configmap-hash: 771c47530bd549ee1c4a78cbb3fca341
       creationTimestamp: null
       labels:
         app.kubernetes.io/component: redpanda
@@ -71,10 +73,13 @@ spec:
         - --check=false
         - --advertise-rpc-addr=$(POD_NAME).redpanda.redpanda-example.svc.cluster.local.:33145
         - --overprovisioned
-        - --reserve-memory 1M
         - --kernel-page-cache=true
         - --default-log-level=debug
         - --smp=1
+        - --memory=1932735283
+        - --reserve-memory=0M
+        command:
+        - /usr/bin/rpk
         env:
         - name: REDPANDA_ENVIRONMENT
           value: kubernetes
@@ -110,12 +115,16 @@ spec:
           name: proxy
           protocol: TCP
         - containerPort: 9093
-          hostPort: 30670
+          hostPort: 30789
           name: kafka-external
           protocol: TCP
         - containerPort: 8083
-          hostPort: 31289
+          hostPort: 30936
           name: proxy-external
+          protocol: TCP
+        - containerPort: 8081
+          hostPort: 31634
+          name: schema-registry
           protocol: TCP
         resources:
           limits:
@@ -127,10 +136,10 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
-        - mountPath: /var/lib/redpanda/data
-          name: datadir
         - mountPath: /etc/redpanda
           name: config-dir
+        - mountPath: /var/lib/redpanda/data
+          name: datadir
       dnsPolicy: ClusterFirst
       initContainers:
       - env:
@@ -150,11 +159,12 @@ spec:
         - name: EXTERNAL_CONNECTIVITY
           value: "true"
         - name: EXTERNAL_CONNECTIVITY_SUBDOMAIN
+        - name: EXTERNAL_CONNECTIVITY_ADDRESS_TYPE
         - name: HOST_PORT
-          value: "30670"
+          value: "30789"
         - name: PROXY_HOST_PORT
-          value: "31289"
-        image: vectorized/configurator:v21.7.6
+          value: "30936"
+        image: vectorized/configurator:v22.1.3
         imagePullPolicy: IfNotPresent
         name: redpanda-configurator
         resources:
@@ -180,7 +190,7 @@ spec:
         fsGroup: 101
       serviceAccount: redpanda
       serviceAccountName: redpanda
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 120
       topologySpreadConstraints:
       - labelSelector:
           matchLabels:
@@ -191,17 +201,17 @@ spec:
         topologyKey: topology.kubernetes.io/zone
         whenUnsatisfiable: ScheduleAnyway
       volumes:
-      - name: datadir
-        persistentVolumeClaim:
-          claimName: datadir
       - configMap:
           defaultMode: 420
           name: redpanda-base
         name: configmap-dir
       - emptyDir: {}
         name: config-dir
+      - name: datadir
+        persistentVolumeClaim:
+          claimName: datadir
   updateStrategy:
-    type: RollingUpdate
+    type: OnDelete
   volumeClaimTemplates:
   - apiVersion: v1
     kind: PersistentVolumeClaim
@@ -227,9 +237,8 @@ spec:
 status:
   collisionCount: 0
   currentReplicas: 3
-  currentRevision: redpanda-5b8f8c8747
+  currentRevision: redpanda-5c9995fc75
   observedGeneration: 1
-  readyReplicas: 2
   replicas: 3
-  updateRevision: redpanda-5b8f8c8747
+  updateRevision: redpanda-5c9995fc75
   updatedReplicas: 3

@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWy8k8Fu2zwQhN9lz5R/JZb+Wrq16SWX1EiLXoocVuQqIURxCXLlxg307gVtx3FTA771JqzmGy5npBfAYL9TTJY9tLC5AgWD9QZa+EpxYzWBgpEEDQpC+wIOO3IpP2EIi2HqKHoSSgvL/2keA3vyAi1EMgG9QVBnhNYnQa/pkm5Ej49kim57oiw4UETheBbxOF60DRil4P5UNiv4m8yTFPCPPQt6xjG4HAv/9BTvqadIXlOC9se7NF+ZxYa0cLS/yOTjN1fowhPmqDvHeviSfT6TI9lhEidSoNlLZOcovk4Otdy4KQlFOLfwZLOiXJbYfCiXRb+s66LSTV2setRFXVddX5llUxoD88OsIAXSuUq997xdQwt37PPlAkfZX+lwDJrR+sMLaJv/q0pBiCys2UEL327WoEAwPpKsj5JZHfkB+wHf+LK5vsSXzfUJHyI/b4/8qlxd4rNkflAQps7Z9HTHck9oth+NiZRS7mufayK3q+cffdPvW5sVyDbQW7O36zxLgjLt/jPHaD6hy955x3mefwcAAP//UEsHCOEIyNWWAQAAtQMAAFBLAQIUABQACAAIAAAAAADhCMjVlgEAALUDAAAIAAAAAAAAAAAAAAAAAAAAAABvcmlnaW5hbFBLBQYAAAAAAQABADYAAADMAQAAAAA=
-  creationTimestamp: "2021-07-27T15:57:41Z"
+    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWy8kz9v2zAQxb/LzZTrfyhsbW26ZEmNtOhSZDiRp4QQxSOOJzduoO9e0HYcNzXgrZtwer/H43vSC2DyP0iy5wg1bGdgoPPRQQ3fSLbeEhjoSdGhItQvELChkMsTpjTphoYkklKeeP5guU8cKSrUIOQSRodgLgh9zIrR0jVdjxEfyVXN7kxZcSJBZbmIROyv2iYUrbg9l40G/iXLJCf8a8+KnrFPocTCvyLJPbUkFC1lqH++S/OVmWzJKov/Ta4cv51hSE9Yom4C2+5r8flCgXSPqQxkwHJU4RBIXifHWm7CkJUELi08+KJY0KJZN3ZWLee2qZZTu6qadtVWS1o7Z9E6N13A+DAayIlsqdIePG83UMMdx3K5xKKHKx2PQdf7eHwB9frjcmkgCStbDlDD95sNGFCUR9LNSTKaE99h2+EbP13Pr/HT9fyMT8LPuxO/mq6u8UUyPhhIQxN8frpjvSd0u0/OCeVc+jrkmins6/lP3/T71kYDukv01uztpsyyog77/ywwus8YinfZcRzHPwEAAP//UEsHCFAYblmTAQAAtQMAAFBLAQIUABQACAAIAAAAAABQGG5ZkwEAALUDAAAIAAAAAAAAAAAAAAAAAAAAAABvcmlnaW5hbFBLBQYAAAAAAQABADYAAADJAQAAAAA=
+  creationTimestamp: "2022-05-14T05:32:39Z"
   labels:
     app.kubernetes.io/component: redpanda
     app.kubernetes.io/instance: redpanda
@@ -18,13 +18,14 @@ metadata:
     controller: true
     kind: Cluster
     name: redpanda
-    uid: 030a9703-f355-4c95-8fac-554bf4d390dd
-  resourceVersion: "15402"
-  uid: 42e4f520-5758-4e13-ae36-1772e33b6de4
+    uid: 3e3b9bc1-42cb-40c8-bf8f-4e9ddcacdd03
+  resourceVersion: "3208"
+  uid: 033ef09c-e53f-47f6-b404-e08517c8489f
 spec:
   clusterIP: None
   clusterIPs:
   - None
+  internalTrafficPolicy: Cluster
   ipFamilies:
   - IPv4
   ipFamilyPolicy: SingleStack

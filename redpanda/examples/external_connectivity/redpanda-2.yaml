@@ -1,7 +1,7 @@
 config_file: /etc/redpanda/redpanda.yaml
 pandaproxy:
   advertised_pandaproxy_api:
-  - address: redpanda-1.redpanda.redpanda-example.svc.cluster.local.
+  - address: redpanda-2.redpanda.redpanda-example.svc.cluster.local.
     name: proxy
     port: 8082
   - address: ""
@@ -28,14 +28,14 @@ redpanda:
     name: admin
     port: 9644
   advertised_kafka_api:
-  - address: redpanda-1.redpanda.redpanda-example.svc.cluster.local.
+  - address: redpanda-2.redpanda.redpanda-example.svc.cluster.local.
     name: kafka
     port: 9092
   - address: ""
     name: kafka-external
     port: 30789
   advertised_rpc_api:
-    address: redpanda-1.redpanda.redpanda-example.svc.cluster.local.
+    address: redpanda-2.redpanda.redpanda-example.svc.cluster.local.
     port: 33145
   auto_create_topics_enabled: false
   data_directory: /var/lib/redpanda/data
@@ -50,7 +50,7 @@ redpanda:
     name: kafka-external
     port: 9093
   log_segment_size: 536870912
-  node_id: 1
+  node_id: 2
   rpc_server:
     address: 0.0.0.0
     port: 33145

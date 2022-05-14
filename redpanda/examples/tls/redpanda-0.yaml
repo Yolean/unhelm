@@ -22,6 +22,11 @@ redpanda:
   - address: 0.0.0.0
     name: admin
     port: 9644
+  admin_api_tls:
+  - cert_file: /etc/tls/certs/admin/tls.crt
+    enabled: true
+    key_file: /etc/tls/certs/admin/tls.key
+    name: admin
   advertised_kafka_api:
   - address: redpanda-0.redpanda.redpanda-example.svc.cluster.local.
     name: kafka
@@ -32,8 +37,6 @@ redpanda:
   auto_create_topics_enabled: false
   data_directory: /var/lib/redpanda/data
   developer_mode: true
-  enable_idempotence: true
-  enable_transactions: true
   kafka_api:
   - address: 0.0.0.0
     name: kafka
@@ -55,6 +58,7 @@ rpk:
   enable_usage_stats: false
   overprovisioned: true
   tune_aio_events: false
+  tune_ballast_file: false
   tune_clocksource: false
   tune_coredump: false
   tune_cpu: false
@@ -66,4 +70,17 @@ rpk:
   tune_network: false
   tune_swappiness: false
   tune_transparent_hugepages: false
-schema_registry: {}
+schema_registry:
+  schema_registry_api:
+  - address: 0.0.0.0
+    name: schema-registry
+    port: 8081
+  schema_registry_api_tls:
+  - cert_file: /etc/tls/certs/schema-registry/tls.crt
+    enabled: true
+    key_file: /etc/tls/certs/schema-registry/tls.key
+    name: schema-registry
+schema_registry_client:
+  brokers:
+  - address: redpanda-0.redpanda.redpanda-example.svc.cluster.local.
+    port: 9092

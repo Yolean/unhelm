@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWy8kzFv2zAQhf/LzZQrJ4IgaWvTJUtqpEWXIsOJPCeEKB5Bnty4gf57Qdtx3NSAt2zC6X2Px/ekF8Bgf1JMlj10sFmCgsF6Ax18p7ixmkDBSIIGBaF7AYc9uZSfMITFMPUUPQmlheVPmsfAnrxAB5FMQG8Q1Bmh9UnQa7qkG9HjI5mi354oCw4UUTieRTyOF20DRil4fSqbFfxP5kkK+M+eBT3jGFyOhX97ive0pkheU4Lu17s0X5nFhrRwtH/I5OM3S3ThCXPUvWM9fMs+X8mR7DCJEynQ7CWycxRfJ4dabtyUhCKcW3iyWVGXZb1uqmVh6ropKo1YtFVzXTStNuW1qcu6XcL8MCtIgXSuUu89b1fQwR37fLnAUfZXOhyDZrT+8AK6tq4qBSGysGYHHfy4WYECwfhIsjpKZnXkB1wP+MaX7dUlvmyvTvgQ+Xl75JuyucRnyfygIEy9s+npjuWe0Gw/GxMppdzXPtdEblfPB33T71ubFcg20Fuzt6s8S4Iy7f4zx2i+oMveecd5nv8GAAD//1BLBwg3NmqZlAEAALUDAABQSwECFAAUAAgACAAAAAAANzZqmZQBAAC1AwAACAAAAAAAAAAAAAAAAAAAAAAAb3JpZ2luYWxQSwUGAAAAAAEAAQA2AAAAygEAAAAA
-  creationTimestamp: "2022-05-14T05:28:47Z"
+    banzaicloud.com/last-applied: UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAb3JpZ2luYWy8kzFv2zAQhf/LzZSrOLZqaWvTJUtqpEWXIsOJPCWEKB5Bnty4gf57Qdtx3NSAt27C6X2Px/ekF8Bgf1BMlj00sLkCBb31Bhr4RnFjNYGCgQQNCkLzAg5bcik/YQizfmwpehJKM8sfNA+BPXmBBiKZgN4gqDNC65Og13RJN6DHRzJFuz1RFhwoonA8i3gcLtoGjFJwdyqbFPxL5kkK+NeeBT3jEFyOhX95ivfUUSSvKUHz812ar8xsQ1o42t9k8vGbK3ThCXPUrWPdf80+X8iR7DCJIynQ7CWycxRfJ4dabtyYhCKcW3i0WVF35VLTx7qYV7UpFt3SFG3bVUXZ4vWqqrrrcqlhepgUpEA6V6n3nrdraOCOfb5c4Cj7Kx2OQTNYf3gBTV0tFgpCZGHNDhr4frMGBYLxkWR9lEzqyPfY9fjGl/X8El/W8xM+RH7eHvlVubrEZ8n0oCCMrbPp6Y7lntBsPxkTKaXc1z7XRG5Xz3/6pt+3NimQbaC3Zm/XeZYEZdz9Z47RfEaXvfOO0zT9CQAA//9QSwcIm6hYbpUBAAC1AwAAUEsBAhQAFAAIAAgAAAAAAJuoWG6VAQAAtQMAAAgAAAAAAAAAAAAAAAAAAAAAAG9yaWdpbmFsUEsFBgAAAAABAAEANgAAAMsBAAAAAA==
+  creationTimestamp: "2022-05-14T05:28:40Z"
   labels:
     app.kubernetes.io/component: redpanda
     app.kubernetes.io/instance: redpanda
@@ -18,9 +18,9 @@ metadata:
     controller: true
     kind: Cluster
     name: redpanda
-    uid: 6006f841-d668-4caa-9483-89cd03d60691
-  resourceVersion: "2437"
-  uid: 7fc6e96d-d939-4fb7-aa81-48f88366d2f0
+    uid: 9f05ce79-269d-4f5d-bbf6-0ba3866f305c
+  resourceVersion: "2330"
+  uid: abffb5e2-e2ff-4ab3-af18-210ce7ba167e
 spec:
   clusterIP: None
   clusterIPs:
