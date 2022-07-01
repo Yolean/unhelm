@@ -34,6 +34,7 @@ ingester:
   ring:
     final_sleep: 0s
     num_tokens: 512
+    unregister_on_shutdown: false
 
 ingester_client:
   grpc_client_config:

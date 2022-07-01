@@ -5,12 +5,12 @@ kind: Deployment
 metadata:
   name: mimir-distributor
   labels:
-    helm.sh/chart: mimir-2.0.13
+    helm.sh/chart: mimir-2.1.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: distributor
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/version: "2.1.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
@@ -29,15 +29,15 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-2.0.13
+        helm.sh/chart: mimir-2.1.0
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.0.0"
+        app.kubernetes.io/version: "2.1.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: distributor
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 7db97a9f2aff238ae7cefa644af6467e4c6e03ee6938e6191bd01be05b0835e5
+        checksum/config: 1e72cb1bc927aaa882f0fab325f5acf3d6d1bc2586169b96afeb7d603888cdd1
     spec:
       serviceAccountName: mimir
       securityContext:
@@ -46,7 +46,7 @@ spec:
         []
       containers:
         - name: distributor
-          image: "grafana/mimir:2.0.0"
+          image: "grafana/mimir:2.1.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=distributor"

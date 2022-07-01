@@ -11,6 +11,7 @@ resources:
 #- ./templates/secret.yaml
 - ./templates/runtime-configmap.yaml
 - ./templates/compactor/compactor-svc.yaml
+- ./templates/distributor/distributor-svc-headless.yaml
 - ./templates/distributor/distributor-svc.yaml
 - ./templates/gossip-ring/gossip-ring-svc.yaml
 - ./templates/ingester/ingester-svc-headless.yaml
