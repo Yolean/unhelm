@@ -5,11 +5,14 @@ secretGenerator:
   files:
   - mimir.yaml
 resources:
+- ./templates/podsecuritypolicy.yaml
 - ./templates/ingester/ingester-pdb.yaml
 - ./templates/store-gateway/store-gateway-pdb.yaml
 - ./templates/serviceaccount.yaml
-#- ./templates/secret.yaml
+#- ./templates/mimir-config.yaml
 - ./templates/runtime-configmap.yaml
+- ./templates/role.yaml
+- ./templates/rolebinding.yaml
 - ./templates/compactor/compactor-svc.yaml
 - ./templates/distributor/distributor-svc-headless.yaml
 - ./templates/distributor/distributor-svc.yaml
@@ -29,4 +32,5 @@ resources:
 - ./templates/compactor/compactor-statefulset.yaml
 - ./templates/ingester/ingester-statefulset.yaml
 - ./templates/store-gateway/store-gateway-statefulset.yaml
+- ./templates/smoke-test/smoke-test-job.yaml
 

@@ -5,15 +5,16 @@ kind: StatefulSet
 metadata:
   name: mimir-store-gateway
   labels:
-    helm.sh/chart: mimir-2.1.0
+    helm.sh/chart: mimir-3.0.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: store-gateway
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.1.0"
+    app.kubernetes.io/version: "2.2.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
+  namespace: "mimir"
 spec:
   replicas: 1
   selector:
@@ -37,15 +38,16 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-2.1.0
+        helm.sh/chart: mimir-3.0.0
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.1.0"
+        app.kubernetes.io/version: "2.2.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: store-gateway
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 1e72cb1bc927aaa882f0fab325f5acf3d6d1bc2586169b96afeb7d603888cdd1
+        checksum/config: e98646e3ba178f4d166561786433cc6b1c100156a1586c0111631597308cd798
+      namespace: "mimir"
     spec:
       serviceAccountName: mimir
       securityContext:
@@ -69,17 +71,21 @@ spec:
       terminationGracePeriodSeconds: 240
       volumes:
         - name: config
-          secret:
-            secretName: mimir-config
+          configMap:
+            name: mimir-config
+            items:
+              - key: "mimir.yaml"
+                path: "mimir.yaml"
         - name: runtime-config
           configMap:
             name: mimir-runtime
       containers:
         - name: store-gateway
-          image: "grafana/mimir:2.1.0"
+          image: "grafana/mimir:2.2.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=store-gateway"
+            - "-config.expand-env=true"
             - "-config.file=/etc/mimir/mimir.yaml"
           volumeMounts:
             - name: config
@@ -112,3 +118,4 @@ spec:
           securityContext:
             readOnlyRootFilesystem: true
           env:
+          envFrom:

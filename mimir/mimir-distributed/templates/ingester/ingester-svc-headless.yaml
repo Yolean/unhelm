@@ -5,16 +5,17 @@ kind: Service
 metadata:
   name: mimir-ingester-headless
   labels:
-    helm.sh/chart: mimir-2.1.0
+    helm.sh/chart: mimir-3.0.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ingester
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.1.0"
+    app.kubernetes.io/version: "2.2.0"
     app.kubernetes.io/managed-by: Helm
     prometheus.io/service-monitor: "false"
   annotations:
     {}
+  namespace: "mimir"
 spec:
   type: ClusterIP
   clusterIP: None
