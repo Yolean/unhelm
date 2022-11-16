@@ -205,3 +205,28 @@ services:
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/thanos/* ./thanos/"
+
+  openreplay:
+    image: docker.io/yolean/ystack-runner:755de97a9e73114abea98bd8c8247186de560c49
+    working_dir: /tmp
+    volumes:
+    - /tmp/unhelm:/tmp/unhelm:rw
+    - ./openreplay:/workspace/openreplay:ro
+    command:
+    - /bin/bash
+    - -cx
+    - |
+      set -eo pipefail
+      helm version
+      git clone https://github.com/openreplay/openreplay.git
+      cd openreplay/scripts/helmcharts/
+      mkdir -p /tmp/unhelm/openreplay/databases /tmp/unhelm/openreplay/openreplay
+      echo 'resources:' > /tmp/unhelm/openreplay/databases/kustomization.yaml
+      echo 'resources:' > /tmp/unhelm/openreplay/openreplay/kustomization.yaml
+      helm template ./databases/ -f ./vars.yaml -n unhelm-namespace-placeholder --output-dir /tmp/unhelm/openreplay | sed 's|wrote /tmp/unhelm/openreplay/databases/|- ./|' | tee -a /tmp/unhelm/openreplay/databases/kustomization.yaml
+      helm template ./openreplay/ -f ./vars.yaml -n unhelm-namespace-placeholder --output-dir /tmp/unhelm/openreplay | sed 's|wrote /tmp/unhelm/openreplay/openreplay/|- ./|' | tee -a /tmp/unhelm/openreplay/openreplay/kustomization.yaml
+      sed -i 's|- ./charts/ingress|#- ./charts/ingress|' /tmp/unhelm/openreplay/openreplay/kustomization.yaml
+      sed -i 's|- \(.*\)/ingress.yaml|#- \1/ingress.yaml|' /tmp/unhelm/openreplay/openreplay/kustomization.yaml
+      set +x
+      echo "Done. To extract the results:"
+      echo "rsync -av --delete /tmp/unhelm/openreplay/* ./openreplay/"

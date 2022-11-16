@@ -9,4 +9,5 @@ docker-compose up --build --force-recreate --exit-code-from mysql mysql
 docker-compose up --build --force-recreate --exit-code-from vault vault
 docker-compose up --build --force-recreate --exit-code-from fluent-bit fluent-bit
 docker-compose up --build --force-recreate --exit-code-from mimir mimir
+docker-compose up --build --force-recreate --exit-code-from openreplay openreplay
 ```
