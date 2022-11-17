@@ -1,0 +1,64 @@
+---
+# Source: openreplay/charts/http/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: http-0.1.0
+    app.kubernetes.io/name: http
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/upstream-hash-by: $http_x_forwarded_for
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+spec:
+  ingressClassName: "openreplay" 
+  tls:
+    - hosts:
+        - 
+      secretName: openreplay-ssl
+  rules:
+    - host:  
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: http-openreplay
+                port:
+                  number: 8080
+            path: /ingest/(.*)
+## TODO:
+## Frontend service from minio will be migrated to nginx atomic container.
+## This ingress is just a workaround.
+---
+# Source: openreplay/charts/http/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio
+  namespace: db
+spec:
+  ingressClassName: "openreplay" 
+  rules:
+    - host:  
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 9000
+            path: /(minio|mobs|sessions-assets|frontend|static|sourcemaps|ios-images)/
+  tls:
+    - hosts:
+      -

@@ -1,0 +1,23 @@
+---
+# Source: openreplay/charts/peers/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: peers-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: peers-0.1.0
+    app.kubernetes.io/name: peers
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9000
+      targetPort: peerjs
+      protocol: TCP
+      name: peerjs
+  selector:
+    app.kubernetes.io/name: peers
+    app.kubernetes.io/instance: RELEASE-NAME

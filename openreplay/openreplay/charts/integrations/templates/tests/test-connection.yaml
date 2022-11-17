@@ -1,0 +1,21 @@
+---
+# Source: openreplay/charts/integrations/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "integrations-openreplay-test-connection"
+  labels:
+    helm.sh/chart: integrations-0.1.0
+    app.kubernetes.io/name: integrations
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['integrations-openreplay:']
+  restartPolicy: Never

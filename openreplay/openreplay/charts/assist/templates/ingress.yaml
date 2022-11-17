@@ -1,0 +1,33 @@
+---
+# Source: openreplay/charts/assist/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: assist-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: assist-0.1.0
+    app.kubernetes.io/name: assist
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/upstream-hash-by: $http_x_forwarded_for
+spec:
+  ingressClassName: "openreplay" 
+  tls:
+    - hosts:
+        - 
+      secretName: openreplay-ssl
+  rules:
+    - host:  
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: assist-openreplay
+                port:
+                  number: 9001
+            path: /ws-assist/(.*)

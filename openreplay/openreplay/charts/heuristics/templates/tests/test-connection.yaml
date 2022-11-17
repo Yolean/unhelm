@@ -1,0 +1,21 @@
+---
+# Source: openreplay/charts/heuristics/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "heuristics-openreplay-test-connection"
+  labels:
+    helm.sh/chart: heuristics-0.1.0
+    app.kubernetes.io/name: heuristics
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['heuristics-openreplay:']
+  restartPolicy: Never

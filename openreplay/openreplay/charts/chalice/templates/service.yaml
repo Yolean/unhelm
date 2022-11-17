@@ -1,0 +1,27 @@
+---
+# Source: openreplay/charts/chalice/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: chalice-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: chalice-0.1.0
+    app.kubernetes.io/name: chalice
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 8888
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: chalice
+    app.kubernetes.io/instance: RELEASE-NAME

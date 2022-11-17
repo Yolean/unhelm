@@ -1,0 +1,80 @@
+---
+# Source: openreplay/charts/storage/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: storage-0.1.0
+    app.kubernetes.io/name: storage
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: storage
+      app.kubernetes.io/instance: RELEASE-NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: storage
+        app.kubernetes.io/instance: RELEASE-NAME
+    spec:
+      serviceAccountName: storage-openreplay
+      securityContext:
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 0
+        runAsUser: 0
+      containers:
+        - name: storage
+          securityContext:
+            {}
+          image: "public.ecr.aws/p1t3u8a3/storage:v1.8.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              value: changeMeMinioAccessKey
+            - name: AWS_SECRET_ACCESS_KEY
+              value: changeMeMinioPassword
+            - name: AWS_ENDPOINT
+              value: 'http://minio.db.svc.cluster.local:9000'
+            - name: AWS_REGION_WEB
+              value: 'us-east-1'
+            - name: AWS_REGION_IOS
+              value: 'us-east-1'
+            - name: S3_BUCKET_WEB
+              value: mobs
+            - name: S3_BUCKET_IOS
+              value: mobs
+            - name: LICENSE_KEY
+              value: ''
+            - name: REDIS_STRING
+              value: 'redis-master.db.svc.cluster.local:6379'
+            - name: KAFKA_SERVERS
+              value: 'kafka.db.svc.cluster.local:9092'
+            - name: KAFKA_USE_SSL
+              value: 'false'
+            - name: FS_CLEAN_HRS
+              value: '24'
+          ports:
+            - name: http
+              containerPort: 9000
+              protocol: TCP
+            - name: metrics
+              containerPort: 8888
+              protocol: TCP
+          resources:
+            {}
+          volumeMounts:
+          - name: datadir
+            mountPath: /mnt/efs
+      volumes:
+      - name: datadir
+        hostPath:
+          # Ensure the file directory is created.
+          path: /openreplay/storage/nfs
+          type: DirectoryOrCreate

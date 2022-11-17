@@ -1,0 +1,72 @@
+---
+# Source: openreplay/charts/assets/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: assets-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: assets-0.1.0
+    app.kubernetes.io/name: assets
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: assets
+      app.kubernetes.io/instance: RELEASE-NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: assets
+        app.kubernetes.io/instance: RELEASE-NAME
+    spec:
+      serviceAccountName: assets-openreplay
+      securityContext:
+        {}
+      containers:
+        - name: assets
+          securityContext:
+            {}
+          image: "public.ecr.aws/p1t3u8a3/assets:v1.8.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              value: changeMeMinioAccessKey
+            - name: AWS_SECRET_ACCESS_KEY
+              value: changeMeMinioPassword
+            - name: S3_BUCKET_ASSETS
+              value: sessions-assets
+            - name: LICENSE_KEY
+              value: ''
+            - name: AWS_ENDPOINT
+              value: 'http://minio.db.svc.cluster.local:9000'
+            - name: AWS_REGION
+              value: 'us-east-1'
+            - name: REDIS_STRING
+              value: 'redis-master.db.svc.cluster.local:6379'
+            - name: KAFKA_SERVERS
+              value: 'kafka.db.svc.cluster.local:9092'
+            - name: KAFKA_USE_SSL
+              value: 'false'
+            # We need to check what is the object store endpoint.
+            # There can be 4 options
+            # 1. Using minio inside kube clster
+            # 2. Using minio managed external cluster, like aws minio offering
+            # 3. Using GCP or other object stores compatible with s3 apis
+            # 4. Using AWS itself.
+            # AWS uses bucketname.endpoint/object while others use endpoint/bucketname/object
+            - name: ASSETS_ORIGIN
+              # Local minio Installation
+              value: 'https:///sessions-assets'
+          ports:
+            - name: http
+              containerPort: 9000
+              protocol: TCP
+            - name: metrics
+              containerPort: 8888
+              protocol: TCP
+          resources:
+            {}

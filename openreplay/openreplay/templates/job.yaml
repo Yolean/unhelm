@@ -1,0 +1,438 @@
+---
+# Source: openreplay/templates/job.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-migration-script
+  namespace: "unhelm-namespace-placeholder"
+  annotations:
+    "helm.sh/hook": pre-install, pre-upgrade
+    "helm.sh/hook-weight": "-6" # Higher precidence, so the first the config map will get created.
+data:
+  clickhouse.sh: |
+    #!/bin/bash
+  
+    set -ex
+  
+    clickhousedir=/opt/openreplay/openreplay/scripts/helm/db/init_dbs/clickhouse
+  
+    function migrate() {
+        echo "Starting clickhouse migration"
+        IFS=',' read -r -a migration_versions <<< "$1"
+        for version in ${migration_versions[*]}; do
+            echo "Migrating clickhouse version $version"
+            # For now, we can ignore the clickhouse db inject errors.
+            # TODO: Better error handling in script
+            clickhouse-client -h clickhouse-openreplay-clickhouse.db.svc.cluster.local --port 9000 --multiquery < ${clickhousedir}/${version}/${version}.sql || true
+        done
+    }
+  
+    function init() {
+        echo "Initializing clickhouse"
+        for file in `ls ${clickhousedir}/create/*.sql`; do
+            echo "Injecting $file"
+            clickhouse-client -h clickhouse-openreplay-clickhouse.db.svc.cluster.local --port 9000 --multiquery < $file || true
+        done
+    }
+  
+    # /bin/bash clickhouse.sh migrate $migration_versions
+    case "$1" in
+        migrate)
+            migrate $2
+            ;;
+        init)
+            init
+            ;;
+        *)
+            echo "Unknown operation for clickhouse migration; exiting."
+            exit 1
+            ;;
+    esac
+  dbops.sh: "#!/bin/bash\n\nset -x\ncd $(dirname $0)\n\nis_migrate=$1\n\n# Converting
+    alphaneumeric to number.\nPREVIOUS_APP_VERSION=`echo $PREVIOUS_APP_VERSION | cut
+    -d \"v\" -f2`\nCHART_APP_VERSION=`echo $CHART_APP_VERSION | cut -d \"v\" -f2`\n\nfunction
+    migration() {\n    ls -la /opt/openreplay/openreplay\n    db=$1\n\n    # Checking
+    if previous app version is set.\n    if [[ $PREVIOUS_APP_VERSION == \"\" ]]; then\n
+    \       echo \"Previous app version to be migrated is not set. Rerun using --set
+    fromVersion=v1.3.5\"\n        exit 100\n    fi\n\n    if [[ $FORCE_MIGRATION ==
+    \"true\" ]]; then\n        echo \"Forcing db migration from $PREVIOUS_APP_VERSION
+    to $CHART_APP_VERSION\"\n    # This is a special case where we force upgrade frontend\n
+    \   elif [[ $UPGRADE_FRONTENT == \"true\" ]]; then\n        echo \"[WARN] Skipping
+    regular upgrdades. Forcing frontend upgrade.\"\n        /bin/bash minio.sh migrate\n
+    \       exit 0\n    elif [[ $PREVIOUS_APP_VERSION == $CHART_APP_VERSION ]]; then\n
+    \       echo \"No application version change. Not upgrading.\"\n        exit 0\n
+    \   fi\n\n    # Checking migration versions\n    cd /opt/openreplay/openreplay/scripts/helm\n
+    \   migration_versions=(`ls -l db/init_dbs/$db | grep -E ^d | awk -v number=${PREVIOUS_APP_VERSION}
+    '$NF > number {print $NF}' | grep -v create`)\n    echo \"Migration version: ${migration_versions[*]}\"\n
+    \   # Can't pass the space seperated array to ansible for migration. So joining
+    them with ,\n    joined_migration_versions=$(IFS=, ; echo \"${migration_versions[*]}\")\n
+    \   \n    cd -\n\n    case \"$1\" in\n        postgresql)\n            /bin/bash
+    postgresql.sh migrate $joined_migration_versions\n            ;;\n        minio)\n
+    \           /bin/bash minio.sh migrate $joined_migration_versions\n            ;;\n
+    \       clickhouse)\n            /bin/bash clickhouse.sh migrate $joined_migration_versions\n
+    \           ;;\n        kafka)\n            /bin/bash kafka.sh migrate $joined_migration_versions\n
+    \           ;;\n        *)\n            echo \"Unknown operation for db migration;
+    exiting.\"\n            exit 1\n            ;;\n        esac\n}\n\nfunction init(){\n
+    \   case $1 in\n        postgresql)\n            /bin/bash postgresql.sh init\n
+    \           ;;\n        minio)\n            /bin/bash minio.sh migrate $migration_versions\n
+    \           ;;\n        clickhouse)\n            /bin/bash clickhouse.sh init\n
+    \           ;;\n        kafka)\n            /bin/bash kafka.sh init\n            ;;\n
+    \       *)\n            echo \"Unknown operation for db init; exiting.\"\n            exit
+    1\n            ;;\n\n    esac\n}\n\nif [[ $FORCE_MIGRATION == \"true\" ]]; then\n
+    \   is_migrate=true\nfi\n\n# dbops.sh true(upgrade) clickhouse\ncase \"$is_migrate\"
+    in\n    \"false\")\n        init $2\n        ;;\n    \"true\")\n        migration
+    $2\n        ;;\n    *)\n        echo \"Unknown operation for db migration; exiting.\"\n
+    \       exit 1\n        ;;\nesac\n"
+  kafka.sh: |
+    #!/bin/bash
+  
+    set -e
+  
+    # Default to 4 days.
+    RETENTION_TIME=${RETENTION_TIME:-345600000}
+  
+    topics=(
+      "raw"
+      "raw-ios"
+      "trigger"
+      "cache"
+      "analytics"
+      "storage-failover"
+      "quickwit"
+    )
+  
+    touch /tmp/config.txt
+  
+    if [[ $KAFKA_SSL == "true" ]]; then
+      echo 'security.protocol=SSL' > /tmp/config.txt
+    fi
+  
+    function init() {
+      echo "Initializing kafka"
+      for topic in ${topics[*]}; do
+        echo "Creating topic: $topic"
+        # TODO: Have to check an idempotent way of creating topics.
+        kafka-topics.sh --create --bootstrap-server ${KAFKA_HOST}:${KAFKA_PORT} --replication-factor 2 --partitions 16 --topic ${topic} --command-config /tmp/config.txt || true
+        kafka-configs.sh --bootstrap-server ${KAFKA_HOST}:${KAFKA_PORT} --entity-type topics --alter --add-config retention.ms=${RETENTION_TIME} --entity-name=${topic} --command-config /tmp/config.txt || true
+      done
+    }
+  
+    # /bin/bash kafka.sh migrate $migration_versions
+    case "$1" in
+      migrate)
+        init
+        ;;
+      init)
+        init
+        ;;
+      *)
+        echo "Unknown operation for kafka migration; exiting."
+        exit 1
+        ;;
+    esac
+  minio.sh: |
+    #!/bin/bash
+  
+    set -e
+  
+  
+    cd /tmp
+  
+    buckets=("mobs" "sessions-assets" "static" "sourcemaps" "sessions-mobile-assets" "quickwit")
+  
+    mc alias set minio http://minio.db.svc.cluster.local:9000 $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
+  
+    function init() {
+    echo "Initializing minio"
+  
+    cat <<EOF > /tmp/lifecycle.json
+    {
+        "Rules": [
+            {
+                "Expiration": {
+                    "Days": 180
+                },
+                "ID": "${bucket}",
+                "Status": "Enabled"
+            }
+        ]
+    }
+    EOF
+  
+    for bucket in ${buckets[*]}; do
+    mc mb minio/${bucket} || true
+    done
+    mc ilm import minio/mobs < /tmp/lifecycle.json || true
+  
+    # Creating frontend bucket
+    mc mb minio/frontend || true
+    mc policy set download minio/frontend || true
+    mc policy set download minio/sessions-assets || true
+    mc policy set download minio/static || true
+    }
+  
+    # /bin/bash kafka.sh migrate $migration_versions
+    case "$1" in
+        migrate)
+            init
+            ;;
+        init)
+            init
+            ;;
+        *)
+            echo "Unknown operation for minio migration; exiting."
+            exit 1
+            ;;
+    esac
+  postgresql.sh: |
+    #!/bin/bash
+  
+    set -ex
+  
+    pgdir=/opt/openreplay/openreplay/scripts/helm/db/init_dbs/postgresql
+  
+    # ENV variables
+    # Ref: https://www.postgresql.org/docs/current/libpq-envars.html
+    # $PGHOST
+    # $PGPORT
+    # $PGDATABASE
+    # $PGUSER
+    # $PGPASSWORD
+  
+    function migrate() {
+        echo "Starting postgresql migration"
+        IFS=',' read -r -a migration_versions <<< "$1"
+        for version in ${migration_versions[*]}; do
+            echo "Migrating postgresql version $version"
+            psql -f ${pgdir}/${version}/${version}.sql 2>&1
+        done
+    }
+  
+    function init() {
+        echo "Initializing postgresql"
+        psql -f ${pgdir}/init_schema.sql 2>&1
+    }
+  
+    # /bin/bash postgresql.sh migrate $migration_versions
+    case "$1" in
+        migrate)
+            migrate $2
+            ;;
+        init)
+            init
+            ;;
+        *)
+            echo "Unknown operation for postgresql migration; exiting."
+            exit 1
+            ;;
+    esac
+  site.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIFITCCAwmgAwIBAgIUQ8hQoDbW3Z4DxRVjIYlIlbEHp/8wDQYJKoZIhvcNAQEL
+    BQAwIDEeMBwGA1UEAwwVb3BlbnJlcGxheS5sb2NhbC5ob3N0MB4XDTIxMTIyMjA3
+    NDIxOVoXDTIyMTIyMjA3NDIxOVowIDEeMBwGA1UEAwwVb3BlbnJlcGxheS5sb2Nh
+    bC5ob3N0MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyXTX6RwqNVM+
+    LSvc5TkuBnxlw1sHxtkkojwpbwavr6ccSdtoYB7KYwcufh0zz3LaSDgPNqStOf6w
+    hAWV830bxvOvU6yJ7MgP8/htfY1KWIoNS6ducoct4VhgshWXWwQtrtWZJku+cyds
+    QTkr2BziSX+Y7/1rALKbOU4CIRCKtJ2jeaI+c4kcXXB+ARauDlqB7+CS4B+wjlfX
+    sOoC2bWgZOxyZnHolb3hKMLfBswLwYq0DRjjNMDqX8xS6V1AgoTrCxl1DqPLw47o
+    immbSKZ4voot60cSBYVK4qOX5Nqw5RmqwELb9Ib4QPVCt9HjbYQp77EcOonkgE4l
+    fYabvvOeM/U6vdtZhI2CJg0tkytuJ4+Hb7i7nRK2SRMppmtP7yDDXpMGoAXK2bVZ
+    ipZBRct0onxLifH5vdrUNbOlXItjWLQMfiHlDeG48kbXbKaJPv3tRvU0Gix2X8SJ
+    OlRNezNNz8pce0Bbgx3YoQhrRTad4CC6cIpRjgTt/pww3BoF7jDLl6RNI1cXfy4u
+    tkSlMqAQV6x0aig9Ldg1VFM2oCaEyvzx0BWDm/jmbZcyVizlb+uQQ/huNSJXT++p
+    CmPNG7rP6eYNTh7+7DDWvKBQQFWOPaVfwvrhzvb7q2B2Bmc33bDXeRuF4MJE6syA
+    YUCV2Ztw65uI864PRDIKO4ru1UQgx5sCAwEAAaNTMFEwHQYDVR0OBBYEFIdNQGn2
+    z3xmJfExKAUeohFnLjzsMB8GA1UdIwQYMBaAFIdNQGn2z3xmJfExKAUeohFnLjzs
+    MA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggIBAJvkSX+RoYGOcU0z
+    qEWlAN6Jy0CzLsTp/VoSZY9gd+hLFd/lK7SjXhAnNyEELpeanGs04ytJpXnSH1bA
+    dGs0UeWYalOxrHSN4ln5SNzWVE8kODM1zcyNePllI/PVcXLmujQz5wNbNoC5Qt8p
+    0RoZ2wInmyh2wTQcflIPUtncsw84ozVVuebmc6jiuPxnxdTAXeYOwKUF25t8rSp6
+    5n23F0GP8Ypu7vjT7N2RpUe0zkutaij+uISBHZw50ohrelPlV4V9qhp6MV+h9xuh
+    0z8OEyq2vK4KNn96A97mSRuqqt6Ajb2MHdErTr6fgj5/CtSD337oIK3froRmID8s
+    /JXADsNnBEqQBfcM6gSaw1M/fHDPNZzwVv6yAN+bKrI+KEmKJD31Tm2G55oPvLTP
+    XZdmVIAqxIu89v/GOJ2J29vC+h9pTjTze31DFg0niwLcr1aNawiC2d4n2wdDwKwc
+    HnCnflELyYcn4KgvpLNz5wEKEHTAQ3JF5VIel1/uqYN9cosw1vjRskPK/g3nIEPG
+    T247naj+JbW244P0jxb57VWiD/7IJ4ZErA1KrvqR/y1NnGxrgXoRjwmhCv/4YIYi
+    qgnvF7IkwGozdoLPiBMmvjNq/AmVLrfZNPxZjHL3nIW+PBEeBD/lkH36mcakg/1S
+    w7yMPvE+TIh6+HwDZc2jNLkv/8tY
+    -----END CERTIFICATE-----
+  site.key: |
+    -----BEGIN PRIVATE KEY-----
+    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
+    7qINKoGovqXB1oAdopIl1z64e7MWVE4=
+    -----END PRIVATE KEY-----
+---
+# Source: openreplay/templates/job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: databases-migrate
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    app: databases
+  annotations:
+    "helm.sh/hook": pre-install, pre-upgrade
+    "helm.sh/hook-weight": "-5"
+spec:
+  backoffLimit: 0 # Don't restart failing containers
+  template:
+    metadata:
+      name: postgresqlMigrate
+    spec:
+      initContainers:
+      - name: git
+        image: alpine/git
+        env:
+          - name: ENTERPRISE_EDITION_LICENSE
+            value: ""
+        command:
+          - /bin/sh
+          - -c
+        args:
+          - |
+            set -x
+            mkdir -p /opt/openreplay/openreplay && cd /opt/openreplay/openreplay
+            git clone https://github.com/openreplay/openreplay .
+            ls /opt/openreplay/openreplay
+            git checkout v1.8.1 || exit 10
+
+            # Checking variable is empty. Shell independant method.
+            if [ "x$ENTERPRISE_EDITION_LICENSE" != "x" ]; then
+              exit_count=0
+              error_connection=1
+
+              while [ $exit_count -le 20 ];do
+                nc -zv clickhouse-openreplay-clickhouse.db.svc.cluster.local 9000 -w 1
+                if [ $? -ne 0 ]; then
+                  echo "[info] clickhouse is not up; retrying in 5 seconds"
+                  sleep 4
+                  exit_count=$(($exit_count+1))
+                  echo $exit_count
+                else
+                  error_connection=0
+                  break
+                fi
+              done
+
+              if [ $error_connection -eq 1 ]; then
+                echo "[error] clickhouse is not running. Check kubectl get po -n db; exiting"
+                exit 100
+              fi
+
+              echo "Copying enterprise code"
+              cp -rf ee/scripts/* scripts/
+            fi
+        volumeMounts:
+        - name: shared
+          mountPath: /opt/openreplay
+      containers:
+      - name: postgres
+        env:
+          - name: FORCE_MIGRATION
+            value: ""
+          - name: PREVIOUS_APP_VERSION
+            value: "v1.8.1"
+          - name: CHART_APP_VERSION
+            value: "v1.8.1"
+          - name: PGHOST
+            value: "postgresql.db.svc.cluster.local"
+          - name: PGPORT
+            value: "5432"
+          - name: PGDATABASE
+            value: "postgres"
+          - name: PGUSER
+            value: "postgres"
+          - name: PGPASSWORD
+            value: "changeMePassword"
+        image: bitnami/postgresql:13.3.0-debian-10-r53
+        command: 
+        - /bin/bash
+        - /opt/migrations/dbops.sh
+        - "false"
+        - "postgresql"
+        volumeMounts:
+        - name: shared
+          mountPath: /opt/openreplay
+        - name: dbmigrationscript
+          mountPath: /opt/migrations/
+      - name: minio
+        image: bitnami/minio:2020.10.9-debian-10-r6
+        env:
+          - name: FORCE_MIGRATION
+            value: ""
+          - name: UPGRADE_FRONTENT
+            value: ""
+          - name: PREVIOUS_APP_VERSION
+            value: "v1.8.1"
+          - name: CHART_APP_VERSION
+            value: "v1.8.1"
+          - name: MINIO_ACCESS_KEY
+            value: "changeMeMinioAccessKey"
+          - name: MINIO_SECRET_KEY
+            value: "changeMeMinioPassword"
+        command: 
+        - /bin/bash
+        - /opt/migrations/dbops.sh
+        - "false"
+        - minio
+        volumeMounts:
+        - name: shared
+          mountPath: /opt/openreplay
+        - name: dbmigrationscript
+          mountPath: /opt/migrations/
+      volumes:
+      - name: dbmigrationscript
+        configMap:
+          name: db-migration-script
+      - name: shared
+        emptyDir: {}
+      restartPolicy: Never

@@ -1,0 +1,22 @@
+---
+# Source: databases/charts/minio/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: unhelm-namespace-placeholder
+  labels:
+    app.kubernetes.io/name: minio
+    helm.sh/chart: minio-3.7.14
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: minio
+      port: 9000
+      targetPort: minio
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: minio
+    app.kubernetes.io/instance: RELEASE-NAME

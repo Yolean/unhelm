@@ -1,0 +1,54 @@
+---
+# Source: openreplay/charts/ender/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ender-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: ender-0.1.0
+    app.kubernetes.io/name: ender
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ender
+      app.kubernetes.io/instance: RELEASE-NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ender
+        app.kubernetes.io/instance: RELEASE-NAME
+    spec:
+      serviceAccountName: ender-openreplay
+      securityContext:
+        {}
+      containers:
+        - name: ender
+          securityContext:
+            {}
+          image: "public.ecr.aws/p1t3u8a3/ender:v1.8.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: LICENSE_KEY
+              value: ''
+            - name: REDIS_STRING
+              value: 'redis-master.db.svc.cluster.local:6379'
+            - name: KAFKA_SERVERS
+              value: 'kafka.db.svc.cluster.local:9092'
+            - name: KAFKA_USE_SSL
+              value: 'false'
+            - name: POSTGRES_STRING
+              value: 'postgres://postgres:changeMePassword@postgresql.db.svc.cluster.local:5432/postgres'
+          ports:
+            - name: http
+              containerPort: 9000
+              protocol: TCP
+            - name: metrics
+              containerPort: 8888
+              protocol: TCP
+          resources:
+            {}

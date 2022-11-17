@@ -1,0 +1,45 @@
+---
+# Source: openreplay/charts/utilities/templates/efs-cron.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: efs-cleaner
+  namespace: unhelm-namespace-placeholder
+spec:
+  schedule: "5 3 */3 * *"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 0 # Don't restart the failed jobs
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: efs-cleaner
+            image: alpine
+            image: "public.ecr.aws/p1t3u8a3/alpine:3.16.1"
+            command:
+            - /bin/sh
+            - -c
+            args:
+            - |
+              # Delete all the files older than 7 days
+              set -x
+              echo "Cleaning NFS strorage for data older than 7 days"
+              storage=`du -sh /mnt/efs`
+              find /mnt/efs -type f -mtime +2 -delete
+              echo "Storage before cleaning"
+              echo ${storage}
+              echo "Storage after cleaning"
+              du -sh /mnt/efs
+            volumeMounts:
+            - mountPath: /mnt/efs
+              name: datadir
+          restartPolicy: Never
+          volumes:
+          - name: datadir
+            hostPath:
+              # Ensure the file directory is created.
+              path: /openreplay/storage/nfs
+              type: DirectoryOrCreate

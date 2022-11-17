@@ -1,0 +1,22 @@
+---
+# Source: databases/charts/redis/templates/headless-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-headless
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    app: redis
+    chart: redis-12.10.1
+    release: RELEASE-NAME
+    heritage: Helm
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: redis
+  selector:
+    app: redis
+    release: RELEASE-NAME

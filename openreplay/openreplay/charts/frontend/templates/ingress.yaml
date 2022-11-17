@@ -1,0 +1,41 @@
+---
+# Source: openreplay/charts/frontend/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: frontend-0.1.0
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      index /index.html;
+      rewrite ^((?!.(js|css|png|svg|jpg|woff|woff2)).)*$ /index.html break;
+      proxy_intercept_errors on; # see frontend://nginx.org/en/docs/frontend/ngx_frontend_proxy_module.html#proxy_intercept_errors
+      error_page 404 =200 /index.html;
+      # Custom CSP snippet here.
+spec:
+  ingressClassName: "openreplay" 
+  tls:
+    - hosts:
+        - 
+      secretName: openreplay-ssl
+  rules:
+    - host:  
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: frontend-openreplay
+                port:
+                  number: 8080
+            path: /(.*)

@@ -1,0 +1,47 @@
+---
+# Source: openreplay/charts/peers/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: peers-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: peers-0.1.0
+    app.kubernetes.io/name: peers
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: peers
+      app.kubernetes.io/instance: RELEASE-NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: peers
+        app.kubernetes.io/instance: RELEASE-NAME
+    spec:
+      serviceAccountName: peers-openreplay
+      securityContext:
+        {}
+      containers:
+        - name: peers
+          securityContext:
+            {}
+          image: "public.ecr.aws/p1t3u8a3/peers:v1.8.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ASSIST_KEY
+              value: SetARandomStringHere
+            - name: S3_KEY
+              value: changeMeMinioAccessKey
+            - name: debug
+              value: '0'
+          ports:
+            - name: peerjs
+              containerPort: 9000
+              protocol: TCP
+          resources:
+            {}

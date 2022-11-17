@@ -1,0 +1,23 @@
+---
+# Source: openreplay/charts/assist/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: assist-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: assist-0.1.0
+    app.kubernetes.io/name: assist
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9001
+      targetPort: socketio
+      protocol: TCP
+      name: socketio
+  selector:
+    app.kubernetes.io/name: assist
+    app.kubernetes.io/instance: RELEASE-NAME

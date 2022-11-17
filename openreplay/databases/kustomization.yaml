@@ -1,0 +1,17 @@
+resources:
+- ./charts/minio/templates/serviceaccount.yaml
+- ./charts/minio/templates/secrets.yaml
+- ./charts/postgresql/templates/secrets.yaml
+- ./charts/redis/templates/configmap-scripts.yaml
+- ./charts/redis/templates/configmap.yaml
+- ./charts/redis/templates/health-configmap.yaml
+- ./charts/minio/templates/pvc-standalone.yaml
+- ./charts/minio/templates/service.yaml
+- ./charts/postgresql/templates/svc-headless.yaml
+- ./charts/postgresql/templates/svc.yaml
+- ./charts/redis/templates/headless-svc.yaml
+- ./charts/redis/templates/redis-master-svc.yaml
+- ./charts/minio/templates/deployment-standalone.yaml
+- ./charts/postgresql/templates/statefulset.yaml
+- ./charts/redis/templates/redis-master-statefulset.yaml
+

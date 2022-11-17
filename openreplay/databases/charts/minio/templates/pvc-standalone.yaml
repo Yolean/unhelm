@@ -1,0 +1,18 @@
+---
+# Source: databases/charts/minio/templates/pvc-standalone.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: minio
+  namespace: unhelm-namespace-placeholder
+  labels:
+    app.kubernetes.io/name: minio
+    helm.sh/chart: minio-3.7.14
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "50Gi"

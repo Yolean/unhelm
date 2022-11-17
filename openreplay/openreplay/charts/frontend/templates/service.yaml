@@ -1,0 +1,23 @@
+---
+# Source: openreplay/charts/frontend/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: frontend-0.1.0
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: frontend
+      protocol: TCP
+      name: frontend
+  selector:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/instance: RELEASE-NAME

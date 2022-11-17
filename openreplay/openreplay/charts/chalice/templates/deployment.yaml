@@ -1,0 +1,153 @@
+---
+# Source: openreplay/charts/chalice/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chalice-openreplay
+  namespace: unhelm-namespace-placeholder
+  labels:
+    helm.sh/chart: chalice-0.1.0
+    app.kubernetes.io/name: chalice
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/version: "v1.8.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: chalice
+      app.kubernetes.io/instance: RELEASE-NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: chalice
+        app.kubernetes.io/instance: RELEASE-NAME
+    spec:
+      serviceAccountName: chalice-openreplay
+      securityContext:
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 0
+        runAsUser: 0
+      containers:
+        - name: chalice
+          securityContext:
+            {}
+          image: "public.ecr.aws/p1t3u8a3/chalice:v1.8.1"
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 100
+            periodSeconds: 15
+            timeoutSeconds: 10
+          env:
+            - name: ASSIST_KEY
+              value: SetARandomStringHere
+            - name: LICENSE_KEY
+              value: ''
+            - name: version_number
+              value: 'v1.8.1'
+            - name: pg_host
+              value: 'postgresql.db.svc.cluster.local'
+            - name: pg_port
+              value: "5432"
+            - name: pg_dbname
+              value: "postgres"
+            - name: pg_user
+              value: 'postgres'
+            - name: pg_password
+              value: 'changeMePassword'
+            - name: SITE_URL
+              value: 'https://'
+            - name: S3_HOST
+              value: 'https://:443'
+            - name: S3_KEY
+              value: changeMeMinioAccessKey
+            - name: S3_SECRET
+              value: changeMeMinioPassword
+            - name: AWS_DEFAULT_REGION
+              value: 'us-east-1'
+            - name: sessions_region
+              value: 'us-east-1' 
+            - name: sessions_bucket
+              value: mobs
+            - name: sourcemaps_bucket
+              value: sourcemaps 
+            - name: js_cache_bucket
+              value: sessions-assets 
+            - name: EMAIL_HOST
+              value: ''
+            - name: EMAIL_PORT
+              value: '587'
+            - name: EMAIL_USER
+              value: ''
+            - name: EMAIL_PASSWORD
+              value: ''
+            - name: EMAIL_USE_TLS
+              value: 'true'
+            - name: EMAIL_USE_SSL
+              value: 'false'
+            - name: EMAIL_SSL_KEY
+              value: ''
+            - name: EMAIL_SSL_CERT
+              value: ''
+            - name: EMAIL_FROM
+              value: 'OpenReplay<do-not-reply@openreplay.com>'
+            - name: PYTHONUNBUFFERED
+              value: '0'
+            - name: SAML2_MD_URL
+              value: ''
+            - name: announcement_url
+              value: ''
+            - name: assist_secret
+              value: ''
+            - name: async_Token
+              value: ''
+            - name: captcha_key
+              value: ''
+            - name: captcha_server
+              value: ''
+            - name: ch_host
+              value: 'clickhouse-openreplay-clickhouse.db.svc.cluster.local'
+            - name: ch_port
+              value: '9000'
+            - name: iceServers
+              value: ''
+            - name: idp_entityId
+              value: ''
+            - name: idp_name
+              value: ''
+            - name: idp_sls_url
+              value: ''
+            - name: idp_sso_url
+              value: ''
+            - name: idp_tenantKey
+              value: ''
+            - name: idp_x509cert
+              value: ''
+            - name: jwt_algorithm
+              value: 'HS512'
+            - name: jwt_exp_delta_seconds
+              value: '2592000'
+            - name: jwt_secret
+              value: 'SetARandomStringHere'
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+            - name: metrics
+              containerPort: 8888
+              protocol: TCP
+          volumeMounts:
+            - name: datadir
+              mountPath: /mnt/efs
+          resources:
+            {}
+      volumes:
+      - name: datadir
+        hostPath:
+          # Ensure the file directory is created.
+          path: /openreplay/storage/nfs
+          type: DirectoryOrCreate
