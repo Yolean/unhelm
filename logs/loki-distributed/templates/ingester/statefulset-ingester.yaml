@@ -5,10 +5,10 @@ kind: StatefulSet
 metadata:
   name: loki-ingester
   labels:
-    helm.sh/chart: loki-0.48.3
+    helm.sh/chart: loki-0.66.1
     app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/version: "2.6.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: ingester
     app.kubernetes.io/part-of: memberlist
@@ -28,13 +28,23 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 8c6a537037eb657ef94c0aa05f3c6b1425da091a1caf82f68de927cf2cc9d71a
+        checksum/config: d14cbb74a7c0da2a7d427d1a55e75e706a95cc2d95c1d0114f3bccb564eab241
       labels:
         app.kubernetes.io/name: loki
         #app.kubernetes.io/instance: unhelm
         app.kubernetes.io/component: ingester
         app.kubernetes.io/part-of: memberlist
     spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: loki
+              #app.kubernetes.io/instance: unhelm
+              app.kubernetes.io/component: ingester
+        
       serviceAccountName: loki
       
       securityContext:
@@ -45,7 +55,7 @@ spec:
       terminationGracePeriodSeconds: 300
       containers:
         - name: ingester
-          image: docker.io/grafana/loki:2.5.0
+          image: docker.io/grafana/loki:2.6.1
           imagePullPolicy: IfNotPresent
           args:
             - -config.file=/etc/loki/config/config.yaml
@@ -66,19 +76,26 @@ spec:
               drop:
               - ALL
             readOnlyRootFilesystem: true
+          
           readinessProbe:
             httpGet:
               path: /ready
               port: http
             initialDelaySeconds: 30
             timeoutSeconds: 1
+          
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 300
           volumeMounts:
             - name: config
               mountPath: /etc/loki/config
+            - name: runtime-config
+              mountPath: /var/loki-runtime
             - name: data
               mountPath: /var/loki
-          resources:
-            {}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -102,5 +119,8 @@ spec:
         - name: config
           configMap:
             name: loki
+        - name: runtime-config
+          configMap:
+            name: loki-runtime
         - name: data
           emptyDir: {}

@@ -5,10 +5,10 @@ kind: Deployment
 metadata:
   name: loki-compactor
   labels:
-    helm.sh/chart: loki-0.48.3
+    helm.sh/chart: loki-0.66.1
     app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/version: "2.6.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: compactor
 spec:
@@ -24,11 +24,12 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 8c6a537037eb657ef94c0aa05f3c6b1425da091a1caf82f68de927cf2cc9d71a
+        checksum/config: d14cbb74a7c0da2a7d427d1a55e75e706a95cc2d95c1d0114f3bccb564eab241
       labels:
         app.kubernetes.io/name: loki
         #app.kubernetes.io/instance: unhelm
         app.kubernetes.io/component: compactor
+        app.kubernetes.io/part-of: memberlist
     spec:
       serviceAccountName: loki
       
@@ -40,7 +41,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: compactor
-          image: docker.io/grafana/loki:2.5.0
+          image: docker.io/grafana/loki:2.6.1
           imagePullPolicy: IfNotPresent
           args:
             - -config.file=/etc/loki/config/config.yaml
@@ -49,6 +50,9 @@ spec:
           ports:
             - name: http
               containerPort: 3100
+              protocol: TCP
+            - name: http-memberlist
+              containerPort: 7946
               protocol: TCP
           securityContext:
             allowPrivilegeEscalation: false
@@ -62,11 +66,18 @@ spec:
               port: http
             initialDelaySeconds: 30
             timeoutSeconds: 1
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 300
           volumeMounts:
             - name: temp
               mountPath: /tmp
             - name: config
               mountPath: /etc/loki/config
+            - name: runtime-config
+              mountPath: /var/loki-runtime
             - name: data
               mountPath: /var/loki
           resources:
@@ -77,5 +88,8 @@ spec:
         - name: config
           configMap:
             name: loki
+        - name: runtime-config
+          configMap:
+            name: loki-runtime
         - name: data
           emptyDir: {}

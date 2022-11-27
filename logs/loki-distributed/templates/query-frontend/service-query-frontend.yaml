@@ -5,15 +5,15 @@ kind: Service
 metadata:
   name: loki-query-frontend
   labels:
-    helm.sh/chart: loki-0.48.3
+    helm.sh/chart: loki-0.66.1
     app.kubernetes.io/name: loki
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/version: "2.6.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: query-frontend
 spec:
   type: ClusterIP
-  clusterIP: None
+  publishNotReadyAddresses: true
   ports:
     - name: http
       port: 3100

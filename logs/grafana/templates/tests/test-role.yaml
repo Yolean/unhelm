@@ -5,14 +5,17 @@ kind: Role
 metadata:
   name: grafana-test
   namespace: logs
+  annotations:
+    "helm.sh/hook": test-success
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
   labels:
-    helm.sh/chart: grafana-6.28.0
+    helm.sh/chart: grafana-6.44.8
     app.kubernetes.io/name: grafana
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "8.5.0"
+    app.kubernetes.io/version: "9.2.5"
     app.kubernetes.io/managed-by: Helm
 rules:
-- apiGroups:      ['policy']
-  resources:      ['podsecuritypolicies']
-  verbs:          ['use']
-  resourceNames:  [grafana-test]
+  - apiGroups:      ['policy']
+    resources:      ['podsecuritypolicies']
+    verbs:          ['use']
+    resourceNames:  [grafana-test]

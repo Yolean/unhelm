@@ -1,0 +1,109 @@
+---
+# Source: loki/templates/read/statefulset-read.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: loki-read
+  labels:
+    app.kubernetes.io/part-of: memberlist
+    helm.sh/chart: loki-3.4.2
+    app.kubernetes.io/name: loki
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/version: "2.6.1"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: read
+spec:
+  replicas: 3
+  podManagementPolicy: Parallel
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+  serviceName: loki-read-headless
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki
+      #app.kubernetes.io/instance: unhelm
+      app.kubernetes.io/component: read
+  template:
+    metadata:
+      annotations:
+        checksum/config: ceb652e5bba4b5aab12e6ea6a8dc183ac3073a5a9b2d61cfcf2bb6b0ae754f21
+      labels:
+        app.kubernetes.io/part-of: memberlist
+        app.kubernetes.io/name: loki
+        #app.kubernetes.io/instance: unhelm
+        app.kubernetes.io/component: read
+    spec:
+      serviceAccountName: loki
+      automountServiceAccountToken: true
+      
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: read
+          image: docker.io/grafana/loki:2.6.1
+          imagePullPolicy: IfNotPresent
+          args:
+            - -config.file=/etc/loki/config/config.yaml
+            - -target=read
+          ports:
+            - name: http-metrics
+              containerPort: 3100
+              protocol: TCP
+            - name: grpc
+              containerPort: 9095
+              protocol: TCP
+            - name: http-memberlist
+              containerPort: 7946
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http-metrics
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+          volumeMounts:
+            - name: config
+              mountPath: /etc/loki/config
+            - name: tmp
+              mountPath: /tmp
+            - name: data
+              mountPath: /var/loki
+          resources:
+            {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: loki
+                  #app.kubernetes.io/instance: unhelm
+                  app.kubernetes.io/component: read
+              topologyKey: kubernetes.io/hostname
+        
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: loki
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "10Gi"

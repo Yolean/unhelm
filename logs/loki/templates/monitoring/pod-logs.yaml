@@ -1,0 +1,40 @@
+---
+# Source: loki/templates/monitoring/pod-logs.yaml
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: PodLogs
+metadata:
+  name: loki
+  namespace: logs
+  labels:
+    helm.sh/chart: loki-3.4.2
+    app.kubernetes.io/name: loki
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/version: "2.6.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  pipelineStages:
+    - cri: { }
+  relabelings:
+    - sourceLabels:
+        - __meta_kubernetes_pod_node_name
+      targetLabel: __host__
+    - action: labelmap
+      regex: __meta_kubernetes_pod_label_(.+)
+    - action: replace
+      replacement: "logs/$1"
+      sourceLabels:
+        - __meta_kubernetes_pod_controller_name
+      targetLabel: job
+    - action: replace
+      sourceLabels:
+        - __meta_kubernetes_pod_container_name
+      targetLabel: container
+    - replacement: "loki"
+      targetLabel: cluster
+  namespaceSelector:
+    matchNames:
+      - logs
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki
+      #app.kubernetes.io/instance: unhelm

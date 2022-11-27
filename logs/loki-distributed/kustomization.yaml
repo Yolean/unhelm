@@ -17,6 +17,7 @@ resources:
 - ./templates/ingester/poddisruptionbudget-ingester.yaml
 - ./templates/serviceaccount.yaml
 #- ./templates/configmap.yaml
+- ./templates/runtime-configmap.yaml
 - ./templates/compactor/service-compactor.yaml
 - ./templates/distributor/service-distributor.yaml
 - ./templates/index-gateway/service-index-gateway-headless.yaml
