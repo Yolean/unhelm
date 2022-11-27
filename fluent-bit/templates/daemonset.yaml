@@ -5,10 +5,10 @@ kind: DaemonSet
 metadata:
   name: fluent-bit
   labels:
-    helm.sh/chart: fluent-bit-0.16.2
+    helm.sh/chart: fluent-bit-0.21.3
     app.kubernetes.io/name: fluent-bit
     app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "1.8.3"
+    app.kubernetes.io/version: "2.0.5"
     app.kubernetes.io/managed-by: Helm
 spec:
   selector:
@@ -18,23 +18,18 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f11d9b291aa03cd79f531d306ec8de546a8e8d795eff13eb66f1cff3efde5907
+        checksum/config: a771471c8398fc9a0d1cbfa4f2693082e85be1dc801375841bad3ee1beeec3e2
         checksum/luascripts: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       labels:
         app.kubernetes.io/name: fluent-bit
         app.kubernetes.io/instance: fluent-bit
     spec:
-      
       serviceAccountName: fluent-bit
-      securityContext:
-        {}
       hostNetwork: false
       dnsPolicy: ClusterFirst
       containers:
         - name: fluent-bit
-          securityContext:
-            {}
-          image: "fluent/fluent-bit:1.8.3"
+          image: "cr.fluentbit.io/fluent/fluent-bit:2.0.5"
           imagePullPolicy: Always
           ports:
             - name: http
@@ -48,8 +43,6 @@ spec:
             httpGet:
               path: /api/v1/health
               port: http
-          resources:
-            {}
           volumeMounts:
             - mountPath: /fluent-bit/etc/fluent-bit.conf
               name: config
