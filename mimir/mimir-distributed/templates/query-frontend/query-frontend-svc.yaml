@@ -5,11 +5,11 @@ kind: Service
 metadata:
   name: mimir-query-frontend
   labels:
-    helm.sh/chart: mimir-3.0.0
+    helm.sh/chart: mimir-3.3.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: query-frontend
-    app.kubernetes.io/version: "2.2.0"
+    app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}

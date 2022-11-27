@@ -22,15 +22,19 @@ resources:
 - ./templates/querier/querier-svc.yaml
 - ./templates/query-frontend/query-frontend-svc-headless.yaml
 - ./templates/query-frontend/query-frontend-svc.yaml
+- ./templates/query-scheduler/query-scheduler-svc-headless.yaml
+- ./templates/query-scheduler/query-scheduler-svc.yaml
 - ./templates/ruler/ruler-svc.yaml
 - ./templates/store-gateway/store-gateway-svc-headless.yaml
 - ./templates/store-gateway/store-gateway-svc.yaml
 - ./templates/distributor/distributor-dep.yaml
 - ./templates/querier/querier-dep.yaml
 - ./templates/query-frontend/query-frontend-dep.yaml
+- ./templates/query-scheduler/query-scheduler-dep.yaml
 - ./templates/ruler/ruler-dep.yaml
 - ./templates/compactor/compactor-statefulset.yaml
 - ./templates/ingester/ingester-statefulset.yaml
 - ./templates/store-gateway/store-gateway-statefulset.yaml
+- ./templates/minio/create-bucket-job.yaml
 - ./templates/smoke-test/smoke-test-job.yaml
 

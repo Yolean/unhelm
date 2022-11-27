@@ -1,25 +1,29 @@
 ---
-# Source: mimir/templates/store-gateway/store-gateway-svc-headless.yaml
+# Source: mimir/templates/query-scheduler/query-scheduler-svc-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: mimir-store-gateway-headless
+  name: mimir-query-scheduler-headless
+  namespace: "mimir"
   labels:
     helm.sh/chart: mimir-3.3.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/component: store-gateway
-    app.kubernetes.io/part-of: memberlist
+    app.kubernetes.io/component: query-scheduler
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
     prometheus.io/service-monitor: "false"
   annotations:
     {}
-  namespace: "mimir"
 spec:
   type: ClusterIP
   clusterIP: None
+  publishNotReadyAddresses: true
   ports:
+    - port: 8080
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
     - port: 9095
       protocol: TCP
       name: grpc
@@ -27,4 +31,4 @@ spec:
   selector:
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/component: store-gateway
+    app.kubernetes.io/component: query-scheduler

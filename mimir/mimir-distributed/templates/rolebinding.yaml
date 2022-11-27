@@ -1,7 +1,7 @@
 ---
-# Source: mimir/templates/serviceaccount.yaml
-apiVersion: v1
-kind: ServiceAccount
+# Source: mimir/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
 metadata:
   name: mimir
   labels:
@@ -10,6 +10,11 @@ metadata:
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    {}
   namespace: "mimir"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mimir
+subjects:
+- kind: ServiceAccount
+  name: mimir

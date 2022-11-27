@@ -5,12 +5,12 @@ kind: Deployment
 metadata:
   name: mimir-distributor
   labels:
-    helm.sh/chart: mimir-3.0.0
+    helm.sh/chart: mimir-3.3.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: distributor
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.2.0"
+    app.kubernetes.io/version: "2.4.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
@@ -30,15 +30,15 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-3.0.0
+        helm.sh/chart: mimir-3.3.0
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.2.0"
+        app.kubernetes.io/version: "2.4.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: distributor
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: e98646e3ba178f4d166561786433cc6b1c100156a1586c0111631597308cd798
+        checksum/config: e23be20be24f7ed46c545e9a5acffdd95153a397cb69e57320b15e6f914f829e
       namespace: "mimir"
     spec:
       serviceAccountName: mimir
@@ -48,7 +48,7 @@ spec:
         []
       containers:
         - name: distributor
-          image: "grafana/mimir:2.2.0"
+          image: "grafana/mimir:2.4.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=distributor"
@@ -90,15 +90,16 @@ spec:
       nodeSelector:
         {}
       affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: target
-                operator: In
-                values:
-                - distributor
-            topologyKey: kubernetes.io/hostname
+        {}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: mimir
+              #app.kubernetes.io/instance: unhelm
+              app.kubernetes.io/component: distributor
       tolerations:
         []
       terminationGracePeriodSeconds: 60
