@@ -5,12 +5,12 @@ kind: Deployment
 metadata:
   name: mimir-ruler
   labels:
-    helm.sh/chart: mimir-3.3.0
+    helm.sh/chart: mimir-4.0.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ruler
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.4.0"
+    app.kubernetes.io/version: "2.5.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
@@ -30,25 +30,30 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-3.3.0
+        helm.sh/chart: mimir-4.0.0
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.4.0"
+        app.kubernetes.io/version: "2.5.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: ruler
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: e23be20be24f7ed46c545e9a5acffdd95153a397cb69e57320b15e6f914f829e
+        checksum/config: fe3a0d10328da1e0b0a83e84ce2acd7c0b50dafa93fad8ae91b3e032ca44f452
       namespace: "mimir"
     spec:
       serviceAccountName: mimir
       securityContext:
-        {}
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
       initContainers:
         []
       containers:
         - name: ruler
-          image: "grafana/mimir:2.4.0"
+          image: "grafana/mimir:2.5.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=ruler"
@@ -62,6 +67,8 @@ spec:
             - name: storage
               mountPath: "/data"
               subPath: 
+            - name: active-queries
+              mountPath: /active-query-tracker
           ports:
             - name: http-metrics
               containerPort: 8080
@@ -84,6 +91,10 @@ spec:
               cpu: 100m
               memory: 128Mi
           securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
             readOnlyRootFilesystem: true
           env:
           envFrom:
@@ -114,4 +125,6 @@ spec:
           configMap:
             name: mimir-runtime
         - name: storage
+          emptyDir: {}
+        - name: active-queries
           emptyDir: {}

@@ -3,15 +3,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mimir-store-gateway
+  name: mimir-store-gateway-zone-a
   labels:
-    helm.sh/chart: mimir-3.3.0
+    helm.sh/chart: mimir-4.0.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: store-gateway
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.4.0"
+    app.kubernetes.io/version: "2.5.0"
     app.kubernetes.io/managed-by: Helm
+    name: "store-gateway-zone-a"
+    rollout-group: store-gateway
+    zone: zone-a
   annotations:
     {}
   namespace: "mimir"
@@ -30,3 +33,79 @@ spec:
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: store-gateway
+    rollout-group: store-gateway
+    zone: zone-a
+---
+# Source: mimir/templates/store-gateway/store-gateway-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mimir-store-gateway-zone-b
+  labels:
+    helm.sh/chart: mimir-4.0.0
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: store-gateway
+    app.kubernetes.io/part-of: memberlist
+    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/managed-by: Helm
+    name: "store-gateway-zone-b"
+    rollout-group: store-gateway
+    zone: zone-b
+  annotations:
+    {}
+  namespace: "mimir"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+    - port: 9095
+      protocol: TCP
+      name: grpc
+      targetPort: grpc
+  selector:
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: store-gateway
+    rollout-group: store-gateway
+    zone: zone-b
+---
+# Source: mimir/templates/store-gateway/store-gateway-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mimir-store-gateway-zone-c
+  labels:
+    helm.sh/chart: mimir-4.0.0
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: store-gateway
+    app.kubernetes.io/part-of: memberlist
+    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/managed-by: Helm
+    name: "store-gateway-zone-c"
+    rollout-group: store-gateway
+    zone: zone-c
+  annotations:
+    {}
+  namespace: "mimir"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+    - port: 9095
+      protocol: TCP
+      name: grpc
+      targetPort: grpc
+  selector:
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: store-gateway
+    rollout-group: store-gateway
+    zone: zone-c
