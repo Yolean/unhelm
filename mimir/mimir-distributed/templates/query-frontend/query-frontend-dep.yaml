@@ -5,11 +5,11 @@ kind: Deployment
 metadata:
   name: mimir-query-frontend
   labels:
-    helm.sh/chart: mimir-4.0.0
+    helm.sh/chart: mimir-4.3.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: query-frontend
-    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/version: "2.7.1"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
@@ -26,14 +26,14 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-4.0.0
+        helm.sh/chart: mimir-4.3.0
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.5.0"
+        app.kubernetes.io/version: "2.7.1"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: query-frontend
       annotations:
-        checksum/config: fe3a0d10328da1e0b0a83e84ce2acd7c0b50dafa93fad8ae91b3e032ca44f452
+        checksum/config: d7cfe007da5bbccf591a08d85ef8973626dfb3977615af2703e6bc615da582c6
       namespace: "mimir"
     spec:
       serviceAccountName: mimir
@@ -48,7 +48,7 @@ spec:
         []
       containers:
         - name: query-frontend
-          image: "grafana/mimir:2.5.0"
+          image: "grafana/mimir:2.7.1"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=query-frontend"

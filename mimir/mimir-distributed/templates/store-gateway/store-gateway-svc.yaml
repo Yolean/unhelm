@@ -5,12 +5,12 @@ kind: Service
 metadata:
   name: mimir-store-gateway-zone-a
   labels:
-    helm.sh/chart: mimir-4.0.0
+    helm.sh/chart: mimir-4.3.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: store-gateway
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/version: "2.7.1"
     app.kubernetes.io/managed-by: Helm
     name: "store-gateway-zone-a"
     rollout-group: store-gateway
@@ -42,12 +42,12 @@ kind: Service
 metadata:
   name: mimir-store-gateway-zone-b
   labels:
-    helm.sh/chart: mimir-4.0.0
+    helm.sh/chart: mimir-4.3.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: store-gateway
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/version: "2.7.1"
     app.kubernetes.io/managed-by: Helm
     name: "store-gateway-zone-b"
     rollout-group: store-gateway
@@ -79,12 +79,12 @@ kind: Service
 metadata:
   name: mimir-store-gateway-zone-c
   labels:
-    helm.sh/chart: mimir-4.0.0
+    helm.sh/chart: mimir-4.3.0
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: store-gateway
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/version: "2.7.1"
     app.kubernetes.io/managed-by: Helm
     name: "store-gateway-zone-c"
     rollout-group: store-gateway
