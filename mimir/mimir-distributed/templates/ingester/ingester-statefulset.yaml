@@ -5,12 +5,12 @@ kind: StatefulSet
 metadata:
   name: mimir-ingester-zone-a
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ingester
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
     name: "ingester-zone-a"
     rollout-group: ingester
@@ -43,10 +43,10 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-4.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.7.1"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: ingester
         app.kubernetes.io/part-of: memberlist
@@ -54,7 +54,7 @@ spec:
         rollout-group: ingester
         zone: zone-a
       annotations:
-        checksum/config: d7cfe007da5bbccf591a08d85ef8973626dfb3977615af2703e6bc615da582c6
+        checksum/config: ac24fde895b89e5e5fde0bea24b6b9c2c2214ed87aa4e518404c766fad3ac9f0
       namespace: "mimir"
     spec:
       serviceAccountName: mimir
@@ -72,14 +72,14 @@ spec:
       affinity:
         {}
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: mimir
-              #app.kubernetes.io/instance: unhelm
-              app.kubernetes.io/component: ingester
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mimir
+            #app.kubernetes.io/instance: unhelm
+            app.kubernetes.io/component: ingester
       tolerations:
         []
       terminationGracePeriodSeconds: 240
@@ -97,7 +97,7 @@ spec:
           emptyDir: {}
       containers:
         - name: ingester
-          image: "grafana/mimir:2.7.1"
+          image: "grafana/mimir:2.8.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=ingester"
@@ -149,12 +149,12 @@ kind: StatefulSet
 metadata:
   name: mimir-ingester-zone-b
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ingester
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
     name: "ingester-zone-b"
     rollout-group: ingester
@@ -187,10 +187,10 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-4.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.7.1"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: ingester
         app.kubernetes.io/part-of: memberlist
@@ -198,7 +198,7 @@ spec:
         rollout-group: ingester
         zone: zone-b
       annotations:
-        checksum/config: d7cfe007da5bbccf591a08d85ef8973626dfb3977615af2703e6bc615da582c6
+        checksum/config: ac24fde895b89e5e5fde0bea24b6b9c2c2214ed87aa4e518404c766fad3ac9f0
       namespace: "mimir"
     spec:
       serviceAccountName: mimir
@@ -216,14 +216,14 @@ spec:
       affinity:
         {}
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: mimir
-              #app.kubernetes.io/instance: unhelm
-              app.kubernetes.io/component: ingester
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mimir
+            #app.kubernetes.io/instance: unhelm
+            app.kubernetes.io/component: ingester
       tolerations:
         []
       terminationGracePeriodSeconds: 240
@@ -241,7 +241,7 @@ spec:
           emptyDir: {}
       containers:
         - name: ingester
-          image: "grafana/mimir:2.7.1"
+          image: "grafana/mimir:2.8.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=ingester"
@@ -293,12 +293,12 @@ kind: StatefulSet
 metadata:
   name: mimir-ingester-zone-c
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ingester
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
     name: "ingester-zone-c"
     rollout-group: ingester
@@ -331,10 +331,10 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-4.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.7.1"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: ingester
         app.kubernetes.io/part-of: memberlist
@@ -342,7 +342,7 @@ spec:
         rollout-group: ingester
         zone: zone-c
       annotations:
-        checksum/config: d7cfe007da5bbccf591a08d85ef8973626dfb3977615af2703e6bc615da582c6
+        checksum/config: ac24fde895b89e5e5fde0bea24b6b9c2c2214ed87aa4e518404c766fad3ac9f0
       namespace: "mimir"
     spec:
       serviceAccountName: mimir
@@ -360,14 +360,14 @@ spec:
       affinity:
         {}
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: mimir
-              #app.kubernetes.io/instance: unhelm
-              app.kubernetes.io/component: ingester
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mimir
+            #app.kubernetes.io/instance: unhelm
+            app.kubernetes.io/component: ingester
       tolerations:
         []
       terminationGracePeriodSeconds: 240
@@ -385,7 +385,7 @@ spec:
           emptyDir: {}
       containers:
         - name: ingester
-          image: "grafana/mimir:2.7.1"
+          image: "grafana/mimir:2.8.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=ingester"

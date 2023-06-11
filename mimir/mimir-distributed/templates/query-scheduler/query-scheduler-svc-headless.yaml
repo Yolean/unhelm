@@ -6,11 +6,11 @@ metadata:
   name: mimir-query-scheduler-headless
   namespace: "mimir"
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: query-scheduler
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
     prometheus.io/service-monitor: "false"
   annotations:

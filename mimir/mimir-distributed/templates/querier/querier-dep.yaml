@@ -5,12 +5,12 @@ kind: Deployment
 metadata:
   name: mimir-querier
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: querier
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
@@ -27,15 +27,15 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-4.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.7.1"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: querier
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: d7cfe007da5bbccf591a08d85ef8973626dfb3977615af2703e6bc615da582c6
+        checksum/config: ac24fde895b89e5e5fde0bea24b6b9c2c2214ed87aa4e518404c766fad3ac9f0
     spec:
       serviceAccountName: mimir
       securityContext:
@@ -49,7 +49,7 @@ spec:
         []
       containers:
         - name: querier
-          image: "grafana/mimir:2.7.1"
+          image: "grafana/mimir:2.8.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=querier"
@@ -99,14 +99,14 @@ spec:
       affinity:
         {}
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: mimir
-              #app.kubernetes.io/instance: unhelm
-              app.kubernetes.io/component: querier
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mimir
+            #app.kubernetes.io/instance: unhelm
+            app.kubernetes.io/component: querier
       tolerations:
         []
       terminationGracePeriodSeconds: 180

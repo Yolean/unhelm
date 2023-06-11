@@ -6,11 +6,11 @@ metadata:
   name: mimir-query-scheduler
   namespace: "mimir"
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: query-scheduler
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
@@ -29,14 +29,14 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-4.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.7.1"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: query-scheduler
       annotations:
-        checksum/config: d7cfe007da5bbccf591a08d85ef8973626dfb3977615af2703e6bc615da582c6
+        checksum/config: ac24fde895b89e5e5fde0bea24b6b9c2c2214ed87aa4e518404c766fad3ac9f0
     spec:
       serviceAccountName: mimir
       securityContext:
@@ -50,7 +50,7 @@ spec:
         []
       containers:
         - name: query-scheduler
-          image: "grafana/mimir:2.7.1"
+          image: "grafana/mimir:2.8.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=query-scheduler"
@@ -98,14 +98,14 @@ spec:
       affinity:
         {}
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: mimir
-              #app.kubernetes.io/instance: unhelm
-              app.kubernetes.io/component: query-scheduler
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mimir
+            #app.kubernetes.io/instance: unhelm
+            app.kubernetes.io/component: query-scheduler
       tolerations:
         []
       terminationGracePeriodSeconds: 180

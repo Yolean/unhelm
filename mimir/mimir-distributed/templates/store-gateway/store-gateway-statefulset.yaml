@@ -5,12 +5,12 @@ kind: StatefulSet
 metadata:
   name: mimir-store-gateway-zone-a
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: store-gateway
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
     name: "store-gateway-zone-a"
     rollout-group: store-gateway
@@ -42,10 +42,10 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-4.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.7.1"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: store-gateway
         app.kubernetes.io/part-of: memberlist
@@ -53,7 +53,7 @@ spec:
         rollout-group: store-gateway
         zone: zone-a
       annotations:
-        checksum/config: d7cfe007da5bbccf591a08d85ef8973626dfb3977615af2703e6bc615da582c6
+        checksum/config: ac24fde895b89e5e5fde0bea24b6b9c2c2214ed87aa4e518404c766fad3ac9f0
       namespace: "mimir"
     spec:
       serviceAccountName: mimir
@@ -71,14 +71,14 @@ spec:
       affinity:
         {}
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: mimir
-              #app.kubernetes.io/instance: unhelm
-              app.kubernetes.io/component: store-gateway
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mimir
+            #app.kubernetes.io/instance: unhelm
+            app.kubernetes.io/component: store-gateway
       tolerations:
         []
       terminationGracePeriodSeconds: 240
@@ -96,7 +96,7 @@ spec:
           emptyDir: {}
       containers:
         - name: store-gateway
-          image: "grafana/mimir:2.7.1"
+          image: "grafana/mimir:2.8.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=store-gateway"
@@ -148,12 +148,12 @@ kind: StatefulSet
 metadata:
   name: mimir-store-gateway-zone-b
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: store-gateway
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
     name: "store-gateway-zone-b"
     rollout-group: store-gateway
@@ -185,10 +185,10 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-4.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.7.1"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: store-gateway
         app.kubernetes.io/part-of: memberlist
@@ -196,7 +196,7 @@ spec:
         rollout-group: store-gateway
         zone: zone-b
       annotations:
-        checksum/config: d7cfe007da5bbccf591a08d85ef8973626dfb3977615af2703e6bc615da582c6
+        checksum/config: ac24fde895b89e5e5fde0bea24b6b9c2c2214ed87aa4e518404c766fad3ac9f0
       namespace: "mimir"
     spec:
       serviceAccountName: mimir
@@ -214,14 +214,14 @@ spec:
       affinity:
         {}
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: mimir
-              #app.kubernetes.io/instance: unhelm
-              app.kubernetes.io/component: store-gateway
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mimir
+            #app.kubernetes.io/instance: unhelm
+            app.kubernetes.io/component: store-gateway
       tolerations:
         []
       terminationGracePeriodSeconds: 240
@@ -239,7 +239,7 @@ spec:
           emptyDir: {}
       containers:
         - name: store-gateway
-          image: "grafana/mimir:2.7.1"
+          image: "grafana/mimir:2.8.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=store-gateway"
@@ -291,12 +291,12 @@ kind: StatefulSet
 metadata:
   name: mimir-store-gateway-zone-c
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: store-gateway
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
     name: "store-gateway-zone-c"
     rollout-group: store-gateway
@@ -328,10 +328,10 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-4.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.7.1"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: store-gateway
         app.kubernetes.io/part-of: memberlist
@@ -339,7 +339,7 @@ spec:
         rollout-group: store-gateway
         zone: zone-c
       annotations:
-        checksum/config: d7cfe007da5bbccf591a08d85ef8973626dfb3977615af2703e6bc615da582c6
+        checksum/config: ac24fde895b89e5e5fde0bea24b6b9c2c2214ed87aa4e518404c766fad3ac9f0
       namespace: "mimir"
     spec:
       serviceAccountName: mimir
@@ -357,14 +357,14 @@ spec:
       affinity:
         {}
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: mimir
-              #app.kubernetes.io/instance: unhelm
-              app.kubernetes.io/component: store-gateway
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mimir
+            #app.kubernetes.io/instance: unhelm
+            app.kubernetes.io/component: store-gateway
       tolerations:
         []
       terminationGracePeriodSeconds: 240
@@ -382,7 +382,7 @@ spec:
           emptyDir: {}
       containers:
         - name: store-gateway
-          image: "grafana/mimir:2.7.1"
+          image: "grafana/mimir:2.8.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=store-gateway"

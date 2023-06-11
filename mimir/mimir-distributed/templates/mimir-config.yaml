@@ -5,10 +5,10 @@ kind: ConfigMap
 metadata:
   name: mimir-config
   labels:
-    helm.sh/chart: mimir-4.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
-    app.kubernetes.io/version: "2.7.1"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
   namespace: "mimir"
 data:
@@ -28,10 +28,13 @@ data:
         sync_dir: /data/tsdb-sync
       tsdb:
         dir: /data/tsdb
+        head_compaction_interval: 15m
+        wal_replay_concurrency: 3
     compactor:
       compaction_interval: 30m
       data_dir: /data
       deletion_delay: 2h
+      first_level_compaction_wait_period: 25m
       max_closing_blocks_concurrency: 2
       max_opening_blocks_concurrency: 4
       sharding_ring:
@@ -84,6 +87,7 @@ data:
         kvstore:
           prefix: multi-zone/
         tokens_file_path: /data/tokens
+        unregister_on_shutdown: false
         wait_stability_min_duration: 1m
         zone_awareness_enabled: true
     usage_stats:
