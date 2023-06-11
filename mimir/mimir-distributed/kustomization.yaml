@@ -20,7 +20,6 @@ resources:
 - ./templates/ingester/ingester-svc-headless.yaml
 - ./templates/ingester/ingester-svc.yaml
 - ./templates/querier/querier-svc.yaml
-- ./templates/query-frontend/query-frontend-svc-headless.yaml
 - ./templates/query-frontend/query-frontend-svc.yaml
 - ./templates/query-scheduler/query-scheduler-svc-headless.yaml
 - ./templates/query-scheduler/query-scheduler-svc.yaml

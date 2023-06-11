@@ -5,11 +5,11 @@ kind: Job
 metadata:
   name: mimir-smoke-test
   labels:
-    helm.sh/chart: mimir-3.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: smoke-test
-    app.kubernetes.io/version: "2.4.0"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": test
@@ -22,22 +22,27 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-3.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.4.0"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: smoke-test
     spec:
       serviceAccountName: mimir
       securityContext:
-        null
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
       initContainers:
         []
       containers:
         - name: smoke-test
-          image: "grafana/mimir-continuous-test:2.4.0"
-          imagePullPolicy: 
+          image: "grafana/mimir-continuous-test:2.8.0"
+          imagePullPolicy: IfNotPresent
           args:
             - "-tests.smoke-test"
             - "-tests.write-endpoint=http://mimir-nginx.mimir.svc:80"

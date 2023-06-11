@@ -3,15 +3,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mimir-ingester
+  name: mimir-ingester-zone-a
   labels:
-    helm.sh/chart: mimir-3.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ingester
     app.kubernetes.io/part-of: memberlist
-    app.kubernetes.io/version: "2.4.0"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
+    name: "ingester-zone-a"
+    rollout-group: ingester
+    zone: zone-a
   annotations:
     {}
   namespace: "mimir"
@@ -30,3 +33,79 @@ spec:
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: ingester
+    rollout-group: ingester
+    zone: zone-a
+---
+# Source: mimir/templates/ingester/ingester-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mimir-ingester-zone-b
+  labels:
+    helm.sh/chart: mimir-4.4.1
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: ingester
+    app.kubernetes.io/part-of: memberlist
+    app.kubernetes.io/version: "2.8.0"
+    app.kubernetes.io/managed-by: Helm
+    name: "ingester-zone-b"
+    rollout-group: ingester
+    zone: zone-b
+  annotations:
+    {}
+  namespace: "mimir"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+    - port: 9095
+      protocol: TCP
+      name: grpc
+      targetPort: grpc
+  selector:
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: ingester
+    rollout-group: ingester
+    zone: zone-b
+---
+# Source: mimir/templates/ingester/ingester-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mimir-ingester-zone-c
+  labels:
+    helm.sh/chart: mimir-4.4.1
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: ingester
+    app.kubernetes.io/part-of: memberlist
+    app.kubernetes.io/version: "2.8.0"
+    app.kubernetes.io/managed-by: Helm
+    name: "ingester-zone-c"
+    rollout-group: ingester
+    zone: zone-c
+  annotations:
+    {}
+  namespace: "mimir"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+    - port: 9095
+      protocol: TCP
+      name: grpc
+      targetPort: grpc
+  selector:
+    app.kubernetes.io/name: mimir
+    #app.kubernetes.io/instance: unhelm
+    app.kubernetes.io/component: ingester
+    rollout-group: ingester
+    zone: zone-c

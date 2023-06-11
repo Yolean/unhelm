@@ -6,11 +6,11 @@ metadata:
   name: mimir-query-scheduler
   namespace: "mimir"
   labels:
-    helm.sh/chart: mimir-3.3.0
+    helm.sh/chart: mimir-4.4.1
     app.kubernetes.io/name: mimir
     #app.kubernetes.io/instance: unhelm
     app.kubernetes.io/component: query-scheduler
-    app.kubernetes.io/version: "2.4.0"
+    app.kubernetes.io/version: "2.8.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
@@ -29,23 +29,28 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: mimir-3.3.0
+        helm.sh/chart: mimir-4.4.1
         app.kubernetes.io/name: mimir
         #app.kubernetes.io/instance: unhelm
-        app.kubernetes.io/version: "2.4.0"
+        app.kubernetes.io/version: "2.8.0"
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: query-scheduler
       annotations:
-        checksum/config: e23be20be24f7ed46c545e9a5acffdd95153a397cb69e57320b15e6f914f829e
+        checksum/config: ac24fde895b89e5e5fde0bea24b6b9c2c2214ed87aa4e518404c766fad3ac9f0
     spec:
       serviceAccountName: mimir
       securityContext:
-        {}
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
       initContainers:
         []
       containers:
         - name: query-scheduler
-          image: "grafana/mimir:2.4.0"
+          image: "grafana/mimir:2.8.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-target=query-scheduler"
@@ -60,6 +65,8 @@ spec:
               mountPath: /etc/mimir
             - name: storage
               mountPath: /data
+            - name: active-queries
+              mountPath: /active-query-tracker
           ports:
             - name: http-metrics
               containerPort: 8080
@@ -79,6 +86,10 @@ spec:
               cpu: 100m
               memory: 128Mi
           securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
             readOnlyRootFilesystem: true
           env:
           envFrom:
@@ -87,14 +98,14 @@ spec:
       affinity:
         {}
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: mimir
-              #app.kubernetes.io/instance: unhelm
-              app.kubernetes.io/component: query-scheduler
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mimir
+            #app.kubernetes.io/instance: unhelm
+            app.kubernetes.io/component: query-scheduler
       tolerations:
         []
       terminationGracePeriodSeconds: 180
@@ -109,4 +120,6 @@ spec:
           configMap:
             name: mimir-runtime
         - name: storage
+          emptyDir: {}
+        - name: active-queries
           emptyDir: {}
