@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://github.com/redpanda-data/helm-charts/raw/redpanda-4.0.32/charts/redpanda/values.schema.json
+image:
+  repository: docker.redpanda.com/redpandadata/redpanda
+  tag: v23.1.3
+  pullPolicy: IfNotPresent
+statefulset:
+  initContainers:
+    setDataDirOwnership:
+      enabled: true
+  additionalRedpandaCmdFlags:
+  - --overprovisioned
+tls:
+  enabled: false
+config:
+  cluster:
+    auto_create_topics_enabled: false
+  tunable: {}
+  node: {}
+external:
+  enabled: false
+resources:
+  cpu:
+    cores: 200m
+  memory:
+    container:
+      max: 576Mi
+      min: 100Mi
+    redpanda:
+      memory: 500Mi
+      reserveMemory: 64Mi
+    # seems to be a bug in the chart: https://github.com/redpanda-data/helm-charts/blob/redpanda-4.0.32/charts/redpanda/templates/statefulset.yaml#LL319C23-L319C39
+    min: 100Mi
