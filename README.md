@@ -1,14 +1,16 @@
-The scripts are in [docker-compose.yml](./docker-compose.yml).
+# Unhelm
 
-For example
+Helm unfortunately became a de-facto standard for defining Kubernetes applications
+as a set of kubernetes resources (or corresponding yaml).
 
-```
-mkdir /tmp/unhelm && chmod a+rxw /tmp/unhelm
-docker-compose up --build --force-recreate --exit-code-from logs logs
-docker-compose up --build --force-recreate --exit-code-from mysql mysql
-docker-compose up --build --force-recreate --exit-code-from vault vault
-docker-compose up --build --force-recreate --exit-code-from fluent-bit fluent-bit
-docker-compose up --build --force-recreate --exit-code-from mimir mimir
-docker-compose up --build --force-recreate --exit-code-from openreplay openreplay
-docker-compose up --build --force-recreate --exit-code-from redpanda redpanda
-```
+Charts are usually fit for "quick start" use cases, but for Operations teams they tend to:
+
+- Get in the way of understanding the system that's operated; things like how it scales.
+- Limit tuning and configuration to use cases the chart author envisions.
+
+The [unhelm](https://github.com/Yolean/unhelm/) repo avoids the endless back and forth between values files and chart source by treating charts as best practices, and enabling tweaks through [Kustomize](https://kustomize.io/).
+
+## To add an application
+
+Submit a new `[chart name].[config name].values.yaml` in the root of this repo,
+containing a line prefixed `# unhelm-template-repo: [repo URL]`.

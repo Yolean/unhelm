@@ -1,4 +1,1 @@
-charts
-!openreplay/**/charts
-loki-repo
-*.org
+helm
