@@ -12,14 +12,19 @@ export HELM_REPOSITORY_CONFIG="$HDIR/repositories.yaml"
 [ $# -eq 0 ] && >&2 echo "First arg must be a value file path" && exit 1
 VALUES=$1
 
+IREPO="# unhelm-template-repo:"
+
 CHART=$(echo $VALUES | cut -d'.' -f1)
 NAME=$(echo $VALUES | cut -d'.' -f2)
-REPO=$(cat $VALUES | grep '^# unhelm-template-repo:' | cut -d' ' -f3)
+! grep "^$IREPO" $VALUES && echo "Failed to find \"$IREPO \" in $VALUES" && exit 1
+REPO=$(cat $VALUES | grep "^$IREPO" | cut -d' ' -f3)
 echo "=> repo=$REPO chart=$CHART name=$NAME"
 
-helm repo add $CHART.$NAME $REPO
+ORIGIN=$(echo $REPO | sed 's|.*://||' | sed 's|/|-|')
+
+helm repo add $ORIGIN $REPO
 helm repo update
-helm show chart $CHART.$NAME/$CHART
+helm show chart $ORIGIN/$CHART
 
 BASE="./$CHART/$NAME"
 echo "$BASE" | grep '//' || rm -r "./$BASE" 2>/dev/null || true
@@ -31,7 +36,7 @@ kind: Kustomization
 resources:
 EOF
 
-helm template $NAME $CHART.$NAME/$CHART -f $VALUES \
+helm template $NAME $ORIGIN/$CHART -f $VALUES \
     --namespace unhelm-namespace-placeholder \
     --output-dir $BASE \
     | sed "s|wrote $BASE/|- ./|" \
