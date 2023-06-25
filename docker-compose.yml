@@ -131,29 +131,6 @@ services:
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/vault/* ./vault/"
 
-  fluent-bit:
-    image: docker.io/yolean/ystack-runner:cd9cb05b51adf3a9b545c622c7424421ebb4945e@sha256:d48744967206aade113797f728d4dd67b0dcebb805e2665146605bcc55539728
-    working_dir: /tmp
-    volumes:
-    - /tmp/unhelm:/tmp/unhelm:rw
-    - ./fluent-bit:/workspace/fluent-bit:ro
-    command:
-    - /bin/bash
-    - -cx
-    - |
-      set -eo pipefail
-      helm version
-      helm repo add fluent https://fluent.github.io/helm-charts
-      helm repo update
-      helm search repo fluent-bit --versions
-      mkdir -p /tmp/unhelm/fluent-bit
-      echo 'resources:' > /tmp/unhelm/fluent-bit/kustomization.yaml
-      helm template fluent-bit fluent/fluent-bit -f /workspace/fluent-bit/fluent-bit.values.yaml -n unhelm-namespace-placeholder --output-dir /tmp/unhelm | sed 's|wrote /tmp/unhelm/fluent-bit/|- ./|' | tee -a /tmp/unhelm/fluent-bit/kustomization.yaml
-      sed -i 's/  namespace: unhelm-namespace-placeholder/  #namespace: unhelm-namespace-placeholder/' /tmp/unhelm/fluent-bit/templates/*.yaml
-      set +x
-      echo "Done. To extract the results:"
-      echo "rsync -av --delete /tmp/unhelm/fluent-bit/* ./fluent-bit/"
-
   openreplay:
     image: docker.io/yolean/ystack-runner:755de97a9e73114abea98bd8c8247186de560c49
     working_dir: /tmp

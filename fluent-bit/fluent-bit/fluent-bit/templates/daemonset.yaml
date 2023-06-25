@@ -3,28 +3,28 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: default-fluent-bit
+  name: fluent-bit
   namespace: unhelm-namespace-placeholder
   labels:
     helm.sh/chart: fluent-bit-0.34.0
     app.kubernetes.io/name: fluent-bit
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: fluent-bit
     app.kubernetes.io/version: "2.1.6"
     app.kubernetes.io/managed-by: Helm
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: fluent-bit
-      app.kubernetes.io/instance: default
+      app.kubernetes.io/instance: fluent-bit
   template:
     metadata:
       labels:
         app.kubernetes.io/name: fluent-bit
-        app.kubernetes.io/instance: default
+        app.kubernetes.io/instance: fluent-bit
       annotations:
-        checksum/config: 3232f5a175dc7cf4d5221a6adcd988ce78ae3bd51bb1e90887e36952ba08ccf6
+        checksum/config: 0065bc5ba5c3fad3379d68b26cced63492b00d84aa33edccf85888d6ddc3a21a
     spec:
-      serviceAccountName: default-fluent-bit
+      serviceAccountName: fluent-bit
       hostNetwork: false
       dnsPolicy: ClusterFirst
       containers:
@@ -60,7 +60,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: default-fluent-bit
+            name: fluent-bit
         - hostPath:
             path: /var/log
           name: varlog
