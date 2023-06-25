@@ -1,14 +1,11 @@
 # yaml-language-server: $schema=https://github.com/cockroachdb/helm-charts/raw/master/cockroachdb/values.schema.json
 # unhelm-template-repo: https://charts.cockroachdb.com/
 
-statefulset:
-  replicas: 1
-
 tls:
-  enabled: false
   serviceAccount:
     create: false
   certs:
     selfSigner:
       enabled: false
       caProvided: false
+    certManager: true

@@ -1,0 +1,45 @@
+---
+# Source: cockroachdb/templates/tests/client.yaml
+kind: Pod
+apiVersion: v1
+metadata:
+  name: certmanager-cockroachdb-test
+  namespace: "unhelm-namespace-placeholder"
+  annotations:
+    helm.sh/hook: test-success
+spec:
+  restartPolicy: Never
+  volumes:
+    - name: client-certs
+      projected:
+        sources:
+        - secret:
+            name: cockroachdb-root
+            items:
+            - key: ca.crt
+              path: ca.crt
+              mode: 0400
+            - key: tls.crt
+              path: client.root.crt
+              mode: 0400
+            - key: tls.key
+              path: client.root.key
+              mode: 0400
+  containers:
+    - name: client-test
+      image: "cockroachdb/cockroach:v23.1.4"
+      imagePullPolicy: "IfNotPresent"
+      volumeMounts:
+      - name: client-certs
+        mountPath: /cockroach-certs
+      command:
+        - /cockroach/cockroach
+        - sql
+        - --certs-dir
+        - /cockroach-certs
+        - --host
+        - certmanager-cockroachdb-public.unhelm-namespace-placeholder
+        - --port
+        - "26257"
+        - -e
+        - SHOW DATABASES;

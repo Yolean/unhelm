@@ -1,0 +1,39 @@
+---
+# Source: cockroachdb/templates/certificate.node.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: certmanager-cockroachdb-node
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    helm.sh/chart: cockroachdb-11.0.3
+    app.kubernetes.io/name: cockroachdb
+    app.kubernetes.io/instance: "certmanager"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  duration: 8760h
+  renewBefore: 168h
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+    - client auth
+  keySize: 2048
+  keyAlgorithm: rsa
+  commonName: node
+  organization:
+    - Cockroach
+  dnsNames:
+    - "localhost"
+    - "127.0.0.1"
+    - "certmanager-cockroachdb-public"
+    - "certmanager-cockroachdb-public.unhelm-namespace-placeholder"
+    - "certmanager-cockroachdb-public.unhelm-namespace-placeholder.svc.cluster.local"
+    - "*.certmanager-cockroachdb"
+    - "*.certmanager-cockroachdb.unhelm-namespace-placeholder"
+    - "*.certmanager-cockroachdb.unhelm-namespace-placeholder.svc.cluster.local"
+  secretName: cockroachdb-node
+  issuerRef:
+    name: cockroachdb
+    kind: Issuer
+    group: cert-manager.io
