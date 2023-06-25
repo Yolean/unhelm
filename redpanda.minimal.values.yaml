@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://github.com/redpanda-data/helm-charts/raw/redpanda-4.0.32/charts/redpanda/values.schema.json
+# unhelm-template-repo: https://charts.redpanda.com
+image:
+  repository: docker.redpanda.com/redpandadata/redpanda
+  # sha256 is disallowed here by the json schema
+  tag: v23.1.13
+  pullPolicy: IfNotPresent
+statefulset:
+  initContainers:
+    setDataDirOwnership:
+      enabled: true
+  additionalRedpandaCmdFlags:
+  - --overprovisioned
+tls:
+  enabled: false
+config:
+  cluster:
+    auto_create_topics_enabled: false
+  tunable: {}
+  node: {}
+external:
+  enabled: false
+# The chart has quite obscure rules for resources, use Kustomize instead
+# resources:
+#   cpu:
+#     cores: 250m
+#   memory:
+#     container:
+#       max: 1Gi
+#       min: 320Mi

@@ -3,7 +3,7 @@ version: '2'
 services:
 
   mimir:
-    image: docker.io/yolean/ystack-runner:a9dd9d3d0df8307651c204a8e4f50e26fb625dc3@sha256:86ee1a84100286d9bad3aebea97d9c4b4965b274f568d6113e64d0a2b46e8bd4
+    image: docker.io/yolean/ystack-runner:cd9cb05b51adf3a9b545c622c7424421ebb4945e@sha256:d48744967206aade113797f728d4dd67b0dcebb805e2665146605bcc55539728
     working_dir: /tmp
     volumes:
     - /tmp/unhelm:/tmp/unhelm:rw
@@ -37,7 +37,7 @@ services:
       echo "rsync -av --delete /tmp/unhelm/mimir/* ./mimir/"
 
   logs:
-    image: docker.io/yolean/ystack-runner:a9dd9d3d0df8307651c204a8e4f50e26fb625dc3@sha256:86ee1a84100286d9bad3aebea97d9c4b4965b274f568d6113e64d0a2b46e8bd4
+    image: docker.io/yolean/ystack-runner:cd9cb05b51adf3a9b545c622c7424421ebb4945e@sha256:d48744967206aade113797f728d4dd67b0dcebb805e2665146605bcc55539728
     working_dir: /tmp
     volumes:
     - /tmp/unhelm:/tmp/unhelm:rw
@@ -82,7 +82,7 @@ services:
       echo "rsync -av --delete /tmp/unhelm/logs/* ./logs/"
 
   mysql:
-    image: docker.io/yolean/ystack-runner:a9dd9d3d0df8307651c204a8e4f50e26fb625dc3@sha256:86ee1a84100286d9bad3aebea97d9c4b4965b274f568d6113e64d0a2b46e8bd4
+    image: docker.io/yolean/ystack-runner:cd9cb05b51adf3a9b545c622c7424421ebb4945e@sha256:d48744967206aade113797f728d4dd67b0dcebb805e2665146605bcc55539728
     working_dir: /tmp
     volumes:
     - /tmp/unhelm:/tmp/unhelm:rw
@@ -108,31 +108,26 @@ services:
       echo "rsync -av --delete /tmp/unhelm/mysql/* ./mysql/"
 
   redpanda:
-    image: docker.io/yolean/ystack-runner:a9dd9d3d0df8307651c204a8e4f50e26fb625dc3@sha256:86ee1a84100286d9bad3aebea97d9c4b4965b274f568d6113e64d0a2b46e8bd4
+    image: docker.io/yolean/ystack-runner:cd9cb05b51adf3a9b545c622c7424421ebb4945e@sha256:d48744967206aade113797f728d4dd67b0dcebb805e2665146605bcc55539728
     working_dir: /tmp
     volumes:
     - /tmp/unhelm:/tmp/unhelm:rw
     - ./redpanda:/workspace/redpanda:ro
-    # https://vectorized.io/docs/quick-start-kubernetes
     command:
     - /bin/bash
     - -cx
     - |
       set -eo pipefail
-      helm version
-      helm repo add redpanda https://charts.vectorized.io/
-      helm search repo redpanda
-      export VERSION=$$(curl -sL https://api.github.com/repos/vectorizedio/redpanda/releases/latest | jq -r .tag_name)
-      mkdir -p /tmp/unhelm/redpanda/redpanda-operator-crd /tmp/unhelm/redpanda/redpanda-operator /tmp/unhelm/redpanda/redpanda
-      kubectl kustomize https://github.com/vectorizedio/redpanda/src/go/k8s/config/crd?ref=$${VERSION} > /tmp/unhelm/redpanda/redpanda-operator-crd/redpanda-operator-crd.yaml
-      echo 'resources:' > /tmp/unhelm/redpanda/redpanda-operator/kustomization.yaml
-      helm template unhelm redpanda/redpanda-operator -f /workspace/redpanda/redpanda-operator.yaml --namespace redpanda-system --output-dir /tmp/unhelm/redpanda | sed 's|wrote /tmp/unhelm/redpanda/redpanda-operator/|- ./|'  | grep -v '/test/' | tee -a /tmp/unhelm/redpanda/redpanda-operator/kustomization.yaml
+      mkdir -p /tmp/unhelm/redpanda/redpanda
+      echo 'resources:' > /tmp/unhelm/redpanda/redpanda/kustomization.yaml
+      helm template --repo https://charts.redpanda.com redpanda redpanda -f /workspace/redpanda/without-tls.values.yaml --namespace unhelm-namespace-placeholder --output-dir /tmp/unhelm/redpanda | sed 's|wrote /tmp/unhelm/redpanda/redpanda/|- ./|' | sort | uniq | tee -a /tmp/unhelm/redpanda/redpanda/kustomization.yaml
+      mv /tmp/unhelm/redpanda/redpanda /tmp/unhelm/redpanda/without-tls
       set +x
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/redpanda/* ./redpanda/"
 
   vault:
-    image: docker.io/yolean/ystack-runner:6e0024f0386b9aeff890f5d507178b684cc80aaa@sha256:06770d55312fff7e79475e30b9f866f144a27b6786fe0aae83dd3b49136249eb
+    image: docker.io/yolean/ystack-runner:cd9cb05b51adf3a9b545c622c7424421ebb4945e@sha256:d48744967206aade113797f728d4dd67b0dcebb805e2665146605bcc55539728
     working_dir: /tmp
     volumes:
     - /tmp/unhelm:/tmp/unhelm:rw
@@ -156,7 +151,7 @@ services:
       echo "rsync -av --delete /tmp/unhelm/vault/* ./vault/"
 
   fluent-bit:
-    image: docker.io/yolean/ystack-runner:6e0024f0386b9aeff890f5d507178b684cc80aaa@sha256:06770d55312fff7e79475e30b9f866f144a27b6786fe0aae83dd3b49136249eb
+    image: docker.io/yolean/ystack-runner:cd9cb05b51adf3a9b545c622c7424421ebb4945e@sha256:d48744967206aade113797f728d4dd67b0dcebb805e2665146605bcc55539728
     working_dir: /tmp
     volumes:
     - /tmp/unhelm:/tmp/unhelm:rw

@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+
+- ./redpanda/charts/console/templates/service.yaml
+- ./redpanda/charts/console/templates/serviceaccount.yaml
+- ./redpanda/charts/console/templates/tests/test-connection.yaml
+- ./redpanda/templates/configmap.yaml
+- ./redpanda/templates/console/configmap.yaml
+- ./redpanda/templates/console/deployment.yaml
+- ./redpanda/templates/poddisruptionbudget.yaml
+- ./redpanda/templates/post-install-upgrade-job.yaml
+- ./redpanda/templates/post-upgrade.yaml
+- ./redpanda/templates/secrets.yaml
+- ./redpanda/templates/service.internal.yaml
+- ./redpanda/templates/statefulset.yaml
+- ./redpanda/templates/tests/test-api-status.yaml
+- ./redpanda/templates/tests/test-console.yaml
+- ./redpanda/templates/tests/test-kafka-produce-consume.yaml
+- ./redpanda/templates/tests/test-pandaproxy-status.yaml
+- ./redpanda/templates/tests/test-schemaregistry-status.yaml

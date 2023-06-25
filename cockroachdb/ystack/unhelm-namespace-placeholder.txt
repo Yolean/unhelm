@@ -1,0 +1,39 @@
+
+Note the following instances of namespace strings that Kustomize won't replace
+=============================================================================
+
+          --port=26257 --cache=25% --max-sql-memory=25% --logtostderr=INFO
+        env:
+        - name: STATEFULSET_NAME
+          value: ystack-cockroachdb
+        - name: STATEFULSET_FQDN
+          value: ystack-cockroachdb.unhelm-namespace-placeholder.svc.cluster.local
+        - name: COCKROACH_CHANNEL
+          value: kubernetes-helm
+        image: cockroachdb/cockroach:v23.1.4
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+--
+  - interval: 30s
+    path: /_status/vars
+    port: http
+  namespaceSelector:
+    matchNames:
+    - unhelm-namespace-placeholder
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: cockroachdb
+      app.kubernetes.io/instance: ystack
+      app.kubernetes.io/name: cockroachdb
+--
+  - command:
+    - /cockroach/cockroach
+    - sql
+    - --insecure
+    - --host
+    - ystack-cockroachdb-public.unhelm-namespace-placeholder
+    - --port
+    - "26257"
+    - -e
+    - SHOW DATABASES;
+    image: cockroachdb/cockroach:v23.1.4

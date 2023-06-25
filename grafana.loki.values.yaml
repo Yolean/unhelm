@@ -1,0 +1,15 @@
+# unhelm-template-repo: https://grafana.github.io/helm-charts
+
+# env:
+#   GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
+adminUser: admin
+adminPassword: admin
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Loki-logs
+      type: loki
+      access: proxy
+      url: http://loki-query-frontend:3100

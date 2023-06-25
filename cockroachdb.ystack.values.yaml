@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://github.com/cockroachdb/helm-charts/raw/master/cockroachdb/values.schema.json
+# unhelm-template-repo: https://charts.cockroachdb.com/
+
+serviceMonitor:
+  enabled: true
+  interval: 30s
+  namespaced: true
+  labels:
+    # ystack's prometheus selector
+    prometheus: now
+
+tls:
+  enabled: false
+  serviceAccount:
+    create: false
+  certs:
+    selfSigner:
+      enabled: false
+      caProvided: false

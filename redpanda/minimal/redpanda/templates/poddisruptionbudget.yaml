@@ -1,0 +1,21 @@
+---
+# Source: redpanda/templates/poddisruptionbudget.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: minimal
+  namespace: unhelm-namespace-placeholder
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-4.0.47
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels: 
+      app.kubernetes.io/name: redpanda
+      app.kubernetes.io/instance: "minimal"
+      app.kubernetes.io/component: redpanda-statefulset
+      redpanda.com/poddisruptionbudget: redpanda

@@ -1,0 +1,61 @@
+---
+# Source: redpanda/templates/tests/test-kafka-internal-tls-status.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: default-test-kafka-internal-tls-status
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-4.0.47
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  restartPolicy: Never
+  securityContext:
+    runAsUser: 65535
+    runAsGroup: 65535
+  containers:
+    - name: redpanda
+      image: docker.redpanda.com/redpandadata/redpanda:v23.1.12
+      command:
+      - /usr/bin/timeout
+      - "120"
+      - bash
+      - -c
+      - |
+        until rpk cluster info \
+          --brokers default-0.default.unhelm-namespace-placeholder.svc.cluster.local.:9093 \
+          --tls-enabled \
+          --tls-truststore /etc/tls/certs/default/ca.crt
+        do sleep 2
+        done
+      resources: 
+            null
+      volumeMounts:
+        - name: default
+          mountPath: /tmp/base-config
+        - name: config
+          mountPath: /etc/redpanda
+        - name: redpanda-default-cert
+          mountPath: /etc/tls/certs/default
+        - name: redpanda-external-cert
+          mountPath: /etc/tls/certs/external
+  volumes:
+    - name: default
+      configMap:
+        name: default
+    - name: config
+      emptyDir: {}
+    - name: redpanda-default-cert
+      secret:
+        defaultMode: 0644
+        secretName: default-default-cert
+    - name: redpanda-external-cert
+      secret:
+        defaultMode: 0644
+        secretName: default-external-cert

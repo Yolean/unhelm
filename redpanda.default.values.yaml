@@ -1,0 +1,2 @@
+# yaml-language-server: $schema=https://github.com/redpanda-data/helm-charts/raw/redpanda-4.0.32/charts/redpanda/values.schema.json
+# unhelm-template-repo: https://charts.redpanda.com

@@ -1,0 +1,32 @@
+---
+# Source: cockroachdb/templates/service.public.yaml
+# This Service is meant to be used by clients of the database.
+# It exposes a ClusterIP that will automatically load balance connections
+# to the different database Pods.
+kind: Service
+apiVersion: v1
+metadata:
+  name: ystack-cockroachdb-public
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    helm.sh/chart: cockroachdb-11.0.3
+    app.kubernetes.io/name: cockroachdb
+    app.kubernetes.io/instance: "ystack"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/component: cockroachdb
+spec:
+  type: "ClusterIP"
+  ports:
+    # The main port, served by gRPC, serves Postgres-flavor SQL, inter-node
+    # traffic and the CLI.
+    - name: "grpc"
+      port: 26257
+      targetPort: grpc
+    # The secondary port serves the UI as well as health and debug endpoints.
+    - name: "http"
+      port: 8080
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: cockroachdb
+    app.kubernetes.io/instance: "ystack"
+    app.kubernetes.io/component: cockroachdb

@@ -1,0 +1,51 @@
+---
+# Source: redpanda/templates/tests/test-schemaregistry-status.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "minimal-test-schemaregistry-status"
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-4.0.47
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  restartPolicy: Never
+  securityContext:
+    runAsUser: 65535
+    runAsGroup: 65535
+  containers:
+    - name: redpanda
+      image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
+      command: [ "/bin/bash", "-c" ]
+      args:
+        - |
+
+          schemaCurl () {
+            curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors \
+            $*
+          }
+
+          schemaCurl http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/types
+
+          curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors \
+          -X POST -H 'Content-Type:application/vnd.schemaregistry.v1+json' \
+          -d '{"schema":"{\"type\":\"record\",\"name\":\"sensor_sample\",\"fields\":[{\"name\":\"timestamp\",\"type\":\"long\",\"logicalType\":\"timestamp-millis\"},{\"name\":\"identifier\",\"type\":\"string\",\"logicalType\":\"uuid\"},{\"name\":\"value\",\"type\":\"long\"}]}"}' \
+          http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions
+
+          schemaCurl http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/ids/1
+
+          schemaCurl http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
+
+          schemaCurl -X DELETE \
+          http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1
+
+          schemaCurl -X DELETE \
+          http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1?permanent=true
+      volumeMounts:
+  volumes:

@@ -1,0 +1,22 @@
+---
+# Source: redpanda/charts/console/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "minimal-console-test-connection"
+  labels:
+    helm.sh/chart: console-0.6.6
+    app.kubernetes.io/name: console
+    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/version: "v2.2.4"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['minimal-console:8080']
+  restartPolicy: Never
+  priorityClassName:
