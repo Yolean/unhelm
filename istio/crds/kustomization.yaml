@@ -1,5 +1,0 @@
-resources:
-- crd-10.yaml
-- crd-11.yaml
-- crd-certmanager-11.yaml
-- crd-certmanager-10.yaml
