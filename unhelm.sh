@@ -38,7 +38,7 @@ kind: Kustomization
 resources:
 EOF
 
-helm template $NAME $ORIGIN/$CHART -f $VALUES \
+helm template $CHART $ORIGIN/$CHART -f $VALUES \
     --namespace unhelm-namespace-placeholder \
     --output-dir $BASE \
     | sed "s|wrote $BASE/|- ./|" \
