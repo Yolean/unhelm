@@ -14,3 +14,14 @@ The [unhelm](https://github.com/Yolean/unhelm/) repo avoids the endless back and
 
 Submit a new `[chart name].[config name].values.yaml` in the root of this repo,
 containing a line prefixed `# unhelm-template-repo: [repo URL]`.
+
+## Namespaces
+
+Please pay attention to where chart-generated yaml contains namespace strings.
+That's frequently hard to spot if you use namespace "app" for your App app,
+which is why this repo consistently uses `unhelm-namespace-placeholder`.
+
+Each generated kustomize base gets a file `unhelm-namespace-placeholder.txt`
+which helps point out these strings.
+They typically call for specific Kustomize patches.
+Or use this repo only as examples and maintain your own yaml.

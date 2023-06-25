@@ -20,15 +20,17 @@ NAME=$(echo $VALUES | cut -d'.' -f2)
 REPO=$(cat $VALUES | grep "^$IREPO" | cut -d' ' -f3)
 echo "=> repo=$REPO chart=$CHART name=$NAME"
 
-ORIGIN=$(echo $REPO | sed 's|.*://||' | sed 's|/|-|')
+ORIGIN=$(echo $REPO | sed 's|.*://||' | sed 's|/$||' | sed 's|/|-|')
 
 helm repo add $ORIGIN $REPO
 helm repo update
-helm show chart $ORIGIN/$CHART
+helm show chart $ORIGIN/$CHART | grep ersion
 
 BASE="./$CHART/$NAME"
 echo "$BASE" | grep '//' || rm -r "./$BASE" 2>/dev/null || true
 mkdir -p $BASE
+
+echo "=> Generating a Kustomize base"
 
 cat << EOF > $BASE/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -42,3 +44,25 @@ helm template $NAME $ORIGIN/$CHART -f $VALUES \
     | sed "s|wrote $BASE/|- ./|" \
     | sort | uniq \
     | tee -a $BASE/kustomization.yaml
+
+echo "=> Looking for namespace references"
+
+mkdir -p .namespace-test
+cat << EOF > .namespace-test/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: unhelm-namespace-replaced
+resources:
+- .$BASE
+EOF
+
+NSINFO=$BASE/unhelm-namespace-placeholder.txt
+cat << EOF > $NSINFO
+
+Note the following instances of namespace strings that Kustomize won't replace
+=============================================================================
+
+EOF
+kustomize build .namespace-test | grep -C 5 unhelm-namespace-placeholder >> $NSINFO || true
+cat $NSINFO | grep unhelm-namespace-placeholder | wc -l || true
+echo "=> Done"
