@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+
+- ./kminion/templates/configmap.yaml
+- ./kminion/templates/deployment.yaml
+- ./kminion/templates/poddisruptionbudget.yaml
+- ./kminion/templates/service.yaml
+- ./kminion/templates/serviceaccount.yaml

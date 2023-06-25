@@ -1,0 +1,4 @@
+
+Note the following instances of namespace strings that Kustomize won't replace
+=============================================================================
+

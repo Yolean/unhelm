@@ -1,0 +1,23 @@
+---
+# Source: kminion/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kminion
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    helm.sh/chart: kminion-0.11.3
+    app.kubernetes.io/name: kminion
+    app.kubernetes.io/instance: kminion
+    app.kubernetes.io/version: "v2.2.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: kminion
+    app.kubernetes.io/instance: kminion

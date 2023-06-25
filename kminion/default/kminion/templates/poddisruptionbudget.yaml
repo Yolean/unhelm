@@ -1,0 +1,19 @@
+---
+# Source: kminion/templates/poddisruptionbudget.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: kminion
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    helm.sh/chart: kminion-0.11.3
+    app.kubernetes.io/name: kminion
+    app.kubernetes.io/instance: kminion
+    app.kubernetes.io/version: "v2.2.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kminion
+      app.kubernetes.io/instance: kminion
