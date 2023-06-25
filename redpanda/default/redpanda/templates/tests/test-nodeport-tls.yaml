@@ -1,0 +1,133 @@
+---
+# Source: redpanda/templates/tests/test-nodeport-tls.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test-nodeport-tls-redpanda
+  annotations:
+    helm.sh/hook-weight: "-100"
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation
+---
+# Source: redpanda/templates/tests/test-nodeport-tls.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: test-nodeport-tls-redpanda
+  annotations:
+    helm.sh/hook-weight: "-100"
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - services
+    verbs:
+      - get
+---
+# Source: redpanda/templates/tests/test-nodeport-tls.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: test-nodeport-tls-redpanda
+  annotations:
+    helm.sh/hook-weight: "-100"
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: test-nodeport-tls-redpanda
+subjects:
+  - kind: ServiceAccount
+    name: test-nodeport-tls-redpanda
+    namespace: unhelm-namespace-placeholder
+---
+# Source: redpanda/templates/tests/test-nodeport-tls.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: default-test-nodeport-tls
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-4.0.47
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  serviceAccountName: test-nodeport-tls-redpanda
+  restartPolicy: Never
+  securityContext:
+    runAsUser: 65535
+    runAsGroup: 65535
+  containers:
+    - name: redpanda
+      image: mintel/docker-alpine-bash-curl-jq:latest
+      command:
+        - bash
+        - -c
+        - |
+          set -x
+          export APISERVER=https://kubernetes.default.svc
+          export SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+          export NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
+          export TOKEN=$(cat ${SERVICEACCOUNT}/token)
+          export CACERT=${SERVICEACCOUNT}/ca.crt
+          
+          ip_list=""
+          
+          replicas=3
+          if [ "${replicas}" -lt "1" ]; then
+            echo "replicas cannot be less than 1"
+            exit 1
+          fi
+          
+          range=$(expr $replicas - 1)          
+          ordinal_list=$(seq 0 $range)
+
+          set -e 
+          
+          for i in $ordinal_list
+          do
+            POD_DESC=$(curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" \
+            -X GET ${APISERVER}/api/v1/namespaces/unhelm-namespace-placeholder/pods/default-$i)
+            ip=$(echo $POD_DESC | jq -r .status.hostIP )
+            ip_list="$ip $ip_list"
+          done
+          
+          echo test will be run against $ip_list
+          echo testing NodePort connectivity
+      volumeMounts:
+      - name: redpanda-default-cert
+        mountPath: /etc/tls/certs/default
+      - name: redpanda-external-cert
+        mountPath: /etc/tls/certs/external
+  volumes:
+  - name: redpanda-default-cert
+    secret:
+      defaultMode: 420
+      items:
+        - key: tls.key
+          path: tls.key
+        - key: tls.crt
+          path: tls.crt
+        - key: ca.crt
+          path: ca.crt
+      secretName: default-default-cert
+  - name: redpanda-external-cert
+    secret:
+      defaultMode: 420
+      items:
+        - key: tls.key
+          path: tls.key
+        - key: tls.crt
+          path: tls.crt
+        - key: ca.crt
+          path: ca.crt
+      secretName: default-external-cert

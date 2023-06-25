@@ -1,0 +1,80 @@
+---
+# Source: redpanda/templates/post-install-upgrade-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: default-configuration
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-4.0.47
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+    "helm.sh/hook-weight": "-10"
+spec:
+  template:
+    metadata:
+      generateName: "default-post-"
+      labels:
+        app.kubernetes.io/name: redpanda
+        app.kubernetes.io/instance: "default"
+        app.kubernetes.io/component: redpanda-post-install
+    spec:
+      restartPolicy: Never
+      securityContext: 
+        fsGroup: 101
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+      - name: redpanda-post-install
+        image: docker.redpanda.com/redpandadata/redpanda:v23.1.12
+        command: ["bash","-c"]
+        args:
+          - |
+            set -e
+        securityContext: 
+          runAsUser: 101
+          runAsGroup: 101
+        volumeMounts:
+          - name: default
+            mountPath: /tmp/base-config
+          - name: config
+            mountPath: /etc/redpanda
+          - name: redpanda-default-cert
+            mountPath: /etc/tls/certs/default
+          - name: redpanda-external-cert
+            mountPath: /etc/tls/certs/external
+      volumes:
+        - name: default
+          configMap:
+            name: default
+        - name: config
+          emptyDir: {}
+        - name: redpanda-default-cert
+          secret:
+            defaultMode: 420
+            items:
+            - key: tls.key
+              path: tls.key
+            - key: tls.crt
+              path: tls.crt
+            - key: ca.crt
+              path: ca.crt
+            secretName: default-default-cert
+        - name: redpanda-external-cert
+          secret:
+            defaultMode: 420
+            items:
+            - key: tls.key
+              path: tls.key
+            - key: tls.crt
+              path: tls.crt
+            - key: ca.crt
+              path: ca.crt
+            secretName: default-external-cert
+      serviceAccountName: default

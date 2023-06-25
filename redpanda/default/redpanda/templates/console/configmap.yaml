@@ -1,0 +1,32 @@
+---
+# Source: redpanda/templates/console/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: default-console
+  labels:
+    helm.sh/chart: console-0.6.6
+    app.kubernetes.io/name: console
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/version: "v2.2.4"
+    app.kubernetes.io/managed-by: Helm
+data:
+  config.yaml: |
+    # from .Values.console.config
+    kafka:
+      brokers:
+      - default-0.default.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - default-1.default.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - default-2.default.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      sasl:
+        enabled: false
+      schemaRegistry:
+        enabled: true
+        tls:
+          enabled: true
+        urls:
+        - https://default-0.default.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - https://default-1.default.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - https://default-2.default.unhelm-namespace-placeholder.svc.cluster.local.:8081
+      tls:
+        enabled: true

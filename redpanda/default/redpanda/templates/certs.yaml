@@ -1,0 +1,74 @@
+---
+# Source: redpanda/templates/certs.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: default-default-cert
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-4.0.47
+spec:
+  dnsNames:
+  - default-cluster.default.unhelm-namespace-placeholder.svc.cluster.local
+  - default-cluster.default.unhelm-namespace-placeholder.svc
+  - default-cluster.default.unhelm-namespace-placeholder
+  - "*.default-cluster.default.unhelm-namespace-placeholder.svc.cluster.local"
+  - "*.default-cluster.default.unhelm-namespace-placeholder.svc"
+  - "*.default-cluster.default.unhelm-namespace-placeholder"
+  - default.unhelm-namespace-placeholder.svc.cluster.local
+  - default.unhelm-namespace-placeholder.svc
+  - default.unhelm-namespace-placeholder
+  - "*.default.unhelm-namespace-placeholder.svc.cluster.local"
+  - "*.default.unhelm-namespace-placeholder.svc"
+  - "*.default.unhelm-namespace-placeholder"
+  duration: 43800h
+  isCA: false
+  secretName: default-default-cert
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: default-default-root-issuer
+    kind: Issuer
+    group: cert-manager.io
+---
+# Source: redpanda/templates/certs.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: default-external-cert
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-4.0.47
+spec:
+  dnsNames:
+  - default-cluster.default.unhelm-namespace-placeholder.svc.cluster.local
+  - default-cluster.default.unhelm-namespace-placeholder.svc
+  - default-cluster.default.unhelm-namespace-placeholder
+  - "*.default-cluster.default.unhelm-namespace-placeholder.svc.cluster.local"
+  - "*.default-cluster.default.unhelm-namespace-placeholder.svc"
+  - "*.default-cluster.default.unhelm-namespace-placeholder"
+  - default.unhelm-namespace-placeholder.svc.cluster.local
+  - default.unhelm-namespace-placeholder.svc
+  - default.unhelm-namespace-placeholder
+  - "*.default.unhelm-namespace-placeholder.svc.cluster.local"
+  - "*.default.unhelm-namespace-placeholder.svc"
+  - "*.default.unhelm-namespace-placeholder"
+  duration: 43800h
+  isCA: false
+  secretName: default-external-cert
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: default-external-root-issuer
+    kind: Issuer
+    group: cert-manager.io
