@@ -1,0 +1,43 @@
+---
+# Source: redpanda/templates/tests/test-api-status.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "minimal-test-api-status"
+  namespace: "unhelm-namespace-placeholder"
+  labels:
+    app.kubernetes.io/component: redpanda
+    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redpanda
+    helm.sh/chart: redpanda-4.0.47
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  restartPolicy: Never
+  securityContext:
+    runAsUser: 65535
+    runAsGroup: 65535
+  containers:
+    - name: redpanda
+      image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
+      command:
+      - /usr/bin/timeout
+      - "120"
+      - bash
+      - -c
+      - |
+        until rpk cluster info \
+          --brokers minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9093
+          do sleep 2
+        done
+      volumeMounts:
+        - name: minimal
+          mountPath: /tmp/base-config
+  volumes:
+    - name: minimal
+      configMap:
+        name: minimal
+    - name: config
+      emptyDir: {}
