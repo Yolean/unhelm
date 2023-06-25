@@ -5,17 +5,17 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: raft-vault
+  name: vault
   namespace: unhelm-namespace-placeholder
   labels:
     helm.sh/chart: vault-0.24.1
     app.kubernetes.io/name: vault
-    app.kubernetes.io/instance: raft
+    app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: vault
-      app.kubernetes.io/instance: raft
+      app.kubernetes.io/instance: vault
       component: server

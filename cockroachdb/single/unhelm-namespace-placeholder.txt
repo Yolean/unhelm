@@ -5,9 +5,9 @@ Note the following instances of namespace strings that Kustomize won't replace
           --port=26257 --cache=25% --max-sql-memory=25% --logtostderr=INFO
         env:
         - name: STATEFULSET_NAME
-          value: single-cockroachdb
+          value: cockroachdb
         - name: STATEFULSET_FQDN
-          value: single-cockroachdb.unhelm-namespace-placeholder.svc.cluster.local
+          value: cockroachdb.unhelm-namespace-placeholder.svc.cluster.local
         - name: COCKROACH_CHANNEL
           value: kubernetes-helm
         image: cockroachdb/cockroach:v23.1.4
@@ -19,7 +19,7 @@ Note the following instances of namespace strings that Kustomize won't replace
     - sql
     - --insecure
     - --host
-    - single-cockroachdb-public.unhelm-namespace-placeholder
+    - cockroachdb-public.unhelm-namespace-placeholder
     - --port
     - "26257"
     - -e

@@ -7,9 +7,9 @@ Note the following instances of namespace strings that Kustomize won't replace
       exit 0
     env:
     - name: VAULT_ADDR
-      value: http://raft-vault.unhelm-namespace-placeholder.svc:8200
+      value: http://vault.unhelm-namespace-placeholder.svc:8200
     image: hashicorp/vault:1.13.1
     imagePullPolicy: IfNotPresent
-    name: raft-server-test
+    name: vault-server-test
     volumeMounts: null
   restartPolicy: Never

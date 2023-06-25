@@ -3,10 +3,10 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: minimal
+  name: redpanda
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -14,9 +14,9 @@ spec:
   selector:
     matchLabels: 
       app.kubernetes.io/name: redpanda
-      app.kubernetes.io/instance: "minimal"
+      app.kubernetes.io/instance: "redpanda"
       app.kubernetes.io/component: redpanda-statefulset
-  serviceName: minimal
+  serviceName: redpanda
   replicas: 3
   updateStrategy:
     type: RollingUpdate
@@ -25,11 +25,11 @@ spec:
     metadata:
       labels: 
         app.kubernetes.io/name: redpanda
-        app.kubernetes.io/instance: "minimal"
+        app.kubernetes.io/instance: "redpanda"
         app.kubernetes.io/component: redpanda-statefulset
         redpanda.com/poddisruptionbudget: redpanda
       annotations:
-        checksum/config: 8458d8ea3315bf9bf1df5a1cdde3c53d61757bee31e24a1c93b6dce6c28f48b4
+        checksum/config: 652156dcec0e78c557627c5666d1b85db3c941e5c7320783ecbd2d895bd9330d
     spec:
       terminationGracePeriodSeconds: 90
       securityContext: 
@@ -52,7 +52,7 @@ spec:
             runAsUser: 0
             runAsGroup: 0
           volumeMounts:
-            - name: minimal
+            - name: redpanda
               mountPath: /etc/redpanda
         - name: set-datadir-ownership
           image: busybox:latest
@@ -69,9 +69,9 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: ADVERTISED_KAFKA_ADDRESSES
-              value: '{"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
+              value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
             - name: ADVERTISED_HTTP_ADDRESSES
-              value: '{"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
+              value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
             - name: KUBERNETES_NODE_NAME
               valueFrom:
                 fieldRef:
@@ -107,7 +107,7 @@ spec:
             runAsUser: 101
             runAsGroup: 101
           volumeMounts:
-            - name: minimal
+            - name: redpanda
               mountPath: /tmp/base-config
             - name: config
               mountPath: /etc/redpanda
@@ -143,7 +143,7 @@ spec:
                 - -c
                 - |
                   set -e
-                  RESULT=$(curl --silent --fail -k  "http://${SERVICE_NAME}.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready")
+                  RESULT=$(curl --silent --fail -k  "http://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready")
                   echo $RESULT
                   echo $RESULT | grep ready
             initialDelaySeconds: 1
@@ -155,7 +155,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - curl --silent --fail -k  "http://${SERVICE_NAME}.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready"
+                - curl --silent --fail -k  "http://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready"
             initialDelaySeconds: 10
             failureThreshold: 3
             periodSeconds: 10
@@ -170,8 +170,8 @@ spec:
                 - -c
                 - |
                   set -x
-                  rpk cluster health --api-urls ${SERVICE_NAME}.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644
-                  rpk cluster health --api-urls ${SERVICE_NAME}.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644 | grep 'Healthy:.*true'
+                  rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
+                  rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 | grep 'Healthy:.*true'
             initialDelaySeconds: 1
             failureThreshold: 3
             periodSeconds: 10
@@ -184,7 +184,7 @@ spec:
             - --memory=2048M
             - --reserve-memory=205M
             - --default-log-level=info
-            - --advertise-rpc-addr=$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.:33145
+            - --advertise-rpc-addr=$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.:33145
             - --overprovisioned
           ports:
             - name: admin
@@ -226,25 +226,25 @@ spec:
             - -c 
             - /etc/secrets/config-watcher/scripts/sasl-user.sh
           volumeMounts:
-            - name: minimal-config-watcher
+            - name: redpanda-config-watcher
               mountPath: /etc/secrets/config-watcher/scripts
               readOnly: true
       volumes:
         - name: lifecycle-scripts
           secret:
-            secretName: minimal-sts-lifecycle
+            secretName: redpanda-sts-lifecycle
             defaultMode: 0774
         - name: datadir
           persistentVolumeClaim:
             claimName: datadir
-        - name: minimal
+        - name: redpanda
           configMap:
-            name: minimal
+            name: redpanda
         - name: config
           emptyDir: {}
-        - name: minimal-config-watcher
+        - name: redpanda-config-watcher
           secret:
-            secretName: minimal-config-watcher
+            secretName: redpanda-config-watcher
             optional: false
             defaultMode: 0774
       affinity:
@@ -254,7 +254,7 @@ spec:
               labelSelector:
                 matchLabels: 
                   app.kubernetes.io/name: redpanda
-                  app.kubernetes.io/instance: "minimal"
+                  app.kubernetes.io/instance: "redpanda"
                   app.kubernetes.io/component: redpanda-statefulset
       topologySpreadConstraints:
         - maxSkew: 1
@@ -263,7 +263,7 @@ spec:
           labelSelector:
             matchLabels: 
               app.kubernetes.io/name: redpanda
-              app.kubernetes.io/instance: "minimal"
+              app.kubernetes.io/instance: "redpanda"
               app.kubernetes.io/component: redpanda-statefulset
       nodeSelector:
         {}
@@ -274,7 +274,7 @@ spec:
         name: datadir
         labels:
           app.kubernetes.io/name: redpanda
-          app.kubernetes.io/instance: "minimal"
+          app.kubernetes.io/instance: "redpanda"
           app.kubernetes.io/component: redpanda
       spec:
         accessModes: ["ReadWriteOnce"]

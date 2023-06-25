@@ -3,11 +3,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: minimal-configuration
+  name: redpanda-configuration
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -20,10 +20,10 @@ metadata:
 spec:
   template:
     metadata:
-      generateName: "minimal-post-"
+      generateName: "redpanda-post-"
       labels:
         app.kubernetes.io/name: redpanda
-        app.kubernetes.io/instance: "minimal"
+        app.kubernetes.io/instance: "redpanda"
         app.kubernetes.io/component: redpanda-post-install
     spec:
       restartPolicy: Never
@@ -41,14 +41,14 @@ spec:
           runAsUser: 101
           runAsGroup: 101
         volumeMounts:
-          - name: minimal
+          - name: redpanda
             mountPath: /tmp/base-config
           - name: config
             mountPath: /etc/redpanda
       volumes:
-        - name: minimal
+        - name: redpanda
           configMap:
-            name: minimal
+            name: redpanda
         - name: config
           emptyDir: {}
       serviceAccountName: default

@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: default-test-schemaregistry-internal-tls-status
+  name: redpanda-test-schemaregistry-internal-tls-status
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -32,23 +32,23 @@ spec:
             $*
           }
 
-          schemaCurl https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
+          schemaCurl https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
 
           curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors \
           -X POST -H 'Content-Type:application/vnd.schemaregistry.v1+json' \
           -d '{"schema": "{\"type\":\"record\",\"name\":\"sensor_sample\",\"fields\":[{\"name\":\"timestamp\",\"type\":\"long\",\"logicalType\":\"timestamp-millis\"},{\"name\":\"identifier\",\"type\":\"string\",\"logicalType\":\"uuid\"},{\"name\":\"value\",\"type\":\"long\"}]}"}' \
           --cacert /etc/tls/certs/default/ca.crt \
-          https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions
+          https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions
 
-          schemaCurl https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/ids/1
+          schemaCurl https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/ids/1
 
-          schemaCurl https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
-
-          schemaCurl -X DELETE \
-          https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1
+          schemaCurl https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
 
           schemaCurl -X DELETE \
-          https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1?permanent=true
+          https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1
+
+          schemaCurl -X DELETE \
+          https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1?permanent=true
       volumeMounts:
         - name: redpanda-default-cert
           mountPath: /etc/tls/certs/default
@@ -60,8 +60,8 @@ spec:
     - name: redpanda-default-cert
       secret:
         defaultMode: 0644
-        secretName: default-default-cert
+        secretName: redpanda-default-cert
     - name: redpanda-external-cert
       secret:
         defaultMode: 0644
-        secretName: default-external-cert
+        secretName: redpanda-external-cert

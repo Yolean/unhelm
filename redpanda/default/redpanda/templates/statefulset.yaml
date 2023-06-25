@@ -3,10 +3,10 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: default
+  name: redpanda
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -14,9 +14,9 @@ spec:
   selector:
     matchLabels: 
       app.kubernetes.io/name: redpanda
-      app.kubernetes.io/instance: "default"
+      app.kubernetes.io/instance: "redpanda"
       app.kubernetes.io/component: redpanda-statefulset
-  serviceName: default
+  serviceName: redpanda
   replicas: 3
   updateStrategy:
     type: RollingUpdate
@@ -25,11 +25,11 @@ spec:
     metadata:
       labels: 
         app.kubernetes.io/name: redpanda
-        app.kubernetes.io/instance: "default"
+        app.kubernetes.io/instance: "redpanda"
         app.kubernetes.io/component: redpanda-statefulset
         redpanda.com/poddisruptionbudget: redpanda
       annotations:
-        checksum/config: 748e5bc3f8e587776db0ee1a735f54da61c0789e205ea4798c07870da5a91837
+        checksum/config: fd897c5ad3f381bbb31405110786817a1fd404ace4583da4b7e0c709d735aa15
     spec:
       terminationGracePeriodSeconds: 90
       securityContext: 
@@ -52,7 +52,7 @@ spec:
             runAsUser: 0
             runAsGroup: 0
           volumeMounts:
-            - name: default
+            - name: redpanda
               mountPath: /etc/redpanda
         - name: redpanda-configurator
           image: docker.redpanda.com/redpandadata/redpanda:v23.1.12
@@ -63,9 +63,9 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: ADVERTISED_KAFKA_ADDRESSES
-              value: '{"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
+              value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
             - name: ADVERTISED_HTTP_ADDRESSES
-              value: '{"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
+              value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
             - name: KUBERNETES_NODE_NAME
               valueFrom:
                 fieldRef:
@@ -101,7 +101,7 @@ spec:
             runAsUser: 101
             runAsGroup: 101
           volumeMounts:
-            - name: default
+            - name: redpanda
               mountPath: /tmp/base-config
             - name: config
               mountPath: /etc/redpanda
@@ -137,7 +137,7 @@ spec:
                 - -c
                 - |
                   set -e
-                  RESULT=$(curl --silent --fail -k --cacert /etc/tls/certs/default/tls.crt "https://${SERVICE_NAME}.default.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready")
+                  RESULT=$(curl --silent --fail -k --cacert /etc/tls/certs/default/tls.crt "https://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready")
                   echo $RESULT
                   echo $RESULT | grep ready
             initialDelaySeconds: 1
@@ -149,7 +149,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - curl --silent --fail -k --cacert /etc/tls/certs/default/tls.crt "https://${SERVICE_NAME}.default.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready"
+                - curl --silent --fail -k --cacert /etc/tls/certs/default/tls.crt "https://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready"
             initialDelaySeconds: 10
             failureThreshold: 3
             periodSeconds: 10
@@ -164,8 +164,8 @@ spec:
                 - -c
                 - |
                   set -x
-                  rpk cluster health --api-urls ${SERVICE_NAME}.default.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt
-                  rpk cluster health --api-urls ${SERVICE_NAME}.default.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt | grep 'Healthy:.*true'
+                  rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt
+                  rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt | grep 'Healthy:.*true'
             initialDelaySeconds: 1
             failureThreshold: 3
             periodSeconds: 10
@@ -178,7 +178,7 @@ spec:
             - --memory=2048M
             - --reserve-memory=205M
             - --default-log-level=info
-            - --advertise-rpc-addr=$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.:33145
+            - --advertise-rpc-addr=$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.:33145
           ports:
             - name: admin
               containerPort: 9644
@@ -223,7 +223,7 @@ spec:
             - -c 
             - /etc/secrets/config-watcher/scripts/sasl-user.sh
           volumeMounts:
-            - name: default-config-watcher
+            - name: redpanda-config-watcher
               mountPath: /etc/secrets/config-watcher/scripts
               readOnly: true
             - name: redpanda-default-cert
@@ -235,14 +235,14 @@ spec:
       volumes:
         - name: lifecycle-scripts
           secret:
-            secretName: default-sts-lifecycle
+            secretName: redpanda-sts-lifecycle
             defaultMode: 0774
         - name: datadir
           persistentVolumeClaim:
             claimName: datadir
-        - name: default
+        - name: redpanda
           configMap:
-            name: default
+            name: redpanda
         - name: config
           emptyDir: {}
         - name: redpanda-default-cert
@@ -255,7 +255,7 @@ spec:
               path: tls.crt
             - key: ca.crt
               path: ca.crt
-            secretName: default-default-cert
+            secretName: redpanda-default-cert
         - name: redpanda-external-cert
           secret:
             defaultMode: 420
@@ -266,10 +266,10 @@ spec:
               path: tls.crt
             - key: ca.crt
               path: ca.crt
-            secretName: default-external-cert
-        - name: default-config-watcher
+            secretName: redpanda-external-cert
+        - name: redpanda-config-watcher
           secret:
-            secretName: default-config-watcher
+            secretName: redpanda-config-watcher
             optional: false
             defaultMode: 0774
       affinity:
@@ -279,7 +279,7 @@ spec:
               labelSelector:
                 matchLabels: 
                   app.kubernetes.io/name: redpanda
-                  app.kubernetes.io/instance: "default"
+                  app.kubernetes.io/instance: "redpanda"
                   app.kubernetes.io/component: redpanda-statefulset
       topologySpreadConstraints:
         - maxSkew: 1
@@ -288,7 +288,7 @@ spec:
           labelSelector:
             matchLabels: 
               app.kubernetes.io/name: redpanda
-              app.kubernetes.io/instance: "default"
+              app.kubernetes.io/instance: "redpanda"
               app.kubernetes.io/component: redpanda-statefulset
       nodeSelector:
         {}
@@ -299,7 +299,7 @@ spec:
         name: datadir
         labels:
           app.kubernetes.io/name: redpanda
-          app.kubernetes.io/instance: "default"
+          app.kubernetes.io/instance: "redpanda"
           app.kubernetes.io/component: redpanda
       spec:
         accessModes: ["ReadWriteOnce"]

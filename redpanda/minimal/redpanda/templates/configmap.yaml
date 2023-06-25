@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: minimal
+  name: redpanda
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -64,13 +64,13 @@ data:
         port: 33145
       seed_servers:
         - host:
-            address: minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
         - host:
-            address: minimal-1.minimal.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
         - host:
-            address: minimal-2.minimal.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
     schema_registry:
       schema_registry_api:

@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: minimal-console
+  name: redpanda-console
   labels:
     helm.sh/chart: console-0.6.6
     app.kubernetes.io/name: console
-    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/version: "v2.2.4"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -15,9 +15,9 @@ data:
     # from .Values.console.config
     kafka:
       brokers:
-      - minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9093
-      - minimal-1.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9093
-      - minimal-2.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
       sasl:
         enabled: false
       schemaRegistry:
@@ -25,8 +25,8 @@ data:
         tls:
           enabled: false
         urls:
-        - http://minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081
-        - http://minimal-1.minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081
-        - http://minimal-2.minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - http://redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - http://redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - http://redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
       tls:
         enabled: false

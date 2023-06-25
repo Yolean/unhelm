@@ -3,17 +3,17 @@
 kind: PodDisruptionBudget
 apiVersion: policy/v1
 metadata:
-  name: certmanager-cockroachdb-budget
+  name: cockroachdb-budget
   namespace: "unhelm-namespace-placeholder"
   labels:
     helm.sh/chart: cockroachdb-11.0.3
     app.kubernetes.io/name: cockroachdb
-    app.kubernetes.io/instance: "certmanager"
+    app.kubernetes.io/instance: "cockroachdb"
     app.kubernetes.io/managed-by: "Helm"
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: cockroachdb
-      app.kubernetes.io/instance: "certmanager"
+      app.kubernetes.io/instance: "cockroachdb"
       app.kubernetes.io/component: cockroachdb
   maxUnavailable: 1

@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "minimal-test-pandaproxy-status"
+  name: "redpanda-test-pandaproxy-status"
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -27,9 +27,9 @@ spec:
         - |
 
           curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors \
-          http://minimal:8082/brokers
+          http://redpanda:8082/brokers
 
           curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors \
-          http://minimal:8082/topics
+          http://redpanda:8082/topics
       volumeMounts:
   volumes:

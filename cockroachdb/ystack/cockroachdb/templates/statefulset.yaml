@@ -3,16 +3,16 @@
 kind: StatefulSet
 apiVersion: apps/v1
 metadata:
-  name: ystack-cockroachdb
+  name: cockroachdb
   namespace: "unhelm-namespace-placeholder"
   labels:
     helm.sh/chart: cockroachdb-11.0.3
     app.kubernetes.io/name: cockroachdb
-    app.kubernetes.io/instance: "ystack"
+    app.kubernetes.io/instance: "cockroachdb"
     app.kubernetes.io/managed-by: "Helm"
     app.kubernetes.io/component: cockroachdb
 spec:
-  serviceName: ystack-cockroachdb
+  serviceName: cockroachdb
   replicas: 3
   updateStrategy:
     type: RollingUpdate
@@ -20,13 +20,13 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: cockroachdb
-      app.kubernetes.io/instance: "ystack"
+      app.kubernetes.io/instance: "cockroachdb"
       app.kubernetes.io/component: cockroachdb
   template:
     metadata:
       labels:
         app.kubernetes.io/name: cockroachdb
-        app.kubernetes.io/instance: "ystack"
+        app.kubernetes.io/instance: "cockroachdb"
         app.kubernetes.io/component: cockroachdb
     spec:
       affinity:
@@ -38,13 +38,13 @@ spec:
                 labelSelector:
                   matchLabels:
                     app.kubernetes.io/name: cockroachdb
-                    app.kubernetes.io/instance: "ystack"
+                    app.kubernetes.io/instance: "cockroachdb"
                     app.kubernetes.io/component: cockroachdb
       topologySpreadConstraints:
       - labelSelector:
           matchLabels:
             app.kubernetes.io/name: cockroachdb
-            app.kubernetes.io/instance: "ystack"
+            app.kubernetes.io/instance: "cockroachdb"
             app.kubernetes.io/component: cockroachdb
         maxSkew: 1
         topologyKey: topology.kubernetes.io/zone
@@ -87,9 +87,9 @@ spec:
               --logtostderr=INFO
           env:
             - name: STATEFULSET_NAME
-              value: ystack-cockroachdb
+              value: cockroachdb
             - name: STATEFULSET_FQDN
-              value: ystack-cockroachdb.unhelm-namespace-placeholder.svc.cluster.local
+              value: cockroachdb.unhelm-namespace-placeholder.svc.cluster.local
             - name: COCKROACH_CHANNEL
               value: kubernetes-helm
           ports:
@@ -124,7 +124,7 @@ spec:
         name: datadir
         labels:
           app.kubernetes.io/name: cockroachdb
-          app.kubernetes.io/instance: "ystack"
+          app.kubernetes.io/instance: "cockroachdb"
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:

@@ -3,12 +3,12 @@
 kind: Job
 apiVersion: batch/v1
 metadata:
-  name: certmanager-cockroachdb-init
+  name: cockroachdb-init
   namespace: "unhelm-namespace-placeholder"
   labels:
     helm.sh/chart: cockroachdb-11.0.3
     app.kubernetes.io/name: cockroachdb
-    app.kubernetes.io/instance: "certmanager"
+    app.kubernetes.io/instance: "cockroachdb"
     app.kubernetes.io/managed-by: "Helm"
     app.kubernetes.io/component: init
   annotations:
@@ -19,7 +19,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: cockroachdb
-        app.kubernetes.io/instance: "certmanager"
+        app.kubernetes.io/instance: "cockroachdb"
         app.kubernetes.io/component: init
     spec:
       restartPolicy: OnFailure
@@ -66,7 +66,7 @@ spec:
 
                     /cockroach/cockroach init \
                       --certs-dir=/cockroach-certs/ \
-                      --host=certmanager-cockroachdb-0.certmanager-cockroachdb:26257 \
+                      --host=cockroachdb-0.cockroachdb:26257 \
                   2>&1);
 
                   local exitCode="$?";

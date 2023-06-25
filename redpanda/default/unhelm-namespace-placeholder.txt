@@ -19,13 +19,13 @@ data:
         truststore_file: /etc/tls/certs/default/ca.crt
       seed_servers:
         - host:
-            address: default-0.default.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
         - host:
-            address: default-1.default.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
         - host:
-            address: default-2.default.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
     schema_registry:
       schema_registry_api:
@@ -37,9 +37,9 @@ data:
     # from .Values.console.config
     kafka:
       brokers:
-      - default-0.default.unhelm-namespace-placeholder.svc.cluster.local.:9093
-      - default-1.default.unhelm-namespace-placeholder.svc.cluster.local.:9093
-      - default-2.default.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
       sasl:
         enabled: false
       schemaRegistry:
@@ -47,9 +47,9 @@ data:
         tls:
           enabled: true
         urls:
-        - https://default-0.default.unhelm-namespace-placeholder.svc.cluster.local.:8081
-        - https://default-1.default.unhelm-namespace-placeholder.svc.cluster.local.:8081
-        - https://default-2.default.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - https://redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - https://redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - https://redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
       tls:
         enabled: true
 kind: ConfigMap
@@ -61,7 +61,7 @@ metadata:
 
     ready_result_exit_code=1
     while [[ ${ready_result_exit_code} -ne 0 ]]; do
-      ready_result=$(rpk cluster health --api-urls default-0.default.unhelm-namespace-placeholder.svc.cluster.local.:9644,default-1.default.unhelm-namespace-placeholder.svc.cluster.local.:9644,default-2.default.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt | grep 'Healthy:.*true' 2>&1) && ready_result_exit_code=$?
+      ready_result=$(rpk cluster health --api-urls redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt | grep 'Healthy:.*true' 2>&1) && ready_result_exit_code=$?
       sleep 2
     done
 
@@ -73,7 +73,7 @@ stringData:
     #!/usr/bin/env bash
 
     # the SERVICE_NAME comes from the metadata.name of the pod, essentially the POD_NAME
-    CURL_URL="https://${SERVICE_NAME}.default.unhelm-namespace-placeholder.svc.cluster.local:9644"
+    CURL_URL="https://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local:9644"
 
     # commands used throughout
     CURL_NODE_ID_CMD="curl --silent --fail --cacert /etc/tls/certs/default/tls.crt ${CURL_URL}/v1/node_config"
@@ -85,7 +85,7 @@ stringData:
         - name: REDPANDA_ADMINAPI_ENABLED
           value: "true"
         - name: REDPANDA_ADMINAPI_URLS
-          value: https://default.unhelm-namespace-placeholder.svc.cluster.local.:9644
+          value: https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
         image: docker.redpanda.com/redpandadata/console:v2.2.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
@@ -97,7 +97,7 @@ stringData:
         - --memory=2048M
         - --reserve-memory=205M
         - --default-log-level=info
-        - --advertise-rpc-addr=$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.:33145
+        - --advertise-rpc-addr=$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.:33145
         env:
         - name: SERVICE_NAME
           valueFrom:
@@ -109,7 +109,7 @@ stringData:
             command:
             - /bin/sh
             - -c
-            - curl --silent --fail -k --cacert /etc/tls/certs/default/tls.crt "https://${SERVICE_NAME}.default.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready"
+            - curl --silent --fail -k --cacert /etc/tls/certs/default/tls.crt "https://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready"
           failureThreshold: 3
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -121,8 +121,8 @@ stringData:
             - -c
             - |
               set -x
-              rpk cluster health --api-urls ${SERVICE_NAME}.default.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt
-              rpk cluster health --api-urls ${SERVICE_NAME}.default.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt | grep 'Healthy:.*true'
+              rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt
+              rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt | grep 'Healthy:.*true'
           failureThreshold: 3
           initialDelaySeconds: 1
           periodSeconds: 10
@@ -134,7 +134,7 @@ stringData:
             - -c
             - |
               set -e
-              RESULT=$(curl --silent --fail -k --cacert /etc/tls/certs/default/tls.crt "https://${SERVICE_NAME}.default.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready")
+              RESULT=$(curl --silent --fail -k --cacert /etc/tls/certs/default/tls.crt "https://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready")
               echo $RESULT
               echo $RESULT | grep ready
           failureThreshold: 120
@@ -146,26 +146,26 @@ stringData:
             fieldRef:
               fieldPath: metadata.name
         - name: ADVERTISED_KAFKA_ADDRESSES
-          value: '{"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}
-            {"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}
-            {"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
+          value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}
+            {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}
+            {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
         - name: ADVERTISED_HTTP_ADDRESSES
-          value: '{"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}
-            {"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}
-            {"address":"$(SERVICE_NAME).default.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
+          value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}
+            {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}
+            {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
         - name: KUBERNETES_NODE_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
         image: docker.redpanda.com/redpandadata/redpanda:v23.1.12
 --
-      name: default
+      name: redpanda
     spec:
       containers:
       - args:
         - |
-          rpk cluster config import -f /tmp/base-config/bootstrap.yaml --api-urls default-0.default.unhelm-namespace-placeholder.svc.cluster.local.:9644,default-1.default.unhelm-namespace-placeholder.svc.cluster.local.:9644,default-2.default.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt
-          rpk cluster config set storage_min_free_bytes 1073741824 --api-urls default-0.default.unhelm-namespace-placeholder.svc.cluster.local.:9644,default-1.default.unhelm-namespace-placeholder.svc.cluster.local.:9644,default-2.default.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt
+          rpk cluster config import -f /tmp/base-config/bootstrap.yaml --api-urls redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt
+          rpk cluster config set storage_min_free_bytes 1073741824 --api-urls redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 --admin-api-tls-enabled --admin-api-tls-truststore /etc/tls/certs/default/ca.crt
         command:
         - /bin/sh
         - -c
@@ -173,22 +173,22 @@ stringData:
         name: redpanda-post-upgrade
 --
     helm.sh/chart: redpanda-4.0.47
-  name: default-default-cert
+  name: redpanda-default-cert
   namespace: unhelm-namespace-replaced
 spec:
   dnsNames:
-  - default-cluster.default.unhelm-namespace-placeholder.svc.cluster.local
-  - default-cluster.default.unhelm-namespace-placeholder.svc
-  - default-cluster.default.unhelm-namespace-placeholder
-  - '*.default-cluster.default.unhelm-namespace-placeholder.svc.cluster.local'
-  - '*.default-cluster.default.unhelm-namespace-placeholder.svc'
-  - '*.default-cluster.default.unhelm-namespace-placeholder'
-  - default.unhelm-namespace-placeholder.svc.cluster.local
-  - default.unhelm-namespace-placeholder.svc
-  - default.unhelm-namespace-placeholder
-  - '*.default.unhelm-namespace-placeholder.svc.cluster.local'
-  - '*.default.unhelm-namespace-placeholder.svc'
-  - '*.default.unhelm-namespace-placeholder'
+  - redpanda-cluster.redpanda.unhelm-namespace-placeholder.svc.cluster.local
+  - redpanda-cluster.redpanda.unhelm-namespace-placeholder.svc
+  - redpanda-cluster.redpanda.unhelm-namespace-placeholder
+  - '*.redpanda-cluster.redpanda.unhelm-namespace-placeholder.svc.cluster.local'
+  - '*.redpanda-cluster.redpanda.unhelm-namespace-placeholder.svc'
+  - '*.redpanda-cluster.redpanda.unhelm-namespace-placeholder'
+  - redpanda.unhelm-namespace-placeholder.svc.cluster.local
+  - redpanda.unhelm-namespace-placeholder.svc
+  - redpanda.unhelm-namespace-placeholder
+  - '*.redpanda.unhelm-namespace-placeholder.svc.cluster.local'
+  - '*.redpanda.unhelm-namespace-placeholder.svc'
+  - '*.redpanda.unhelm-namespace-placeholder'
   duration: 43800h
   isCA: false
   issuerRef:
@@ -196,22 +196,22 @@ spec:
     kind: Issuer
 --
     helm.sh/chart: redpanda-4.0.47
-  name: default-external-cert
+  name: redpanda-external-cert
   namespace: unhelm-namespace-replaced
 spec:
   dnsNames:
-  - default-cluster.default.unhelm-namespace-placeholder.svc.cluster.local
-  - default-cluster.default.unhelm-namespace-placeholder.svc
-  - default-cluster.default.unhelm-namespace-placeholder
-  - '*.default-cluster.default.unhelm-namespace-placeholder.svc.cluster.local'
-  - '*.default-cluster.default.unhelm-namespace-placeholder.svc'
-  - '*.default-cluster.default.unhelm-namespace-placeholder'
-  - default.unhelm-namespace-placeholder.svc.cluster.local
-  - default.unhelm-namespace-placeholder.svc
-  - default.unhelm-namespace-placeholder
-  - '*.default.unhelm-namespace-placeholder.svc.cluster.local'
-  - '*.default.unhelm-namespace-placeholder.svc'
-  - '*.default.unhelm-namespace-placeholder'
+  - redpanda-cluster.redpanda.unhelm-namespace-placeholder.svc.cluster.local
+  - redpanda-cluster.redpanda.unhelm-namespace-placeholder.svc
+  - redpanda-cluster.redpanda.unhelm-namespace-placeholder
+  - '*.redpanda-cluster.redpanda.unhelm-namespace-placeholder.svc.cluster.local'
+  - '*.redpanda-cluster.redpanda.unhelm-namespace-placeholder.svc'
+  - '*.redpanda-cluster.redpanda.unhelm-namespace-placeholder'
+  - redpanda.unhelm-namespace-placeholder.svc.cluster.local
+  - redpanda.unhelm-namespace-placeholder.svc
+  - redpanda.unhelm-namespace-placeholder
+  - '*.redpanda.unhelm-namespace-placeholder.svc.cluster.local'
+  - '*.redpanda.unhelm-namespace-placeholder.svc'
+  - '*.redpanda.unhelm-namespace-placeholder'
   duration: 43800h
   isCA: false
   issuerRef:
@@ -223,19 +223,19 @@ spec:
     - bash
     - -c
     - |
-      curl -svm3 --fail --retry 120 --retry-max-time 120 --retry-all-errors http://default-console.unhelm-namespace-placeholder.svc:8080/api/cluster
+      curl -svm3 --fail --retry 120 --retry-max-time 120 --retry-all-errors http://redpanda-console.unhelm-namespace-placeholder.svc:8080/api/cluster
     image: docker.redpanda.com/redpandadata/redpanda:v23.1.12
     name: redpanda
     volumeMounts:
     - mountPath: /tmp/base-config
-      name: default
+      name: redpanda
 --
     - "120"
     - bash
     - -c
     - |
       until rpk cluster info \
-        --brokers default-0.default.unhelm-namespace-placeholder.svc.cluster.local.:9093 \
+        --brokers redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093 \
         --tls-enabled \
         --tls-truststore /etc/tls/certs/default/ca.crt
       do sleep 2
@@ -247,7 +247,7 @@ spec:
       set -e
     env:
     - name: REDPANDA_BROKERS
-      value: default.unhelm-namespace-placeholder.svc.cluster.local:9093
+      value: redpanda.unhelm-namespace-placeholder.svc.cluster.local:9093
     - name: POD_NAME
       valueFrom:
         fieldRef:
@@ -259,7 +259,7 @@ spec:
       -lt \"1\" ]; then\n  echo \"replicas cannot be less than 1\"\n  exit 1\nfi\n\nrange=$(expr
       $replicas - 1)          \nordinal_list=$(seq 0 $range)\n\nset -e \n\nfor i in
       $ordinal_list\ndo\n  POD_DESC=$(curl --cacert ${CACERT} --header \"Authorization:
-      Bearer ${TOKEN}\" \\\n  -X GET ${APISERVER}/api/v1/namespaces/unhelm-namespace-placeholder/pods/default-$i)\n
+      Bearer ${TOKEN}\" \\\n  -X GET ${APISERVER}/api/v1/namespaces/unhelm-namespace-placeholder/pods/redpanda-$i)\n
       \ ip=$(echo $POD_DESC | jq -r .status.hostIP )\n  ip_list=\"$ip $ip_list\"\ndone\n\necho
       test will be run against $ip_list\necho testing NodePort connectivity\n"
     image: mintel/docker-alpine-bash-curl-jq:latest
@@ -271,11 +271,11 @@ spec:
 
       curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors --ssl-reqd \
       --cacert /etc/tls/certs/default/ca.crt \
-      https://default.unhelm-namespace-placeholder.svc.cluster.local.:8082/brokers
+      https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8082/brokers
 
       curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors --ssl-reqd \
       --cacert /etc/tls/certs/default/ca.crt \
-      https://default.unhelm-namespace-placeholder.svc.cluster.local.:8082/topics
+      https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8082/topics
     command:
     - /bin/bash
     - -c
@@ -287,23 +287,23 @@ spec:
         $*
       }
 
-      schemaCurl https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
+      schemaCurl https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
 
       curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors \
       -X POST -H 'Content-Type:application/vnd.schemaregistry.v1+json' \
       -d '{"schema": "{\"type\":\"record\",\"name\":\"sensor_sample\",\"fields\":[{\"name\":\"timestamp\",\"type\":\"long\",\"logicalType\":\"timestamp-millis\"},{\"name\":\"identifier\",\"type\":\"string\",\"logicalType\":\"uuid\"},{\"name\":\"value\",\"type\":\"long\"}]}"}' \
       --cacert /etc/tls/certs/default/ca.crt \
-      https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions
+      https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions
 
-      schemaCurl https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/ids/1
+      schemaCurl https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/ids/1
 
-      schemaCurl https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
-
-      schemaCurl -X DELETE \
-      https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1
+      schemaCurl https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
 
       schemaCurl -X DELETE \
-      https://default.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1?permanent=true
+      https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1
+
+      schemaCurl -X DELETE \
+      https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1?permanent=true
     command:
     - /bin/bash
     - -c

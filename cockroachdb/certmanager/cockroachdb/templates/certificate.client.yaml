@@ -3,12 +3,12 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: certmanager-cockroachdb-root-client
+  name: cockroachdb-root-client
   namespace: "unhelm-namespace-placeholder"
   labels:
     helm.sh/chart: cockroachdb-11.0.3
     app.kubernetes.io/name: cockroachdb
-    app.kubernetes.io/instance: "certmanager"
+    app.kubernetes.io/instance: "cockroachdb"
     app.kubernetes.io/managed-by: "Helm"
 spec:
   duration: 672h

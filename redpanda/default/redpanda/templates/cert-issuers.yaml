@@ -4,23 +4,23 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: default-default-root-certificate
+  name: redpanda-default-root-certificate
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
 spec:
   isCA: true
-  commonName: default-default-root-certificate
-  secretName: default-default-root-certificate
+  commonName: redpanda-default-root-certificate
+  secretName: redpanda-default-root-certificate
   privateKey:
     algorithm: ECDSA
     size: 256
   issuerRef:
-    name: default-default-selfsigned-issuer
+    name: redpanda-default-selfsigned-issuer
     kind: Issuer
     group: cert-manager.io
 ---
@@ -29,23 +29,23 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: default-external-root-certificate
+  name: redpanda-external-root-certificate
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
 spec:
   isCA: true
-  commonName: default-external-root-certificate
-  secretName: default-external-root-certificate
+  commonName: redpanda-external-root-certificate
+  secretName: redpanda-external-root-certificate
   privateKey:
     algorithm: ECDSA
     size: 256
   issuerRef:
-    name: default-external-selfsigned-issuer
+    name: redpanda-external-selfsigned-issuer
     kind: Issuer
     group: cert-manager.io
 ---
@@ -54,11 +54,11 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: default-default-selfsigned-issuer
+  name: redpanda-default-selfsigned-issuer
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -70,28 +70,28 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: default-default-root-issuer
+  name: redpanda-default-root-issuer
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
 spec:
   ca:
-    secretName: default-default-root-certificate
+    secretName: redpanda-default-root-certificate
 ---
 # Source: redpanda/templates/cert-issuers.yaml
 # The self-signed issuer is used to create the self-signed CA
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: default-external-selfsigned-issuer
+  name: redpanda-external-selfsigned-issuer
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -103,14 +103,14 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: default-external-root-issuer
+  name: redpanda-external-root-issuer
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
 spec:
   ca:
-    secretName: default-external-root-certificate
+    secretName: redpanda-external-root-certificate

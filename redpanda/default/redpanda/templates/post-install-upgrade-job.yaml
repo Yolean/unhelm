@@ -3,11 +3,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: default-configuration
+  name: redpanda-configuration
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -20,10 +20,10 @@ metadata:
 spec:
   template:
     metadata:
-      generateName: "default-post-"
+      generateName: "redpanda-post-"
       labels:
         app.kubernetes.io/name: redpanda
-        app.kubernetes.io/instance: "default"
+        app.kubernetes.io/instance: "redpanda"
         app.kubernetes.io/component: redpanda-post-install
     spec:
       restartPolicy: Never
@@ -41,7 +41,7 @@ spec:
           runAsUser: 101
           runAsGroup: 101
         volumeMounts:
-          - name: default
+          - name: redpanda
             mountPath: /tmp/base-config
           - name: config
             mountPath: /etc/redpanda
@@ -50,9 +50,9 @@ spec:
           - name: redpanda-external-cert
             mountPath: /etc/tls/certs/external
       volumes:
-        - name: default
+        - name: redpanda
           configMap:
-            name: default
+            name: redpanda
         - name: config
           emptyDir: {}
         - name: redpanda-default-cert
@@ -65,7 +65,7 @@ spec:
               path: tls.crt
             - key: ca.crt
               path: ca.crt
-            secretName: default-default-cert
+            secretName: redpanda-default-cert
         - name: redpanda-external-cert
           secret:
             defaultMode: 420
@@ -76,5 +76,5 @@ spec:
               path: tls.crt
             - key: ca.crt
               path: ca.crt
-            secretName: default-external-cert
+            secretName: redpanda-external-cert
       serviceAccountName: default

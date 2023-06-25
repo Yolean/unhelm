@@ -3,7 +3,7 @@
 kind: Pod
 apiVersion: v1
 metadata:
-  name: ystack-cockroachdb-test
+  name: cockroachdb-test
   namespace: "unhelm-namespace-placeholder"
   annotations:
     helm.sh/hook: test-success
@@ -18,7 +18,7 @@ spec:
         - sql
         - --insecure
         - --host
-        - ystack-cockroachdb-public.unhelm-namespace-placeholder
+        - cockroachdb-public.unhelm-namespace-placeholder
         - --port
         - "26257"
         - -e

@@ -3,12 +3,12 @@
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: certmanager-cockroachdb
+  name: cockroachdb
   namespace: "unhelm-namespace-placeholder"
   labels:
     helm.sh/chart: cockroachdb-11.0.3
     app.kubernetes.io/name: cockroachdb
-    app.kubernetes.io/instance: "certmanager"
+    app.kubernetes.io/instance: "cockroachdb"
     app.kubernetes.io/managed-by: "Helm"
 rules:
   - apiGroups: [""]

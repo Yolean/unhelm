@@ -6,12 +6,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: minimal
+  name: redpanda
   namespace: "unhelm-namespace-placeholder"
   labels:
     monitoring.redpanda.com/enabled: "false"
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -21,7 +21,7 @@ spec:
   clusterIP: None
   selector:
     app.kubernetes.io/name: redpanda
-    app.kubernetes.io/instance: "minimal"
+    app.kubernetes.io/instance: "redpanda"
   ports:
     - name: admin
       protocol: TCP

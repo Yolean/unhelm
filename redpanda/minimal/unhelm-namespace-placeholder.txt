@@ -7,13 +7,13 @@ Note the following instances of namespace strings that Kustomize won't replace
         port: 33145
       seed_servers:
         - host:
-            address: minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
         - host:
-            address: minimal-1.minimal.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
         - host:
-            address: minimal-2.minimal.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
     schema_registry:
       schema_registry_api:
@@ -25,9 +25,9 @@ data:
     # from .Values.console.config
     kafka:
       brokers:
-      - minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9093
-      - minimal-1.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9093
-      - minimal-2.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
+      - redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
       sasl:
         enabled: false
       schemaRegistry:
@@ -35,9 +35,9 @@ data:
         tls:
           enabled: false
         urls:
-        - http://minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081
-        - http://minimal-1.minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081
-        - http://minimal-2.minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - http://redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - http://redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
+        - http://redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
       tls:
         enabled: false
 kind: ConfigMap
@@ -49,7 +49,7 @@ metadata:
 
     ready_result_exit_code=1
     while [[ ${ready_result_exit_code} -ne 0 ]]; do
-      ready_result=$(rpk cluster health --api-urls minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644,minimal-1.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644,minimal-2.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644 | grep 'Healthy:.*true' 2>&1) && ready_result_exit_code=$?
+      ready_result=$(rpk cluster health --api-urls redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 | grep 'Healthy:.*true' 2>&1) && ready_result_exit_code=$?
       sleep 2
     done
 
@@ -61,7 +61,7 @@ stringData:
     #!/usr/bin/env bash
 
     # the SERVICE_NAME comes from the metadata.name of the pod, essentially the POD_NAME
-    CURL_URL="http://${SERVICE_NAME}.minimal.unhelm-namespace-placeholder.svc.cluster.local:9644"
+    CURL_URL="http://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local:9644"
 
     # commands used throughout
     CURL_NODE_ID_CMD="curl --silent --fail  ${CURL_URL}/v1/node_config"
@@ -73,7 +73,7 @@ stringData:
         - name: REDPANDA_ADMINAPI_ENABLED
           value: "true"
         - name: REDPANDA_ADMINAPI_URLS
-          value: http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644
+          value: http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
         image: docker.redpanda.com/redpandadata/console:v2.2.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
@@ -85,7 +85,7 @@ stringData:
         - --memory=2048M
         - --reserve-memory=205M
         - --default-log-level=info
-        - --advertise-rpc-addr=$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.:33145
+        - --advertise-rpc-addr=$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.:33145
         - --overprovisioned
         env:
         - name: SERVICE_NAME
@@ -97,7 +97,7 @@ stringData:
             command:
             - /bin/sh
             - -c
-            - curl --silent --fail -k  "http://${SERVICE_NAME}.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready"
+            - curl --silent --fail -k  "http://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready"
           failureThreshold: 3
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -109,8 +109,8 @@ stringData:
             - -c
             - |
               set -x
-              rpk cluster health --api-urls ${SERVICE_NAME}.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644
-              rpk cluster health --api-urls ${SERVICE_NAME}.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644 | grep 'Healthy:.*true'
+              rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
+              rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 | grep 'Healthy:.*true'
           failureThreshold: 3
           initialDelaySeconds: 1
           periodSeconds: 10
@@ -122,7 +122,7 @@ stringData:
             - -c
             - |
               set -e
-              RESULT=$(curl --silent --fail -k  "http://${SERVICE_NAME}.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready")
+              RESULT=$(curl --silent --fail -k  "http://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready")
               echo $RESULT
               echo $RESULT | grep ready
           failureThreshold: 120
@@ -134,26 +134,26 @@ stringData:
             fieldRef:
               fieldPath: metadata.name
         - name: ADVERTISED_KAFKA_ADDRESSES
-          value: '{"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}
-            {"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}
-            {"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
+          value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}
+            {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}
+            {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
         - name: ADVERTISED_HTTP_ADDRESSES
-          value: '{"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}
-            {"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}
-            {"address":"$(SERVICE_NAME).minimal.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
+          value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}
+            {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}
+            {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
         - name: KUBERNETES_NODE_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
         image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
 --
-      name: minimal
+      name: redpanda
     spec:
       containers:
       - args:
         - |
-          rpk cluster config import -f /tmp/base-config/bootstrap.yaml --api-urls minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644,minimal-1.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644,minimal-2.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644
-          rpk cluster config set storage_min_free_bytes 1073741824 --api-urls minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644,minimal-1.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644,minimal-2.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9644
+          rpk cluster config import -f /tmp/base-config/bootstrap.yaml --api-urls redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
+          rpk cluster config set storage_min_free_bytes 1073741824 --api-urls redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
         command:
         - /bin/sh
         - -c
@@ -165,7 +165,7 @@ stringData:
     - -c
     - |
       until rpk cluster info \
-        --brokers minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9093
+        --brokers redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
         do sleep 2
       done
     image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
@@ -177,19 +177,19 @@ stringData:
     - bash
     - -c
     - |
-      curl -svm3 --fail --retry 120 --retry-max-time 120 --retry-all-errors http://minimal-console.unhelm-namespace-placeholder.svc:8080/api/cluster
+      curl -svm3 --fail --retry 120 --retry-max-time 120 --retry-all-errors http://redpanda-console.unhelm-namespace-placeholder.svc:8080/api/cluster
     image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
     name: redpanda
     volumeMounts:
     - mountPath: /tmp/base-config
-      name: minimal
+      name: redpanda
 --
     - -c
     - |
       set -e
     env:
     - name: REDPANDA_BROKERS
-      value: minimal.unhelm-namespace-placeholder.svc.cluster.local:9093
+      value: redpanda.unhelm-namespace-placeholder.svc.cluster.local:9093
     - name: POD_NAME
       valueFrom:
         fieldRef:
@@ -201,22 +201,22 @@ stringData:
         $*
       }
 
-      schemaCurl http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/types
+      schemaCurl http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/types
 
       curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors \
       -X POST -H 'Content-Type:application/vnd.schemaregistry.v1+json' \
       -d '{"schema":"{\"type\":\"record\",\"name\":\"sensor_sample\",\"fields\":[{\"name\":\"timestamp\",\"type\":\"long\",\"logicalType\":\"timestamp-millis\"},{\"name\":\"identifier\",\"type\":\"string\",\"logicalType\":\"uuid\"},{\"name\":\"value\",\"type\":\"long\"}]}"}' \
-      http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions
+      http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions
 
-      schemaCurl http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/ids/1
+      schemaCurl http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/ids/1
 
-      schemaCurl http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
-
-      schemaCurl -X DELETE \
-      http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1
+      schemaCurl http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
 
       schemaCurl -X DELETE \
-      http://minimal.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1?permanent=true
+      http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1
+
+      schemaCurl -X DELETE \
+      http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1?permanent=true
     command:
     - /bin/bash
     - -c

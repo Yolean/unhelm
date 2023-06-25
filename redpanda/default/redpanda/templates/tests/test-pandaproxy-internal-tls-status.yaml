@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: default-test-pandaproxy-internal-tls-status
+  name: redpanda-test-pandaproxy-internal-tls-status
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -28,11 +28,11 @@ spec:
 
           curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors --ssl-reqd \
           --cacert /etc/tls/certs/default/ca.crt \
-          https://default.unhelm-namespace-placeholder.svc.cluster.local.:8082/brokers
+          https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8082/brokers
 
           curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors --ssl-reqd \
           --cacert /etc/tls/certs/default/ca.crt \
-          https://default.unhelm-namespace-placeholder.svc.cluster.local.:8082/topics
+          https://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8082/topics
       volumeMounts:
         - name: redpanda-default-cert
           mountPath: /etc/tls/certs/default
@@ -44,8 +44,8 @@ spec:
     - name: redpanda-default-cert
       secret:
         defaultMode: 0644
-        secretName: default-default-cert
+        secretName: redpanda-default-cert
     - name: redpanda-external-cert
       secret:
         defaultMode: 0644
-        secretName: default-external-cert
+        secretName: redpanda-external-cert

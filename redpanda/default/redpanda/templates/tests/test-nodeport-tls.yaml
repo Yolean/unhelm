@@ -49,11 +49,11 @@ subjects:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: default-test-nodeport-tls
+  name: redpanda-test-nodeport-tls
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -96,7 +96,7 @@ spec:
           for i in $ordinal_list
           do
             POD_DESC=$(curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" \
-            -X GET ${APISERVER}/api/v1/namespaces/unhelm-namespace-placeholder/pods/default-$i)
+            -X GET ${APISERVER}/api/v1/namespaces/unhelm-namespace-placeholder/pods/redpanda-$i)
             ip=$(echo $POD_DESC | jq -r .status.hostIP )
             ip_list="$ip $ip_list"
           done
@@ -119,7 +119,7 @@ spec:
           path: tls.crt
         - key: ca.crt
           path: ca.crt
-      secretName: default-default-cert
+      secretName: redpanda-default-cert
   - name: redpanda-external-cert
     secret:
       defaultMode: 420
@@ -130,4 +130,4 @@ spec:
           path: tls.crt
         - key: ca.crt
           path: ca.crt
-      secretName: default-external-cert
+      secretName: redpanda-external-cert

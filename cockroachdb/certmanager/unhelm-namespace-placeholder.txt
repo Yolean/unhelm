@@ -5,9 +5,9 @@ Note the following instances of namespace strings that Kustomize won't replace
           --http-port=8080 --port=26257 --cache=25% --max-sql-memory=25% --logtostderr=INFO
         env:
         - name: STATEFULSET_NAME
-          value: certmanager-cockroachdb
+          value: cockroachdb
         - name: STATEFULSET_FQDN
-          value: certmanager-cockroachdb.unhelm-namespace-placeholder.svc.cluster.local
+          value: cockroachdb.unhelm-namespace-placeholder.svc.cluster.local
         - name: COCKROACH_CHANNEL
           value: kubernetes-helm
         image: cockroachdb/cockroach:v23.1.4
@@ -18,12 +18,12 @@ Note the following instances of namespace strings that Kustomize won't replace
   dnsNames:
   - localhost
   - 127.0.0.1
-  - certmanager-cockroachdb-public
-  - certmanager-cockroachdb-public.unhelm-namespace-placeholder
-  - certmanager-cockroachdb-public.unhelm-namespace-placeholder.svc.cluster.local
-  - '*.certmanager-cockroachdb'
-  - '*.certmanager-cockroachdb.unhelm-namespace-placeholder'
-  - '*.certmanager-cockroachdb.unhelm-namespace-placeholder.svc.cluster.local'
+  - cockroachdb-public
+  - cockroachdb-public.unhelm-namespace-placeholder
+  - cockroachdb-public.unhelm-namespace-placeholder.svc.cluster.local
+  - '*.cockroachdb'
+  - '*.cockroachdb.unhelm-namespace-placeholder'
+  - '*.cockroachdb.unhelm-namespace-placeholder.svc.cluster.local'
   duration: 8760h
   issuerRef:
     group: cert-manager.io
@@ -35,7 +35,7 @@ Note the following instances of namespace strings that Kustomize won't replace
     - --certs-dir
     - /cockroach-certs
     - --host
-    - certmanager-cockroachdb-public.unhelm-namespace-placeholder
+    - cockroachdb-public.unhelm-namespace-placeholder
     - --port
     - "26257"
     - -e

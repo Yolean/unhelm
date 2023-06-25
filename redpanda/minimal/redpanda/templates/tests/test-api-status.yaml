@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "minimal-test-api-status"
+  name: "redpanda-test-api-status"
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -29,15 +29,15 @@ spec:
       - -c
       - |
         until rpk cluster info \
-          --brokers minimal-0.minimal.unhelm-namespace-placeholder.svc.cluster.local.:9093
+          --brokers redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
           do sleep 2
         done
       volumeMounts:
-        - name: minimal
+        - name: redpanda
           mountPath: /tmp/base-config
   volumes:
-    - name: minimal
+    - name: redpanda
       configMap:
-        name: minimal
+        name: redpanda
     - name: config
       emptyDir: {}

@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: default
+  name: redpanda
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -92,13 +92,13 @@ data:
         truststore_file: /etc/tls/certs/default/ca.crt
       seed_servers:
         - host:
-            address: default-0.default.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
         - host:
-            address: default-1.default.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
         - host:
-            address: default-2.default.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
             port: 33145
     schema_registry:
       schema_registry_api:

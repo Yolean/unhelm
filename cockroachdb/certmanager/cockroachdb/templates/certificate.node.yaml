@@ -3,12 +3,12 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: certmanager-cockroachdb-node
+  name: cockroachdb-node
   namespace: "unhelm-namespace-placeholder"
   labels:
     helm.sh/chart: cockroachdb-11.0.3
     app.kubernetes.io/name: cockroachdb
-    app.kubernetes.io/instance: "certmanager"
+    app.kubernetes.io/instance: "cockroachdb"
     app.kubernetes.io/managed-by: "Helm"
 spec:
   duration: 8760h
@@ -26,12 +26,12 @@ spec:
   dnsNames:
     - "localhost"
     - "127.0.0.1"
-    - "certmanager-cockroachdb-public"
-    - "certmanager-cockroachdb-public.unhelm-namespace-placeholder"
-    - "certmanager-cockroachdb-public.unhelm-namespace-placeholder.svc.cluster.local"
-    - "*.certmanager-cockroachdb"
-    - "*.certmanager-cockroachdb.unhelm-namespace-placeholder"
-    - "*.certmanager-cockroachdb.unhelm-namespace-placeholder.svc.cluster.local"
+    - "cockroachdb-public"
+    - "cockroachdb-public.unhelm-namespace-placeholder"
+    - "cockroachdb-public.unhelm-namespace-placeholder.svc.cluster.local"
+    - "*.cockroachdb"
+    - "*.cockroachdb.unhelm-namespace-placeholder"
+    - "*.cockroachdb.unhelm-namespace-placeholder.svc.cluster.local"
   secretName: cockroachdb-node
   issuerRef:
     name: cockroachdb

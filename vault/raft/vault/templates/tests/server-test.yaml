@@ -3,19 +3,19 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "raft-server-test"
+  name: "vault-server-test"
   namespace: unhelm-namespace-placeholder
   annotations:
     "helm.sh/hook": test
 spec:
   
   containers:
-    - name: raft-server-test
+    - name: vault-server-test
       image: hashicorp/vault:1.13.1
       imagePullPolicy: IfNotPresent
       env:
         - name: VAULT_ADDR
-          value: http://raft-vault.unhelm-namespace-placeholder.svc:8200
+          value: http://vault.unhelm-namespace-placeholder.svc:8200
         
       command:
         - /bin/sh

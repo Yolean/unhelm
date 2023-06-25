@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "minimal-test-console"
+  name: "redpanda-test-console"
   namespace: "unhelm-namespace-placeholder"
   labels:
     app.kubernetes.io/component: redpanda
-    app.kubernetes.io/instance: minimal
+    app.kubernetes.io/instance: redpanda
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redpanda
     helm.sh/chart: redpanda-4.0.47
@@ -28,13 +28,13 @@ spec:
       - bash
       - -c
       - |
-        curl -svm3 --fail --retry 120 --retry-max-time 120 --retry-all-errors http://minimal-console.unhelm-namespace-placeholder.svc:8080/api/cluster
+        curl -svm3 --fail --retry 120 --retry-max-time 120 --retry-all-errors http://redpanda-console.unhelm-namespace-placeholder.svc:8080/api/cluster
       volumeMounts:
-        - name: minimal
+        - name: redpanda
           mountPath: /tmp/base-config
   volumes:
-    - name: minimal
+    - name: redpanda
       configMap:
-        name: minimal
+        name: redpanda
     - name: config
       emptyDir: {}
