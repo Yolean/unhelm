@@ -107,25 +107,6 @@ services:
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/mysql/* ./mysql/"
 
-  redpanda:
-    image: docker.io/yolean/ystack-runner:cd9cb05b51adf3a9b545c622c7424421ebb4945e@sha256:d48744967206aade113797f728d4dd67b0dcebb805e2665146605bcc55539728
-    working_dir: /tmp
-    volumes:
-    - /tmp/unhelm:/tmp/unhelm:rw
-    - ./redpanda:/workspace/redpanda:ro
-    command:
-    - /bin/bash
-    - -cx
-    - |
-      set -eo pipefail
-      mkdir -p /tmp/unhelm/redpanda/redpanda
-      echo 'resources:' > /tmp/unhelm/redpanda/redpanda/kustomization.yaml
-      helm template --repo https://charts.redpanda.com redpanda redpanda -f /workspace/redpanda/without-tls.values.yaml --namespace unhelm-namespace-placeholder --output-dir /tmp/unhelm/redpanda | sed 's|wrote /tmp/unhelm/redpanda/redpanda/|- ./|' | sort | uniq | tee -a /tmp/unhelm/redpanda/redpanda/kustomization.yaml
-      mv /tmp/unhelm/redpanda/redpanda /tmp/unhelm/redpanda/without-tls
-      set +x
-      echo "Done. To extract the results:"
-      echo "rsync -av --delete /tmp/unhelm/redpanda/* ./redpanda/"
-
   vault:
     image: docker.io/yolean/ystack-runner:cd9cb05b51adf3a9b545c622c7424421ebb4945e@sha256:d48744967206aade113797f728d4dd67b0dcebb805e2665146605bcc55539728
     working_dir: /tmp
