@@ -173,34 +173,6 @@ services:
       echo "Done. To extract the results:"
       echo "rsync -av --delete /tmp/unhelm/fluent-bit/* ./fluent-bit/"
 
-  thanos:
-    build: ./jsonnet-docker
-    working_dir: /tmp
-    volumes:
-    - /tmp/unhelm:/tmp/unhelm:rw
-    - ./thanos:/workspace/thanos:ro
-    command:
-    - /bin/bash
-    - -cx
-    - |
-      mkdir -p /tmp/unhelm/thanos
-      cd /tmp/unhelm/thanos
-      jb init
-      jb install github.com/thanos-io/kube-thanos/jsonnet/kube-thanos@main
-      cp /workspace/thanos/example.jsonnet .
-      git --no-pager diff
-      . build.sh
-      git --no-pager diff
-      cat <<EOF >kustomization.yaml
-      apiVersion: kustomize.config.k8s.io/v1beta1
-      kind: Kustomization
-      resources:
-      EOF
-      find manifests -name '*.yaml' | sed 's/^/- /' >>kustomization.yaml
-      set +x
-      echo "Done. To extract the results:"
-      echo "rsync -av --delete /tmp/unhelm/thanos/* ./thanos/"
-
   openreplay:
     image: docker.io/yolean/ystack-runner:755de97a9e73114abea98bd8c8247186de560c49
     working_dir: /tmp
