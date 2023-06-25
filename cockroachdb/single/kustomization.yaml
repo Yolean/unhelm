@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+
+- ./cockroachdb/templates/job.init.yaml
+- ./cockroachdb/templates/poddisruptionbudget.yaml
+- ./cockroachdb/templates/service.discovery.yaml
+- ./cockroachdb/templates/service.public.yaml
+- ./cockroachdb/templates/statefulset.yaml
+- ./cockroachdb/templates/tests/client.yaml
