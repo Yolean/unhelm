@@ -1,13 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 resources:
-- ./vault/templates/server-disruptionbudget.yaml
-- ./vault/templates/server-serviceaccount.yaml
+
 - ./vault/templates/server-config-configmap.yaml
 - ./vault/templates/server-discovery-role.yaml
 - ./vault/templates/server-discovery-rolebinding.yaml
+- ./vault/templates/server-disruptionbudget.yaml
 - ./vault/templates/server-ha-active-service.yaml
 - ./vault/templates/server-ha-standby-service.yaml
 - ./vault/templates/server-headless-service.yaml
 - ./vault/templates/server-service.yaml
-- ./vault/templates/ui-service.yaml
+- ./vault/templates/server-serviceaccount.yaml
 - ./vault/templates/server-statefulset.yaml
-
+- ./vault/templates/tests/server-test.yaml
+- ./vault/templates/ui-service.yaml

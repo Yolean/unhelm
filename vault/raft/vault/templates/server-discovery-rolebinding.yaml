@@ -3,18 +3,18 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: vault-discovery-rolebinding
-  #namespace: unhelm-namespace-placeholder
+  name: raft-vault-discovery-rolebinding
+  namespace: unhelm-namespace-placeholder
   labels:
-    helm.sh/chart: vault-0.14.0
+    helm.sh/chart: vault-0.24.1
     app.kubernetes.io/name: vault
-    app.kubernetes.io/instance: vault
+    app.kubernetes.io/instance: raft
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: vault-discovery-role
+  name: raft-vault-discovery-role
 subjects:
 - kind: ServiceAccount
-  name: vault
-  #namespace: unhelm-namespace-placeholder
+  name: raft-vault
+  namespace: unhelm-namespace-placeholder

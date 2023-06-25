@@ -4,14 +4,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: vault
-  #namespace: unhelm-namespace-placeholder
+  name: raft-vault
+  namespace: unhelm-namespace-placeholder
   labels:
     app.kubernetes.io/name: vault
-    app.kubernetes.io/instance: vault
+    app.kubernetes.io/instance: raft
     app.kubernetes.io/managed-by: Helm
 spec:
-  serviceName: vault-internal
+  serviceName: raft-vault-internal
   podManagementPolicy: Parallel
   replicas: 3
   updateStrategy:
@@ -19,14 +19,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: vault
-      app.kubernetes.io/instance: vault
+      app.kubernetes.io/instance: raft
       component: server
   template:
     metadata:
       labels:
-        helm.sh/chart: vault-0.14.0
+        helm.sh/chart: vault-0.24.1
         app.kubernetes.io/name: vault
-        app.kubernetes.io/instance: vault
+        app.kubernetes.io/instance: raft
         component: server
     spec:
       
@@ -36,32 +36,34 @@ spec:
             - labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: vault
-                  app.kubernetes.io/instance: "vault"
+                  app.kubernetes.io/instance: "raft"
                   component: server
               topologyKey: kubernetes.io/hostname
   
       
       
+      
       terminationGracePeriodSeconds: 10
-      serviceAccountName: vault
+      serviceAccountName: raft-vault
       
       securityContext:
         runAsNonRoot: true
         runAsGroup: 1000
         runAsUser: 100
         fsGroup: 1000
+      hostNetwork: false
       volumes:
         
         - name: config
           configMap:
-            name: vault-config
+            name: raft-vault-config
   
         - name: home
           emptyDir: {}
       containers:
         - name: vault
           
-          image: hashicorp/vault:1.8.0
+          image: hashicorp/vault:1.13.1
           imagePullPolicy: IfNotPresent
           command:
           - "/bin/sh"
@@ -109,7 +111,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: VAULT_CLUSTER_ADDR
-              value: "https://$(HOSTNAME).vault-internal:8201"
+              value: "https://$(HOSTNAME).raft-vault-internal:8201"
             - name: HOME
               value: "/home/vault"
             

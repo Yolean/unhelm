@@ -1,3 +1,4 @@
+# unhelm-template-repo: https://helm.releases.hashicorp.com
 server:
   ha:
     enabled: true
