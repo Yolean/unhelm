@@ -3,34 +3,37 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: fluent-bit
+  name: default-fluent-bit
+  namespace: unhelm-namespace-placeholder
   labels:
-    helm.sh/chart: fluent-bit-0.21.3
+    helm.sh/chart: fluent-bit-0.34.0
     app.kubernetes.io/name: fluent-bit
-    app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "2.0.5"
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/version: "2.1.6"
     app.kubernetes.io/managed-by: Helm
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: fluent-bit
-      app.kubernetes.io/instance: fluent-bit
+      app.kubernetes.io/instance: default
   template:
     metadata:
-      annotations:
-        checksum/config: a771471c8398fc9a0d1cbfa4f2693082e85be1dc801375841bad3ee1beeec3e2
-        checksum/luascripts: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       labels:
         app.kubernetes.io/name: fluent-bit
-        app.kubernetes.io/instance: fluent-bit
+        app.kubernetes.io/instance: default
+      annotations:
+        checksum/config: 3232f5a175dc7cf4d5221a6adcd988ce78ae3bd51bb1e90887e36952ba08ccf6
     spec:
-      serviceAccountName: fluent-bit
+      serviceAccountName: default-fluent-bit
       hostNetwork: false
       dnsPolicy: ClusterFirst
       containers:
         - name: fluent-bit
-          image: "cr.fluentbit.io/fluent/fluent-bit:2.0.5"
+          image: "cr.fluentbit.io/fluent/fluent-bit:2.1.6"
           imagePullPolicy: Always
+          args:
+            - --workdir=/fluent-bit/etc
+            - --config=/fluent-bit/etc/conf/fluent-bit.conf
           ports:
             - name: http
               containerPort: 2020
@@ -44,12 +47,8 @@ spec:
               path: /api/v1/health
               port: http
           volumeMounts:
-            - mountPath: /fluent-bit/etc/fluent-bit.conf
-              name: config
-              subPath: fluent-bit.conf
-            - mountPath: /fluent-bit/etc/custom_parsers.conf
-              name: config
-              subPath: custom_parsers.conf
+            - name: config
+              mountPath: /fluent-bit/etc/conf
             - mountPath: /var/log
               name: varlog
             - mountPath: /var/lib/docker/containers
@@ -61,7 +60,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: fluent-bit
+            name: default-fluent-bit
         - hostPath:
             path: /var/log
           name: varlog

@@ -3,12 +3,13 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "fluent-bit-test-connection"
+  name: "default-fluent-bit-test-connection"
+  namespace: unhelm-namespace-placeholder
   labels:
-    helm.sh/chart: fluent-bit-0.21.3
+    helm.sh/chart: fluent-bit-0.34.0
     app.kubernetes.io/name: fluent-bit
-    app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "2.0.5"
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/version: "2.1.6"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": test-success
@@ -18,5 +19,5 @@ spec:
       image: "busybox:latest"
       imagePullPolicy: Always
       command: ['wget']
-      args: ['fluent-bit:2020']
+      args: ['default-fluent-bit:2020']
   restartPolicy: Never

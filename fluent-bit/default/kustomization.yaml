@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+
+- ./fluent-bit/templates/clusterrole.yaml
+- ./fluent-bit/templates/clusterrolebinding.yaml
+- ./fluent-bit/templates/configmap.yaml
+- ./fluent-bit/templates/daemonset.yaml
+- ./fluent-bit/templates/service.yaml
+- ./fluent-bit/templates/serviceaccount.yaml
+- ./fluent-bit/templates/tests/test-connection.yaml
