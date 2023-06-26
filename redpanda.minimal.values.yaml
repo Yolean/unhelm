@@ -1,5 +1,7 @@
 # yaml-language-server: $schema=https://github.com/redpanda-data/helm-charts/raw/redpanda-4.0.32/charts/redpanda/values.schema.json
 # unhelm-template-repo: https://charts.redpanda.com
+# unhelm-namespace: kafka
+
 image:
   repository: docker.redpanda.com/redpandadata/redpanda
   # sha256 is disallowed here by the json schema

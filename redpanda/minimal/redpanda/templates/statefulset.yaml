@@ -29,7 +29,7 @@ spec:
         app.kubernetes.io/component: redpanda-statefulset
         redpanda.com/poddisruptionbudget: redpanda
       annotations:
-        checksum/config: 3d72e1348bc6b82ebfb04ace04181c2f1e0b6105339fc4b9cdb9e02fd494c817
+        checksum/config: 1ea38287095928598ef2a1a2ee5d4cfc96ddc3a21b5d1e62e047bb6a0818777a
     spec:
       terminationGracePeriodSeconds: 90
       securityContext: 
@@ -52,9 +52,9 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: ADVERTISED_KAFKA_ADDRESSES
-              value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
+              value: '{"address":"$(SERVICE_NAME).redpanda.kafka.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).redpanda.kafka.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092} {"address":"$(SERVICE_NAME).redpanda.kafka.svc.cluster.local.","name":"internal","port":9093};{"address":"$(SERVICE_NAME)","name":"default","port":31092}'
             - name: ADVERTISED_HTTP_ADDRESSES
-              value: '{"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
+              value: '{"address":"$(SERVICE_NAME).redpanda.kafka.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).redpanda.kafka.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082} {"address":"$(SERVICE_NAME).redpanda.kafka.svc.cluster.local.","name":"internal","port":8082};{"address":"$(SERVICE_NAME)","name":"default","port":30082}'
             - name: KUBERNETES_NODE_NAME
               valueFrom:
                 fieldRef:
@@ -126,7 +126,7 @@ spec:
                 - -c
                 - |
                   set -e
-                  RESULT=$(curl --silent --fail -k  "http://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready")
+                  RESULT=$(curl --silent --fail -k  "http://${SERVICE_NAME}.redpanda.kafka.svc.cluster.local.:9644/v1/status/ready")
                   echo $RESULT
                   echo $RESULT | grep ready
             initialDelaySeconds: 1
@@ -138,7 +138,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - curl --silent --fail -k  "http://${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644/v1/status/ready"
+                - curl --silent --fail -k  "http://${SERVICE_NAME}.redpanda.kafka.svc.cluster.local.:9644/v1/status/ready"
             initialDelaySeconds: 10
             failureThreshold: 3
             periodSeconds: 10
@@ -153,8 +153,8 @@ spec:
                 - -c
                 - |
                   set -x
-                  rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
-                  rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 | grep 'Healthy:.*true'
+                  rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.kafka.svc.cluster.local.:9644
+                  rpk cluster health --api-urls ${SERVICE_NAME}.redpanda.kafka.svc.cluster.local.:9644 | grep 'Healthy:.*true'
             initialDelaySeconds: 1
             failureThreshold: 3
             periodSeconds: 10
@@ -167,7 +167,7 @@ spec:
             - --memory=2048M
             - --reserve-memory=205M
             - --default-log-level=info
-            - --advertise-rpc-addr=$(SERVICE_NAME).redpanda.unhelm-namespace-placeholder.svc.cluster.local.:33145
+            - --advertise-rpc-addr=$(SERVICE_NAME).redpanda.kafka.svc.cluster.local.:33145
             - --overprovisioned
           ports:
             - name: admin
