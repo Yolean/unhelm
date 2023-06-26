@@ -20,42 +20,6 @@ Note the following instances of namespace strings that Kustomize won't replace
         - name: internal
           address: 0.0.0.0
 --
-data:
-  config.yaml: |
-    # from .Values.console.config
-    kafka:
-      brokers:
-      - redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
-      - redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
-      - redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9093
-      sasl:
-        enabled: false
-      schemaRegistry:
-        enabled: true
-        tls:
-          enabled: false
-        urls:
-        - http://redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
-        - http://redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
-        - http://redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081
-      tls:
-        enabled: false
-kind: ConfigMap
-metadata:
-  labels:
---
-    #!/usr/bin/env bash
-    set -e
-
-    ready_result_exit_code=1
-    while [[ ${ready_result_exit_code} -ne 0 ]]; do
-      ready_result=$(rpk cluster health --api-urls redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644 | grep 'Healthy:.*true' 2>&1) && ready_result_exit_code=$?
-      sleep 2
-    done
-
-    while true; do
-      sleep infinity
---
 stringData:
   common.sh: |-
     #!/usr/bin/env bash
@@ -67,18 +31,6 @@ stringData:
     CURL_NODE_ID_CMD="curl --silent --fail  ${CURL_URL}/v1/node_config"
 
     CURL_MAINTENANCE_DELETE_CMD_PREFIX='curl -X DELETE --silent -o /dev/null -w "%{http_code}"'
---
-        - --config.filepath=/etc/console/configs/config.yaml
-        env:
-        - name: REDPANDA_ADMINAPI_ENABLED
-          value: "true"
-        - name: REDPANDA_ADMINAPI_URLS
-          value: http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
-        image: docker.redpanda.com/redpandadata/console:v2.2.4
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
 --
         - start
         - --smp=1
@@ -147,19 +99,6 @@ stringData:
               fieldPath: spec.nodeName
         image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
 --
-      name: redpanda
-    spec:
-      containers:
-      - args:
-        - |
-          rpk cluster config import -f /tmp/base-config/bootstrap.yaml --api-urls redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
-          rpk cluster config set storage_min_free_bytes 1073741824 --api-urls redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644,redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.:9644
-        command:
-        - /bin/sh
-        - -c
-        image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
-        name: redpanda-post-upgrade
---
     - "120"
     - bash
     - -c
@@ -171,18 +110,6 @@ stringData:
     image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
     name: redpanda
     volumeMounts:
---
-    - /usr/bin/timeout
-    - "120"
-    - bash
-    - -c
-    - |
-      curl -svm3 --fail --retry 120 --retry-max-time 120 --retry-all-errors http://redpanda-console.unhelm-namespace-placeholder.svc:8080/api/cluster
-    image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
-    name: redpanda
-    volumeMounts:
-    - mountPath: /tmp/base-config
-      name: redpanda
 --
     - -c
     - |

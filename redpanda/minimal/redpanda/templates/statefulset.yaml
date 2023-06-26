@@ -29,7 +29,7 @@ spec:
         app.kubernetes.io/component: redpanda-statefulset
         redpanda.com/poddisruptionbudget: redpanda
       annotations:
-        checksum/config: 652156dcec0e78c557627c5666d1b85db3c941e5c7320783ecbd2d895bd9330d
+        checksum/config: 98466a7d7d4fdde0104e76f3d38c8ec61764e317d208bffc5f85b35f475a502f
     spec:
       terminationGracePeriodSeconds: 90
       securityContext: 
@@ -219,16 +219,6 @@ spec:
             limits:
               cpu: 1
               memory: 2.5Gi
-        - name: config-watcher
-          image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
-          command:
-            - /bin/bash # could be expanded for multiple scripts
-            - -c 
-            - /etc/secrets/config-watcher/scripts/sasl-user.sh
-          volumeMounts:
-            - name: redpanda-config-watcher
-              mountPath: /etc/secrets/config-watcher/scripts
-              readOnly: true
       volumes:
         - name: lifecycle-scripts
           secret:

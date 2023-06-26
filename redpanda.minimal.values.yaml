@@ -11,6 +11,9 @@ statefulset:
       enabled: true
   additionalRedpandaCmdFlags:
   - --overprovisioned
+  sideCars:
+    configWatcher:
+      enabled: false
 tls:
   enabled: false
 config:
@@ -20,6 +23,18 @@ config:
   node: {}
 external:
   enabled: false
+rbac:
+  enabled: false
+post_install_job:
+  enabled: false
+post_upgrade_job:
+  enabled: false
+console:
+  enabled: false
+logging:
+  logLevel: info
+  usageStats:
+    enabled: false
 # The chart has quite obscure rules for resources, use Kustomize instead
 # resources:
 #   cpu:

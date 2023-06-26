@@ -92,7 +92,7 @@ data:
       pandaproxy_api_tls:
 
     rpk:
-      enable_usage_stats: true
+      enable_usage_stats: false
       overprovisioned: false
       enable_memory_locking: false
       tune_aio_events: true
