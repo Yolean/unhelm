@@ -29,7 +29,7 @@ spec:
         app.kubernetes.io/component: redpanda-statefulset
         redpanda.com/poddisruptionbudget: redpanda
       annotations:
-        checksum/config: 98466a7d7d4fdde0104e76f3d38c8ec61764e317d208bffc5f85b35f475a502f
+        checksum/config: 3d72e1348bc6b82ebfb04ace04181c2f1e0b6105339fc4b9cdb9e02fd494c817
     spec:
       terminationGracePeriodSeconds: 90
       securityContext: 
@@ -37,23 +37,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       serviceAccountName: default
       initContainers:
-        - name: tuning
-          image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
-          command:
-            - bash
-            - -c
-          args:
-            - |
-              rpk redpanda tune all
-          securityContext:
-            capabilities:
-              add: ["SYS_RESOURCE"]
-            privileged: true
-            runAsUser: 0
-            runAsGroup: 0
-          volumeMounts:
-            - name: redpanda
-              mountPath: /etc/redpanda
         - name: set-datadir-ownership
           image: busybox:latest
           command: ["/bin/sh", "-c", "chown 101:101 -R /var/lib/redpanda/data"]
