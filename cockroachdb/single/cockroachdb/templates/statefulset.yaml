@@ -77,7 +77,7 @@ spec:
             # https://github.com/helm/charts/pull/18993#issuecomment-558795102
             - >-
               exec /cockroach/cockroach
-              start --join=${STATEFULSET_NAME}-0.${STATEFULSET_FQDN}:26257,${STATEFULSET_NAME}-1.${STATEFULSET_FQDN}:26257,${STATEFULSET_NAME}-2.${STATEFULSET_FQDN}:26257
+              start-single-node
               --advertise-host=$(hostname).${STATEFULSET_FQDN}
               --insecure
               --http-port=8080

@@ -2,7 +2,7 @@
 Note the following instances of namespace strings that Kustomize won't replace
 =============================================================================
 
-          --port=26257 --cache=25% --max-sql-memory=25% --logtostderr=INFO
+          --logtostderr=INFO
         env:
         - name: STATEFULSET_NAME
           value: cockroachdb

@@ -3,6 +3,8 @@
 
 statefulset:
   replicas: 1
+conf:
+  single-node: true
 
 tls:
   enabled: false
