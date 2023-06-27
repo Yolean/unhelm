@@ -7,7 +7,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redpanda
-  namespace: "unhelm-namespace-placeholder"
+  namespace: "kafka"
   labels:
     monitoring.redpanda.com/enabled: "false"
     app.kubernetes.io/component: redpanda

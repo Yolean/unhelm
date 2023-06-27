@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "redpanda-test-schemaregistry-status"
-  namespace: "unhelm-namespace-placeholder"
+  namespace: "kafka"
   labels:
     app.kubernetes.io/component: redpanda
     app.kubernetes.io/instance: redpanda
@@ -31,21 +31,21 @@ spec:
             $*
           }
 
-          schemaCurl http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/types
+          schemaCurl http://redpanda.kafka.svc.cluster.local.:8081/schemas/types
 
           curl -svm3 --fail --retry "120" --retry-max-time "120" --retry-all-errors \
           -X POST -H 'Content-Type:application/vnd.schemaregistry.v1+json' \
           -d '{"schema":"{\"type\":\"record\",\"name\":\"sensor_sample\",\"fields\":[{\"name\":\"timestamp\",\"type\":\"long\",\"logicalType\":\"timestamp-millis\"},{\"name\":\"identifier\",\"type\":\"string\",\"logicalType\":\"uuid\"},{\"name\":\"value\",\"type\":\"long\"}]}"}' \
-          http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions
+          http://redpanda.kafka.svc.cluster.local.:8081/subjects/sensor-value/versions
 
-          schemaCurl http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/schemas/ids/1
+          schemaCurl http://redpanda.kafka.svc.cluster.local.:8081/schemas/ids/1
 
-          schemaCurl http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects
-
-          schemaCurl -X DELETE \
-          http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1
+          schemaCurl http://redpanda.kafka.svc.cluster.local.:8081/subjects
 
           schemaCurl -X DELETE \
-          http://redpanda.unhelm-namespace-placeholder.svc.cluster.local.:8081/subjects/sensor-value/versions/1?permanent=true
+          http://redpanda.kafka.svc.cluster.local.:8081/subjects/sensor-value/versions/1
+
+          schemaCurl -X DELETE \
+          http://redpanda.kafka.svc.cluster.local.:8081/subjects/sensor-value/versions/1?permanent=true
       volumeMounts:
   volumes:

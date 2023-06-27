@@ -25,3 +25,5 @@ Each generated kustomize base gets a file `unhelm-namespace-placeholder.txt`
 which helps point out these strings.
 They typically call for specific Kustomize patches.
 Or use this repo only as examples and maintain your own yaml.
+
+To set a different namespace, use a line prefixed `# unhelm-namespace: [namespace name]`.
