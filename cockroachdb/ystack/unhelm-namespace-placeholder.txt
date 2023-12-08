@@ -10,7 +10,7 @@ Note the following instances of namespace strings that Kustomize won't replace
           value: cockroachdb.unhelm-namespace-placeholder.svc.cluster.local
         - name: COCKROACH_CHANNEL
           value: kubernetes-helm
-        image: cockroachdb/cockroach:v23.1.4
+        image: cockroachdb/cockroach:v23.1.12
         imagePullPolicy: IfNotPresent
         livenessProbe:
 --
@@ -36,4 +36,4 @@ Note the following instances of namespace strings that Kustomize won't replace
     - "26257"
     - -e
     - SHOW DATABASES;
-    image: cockroachdb/cockroach:v23.1.4
+    image: cockroachdb/cockroach:v23.1.12

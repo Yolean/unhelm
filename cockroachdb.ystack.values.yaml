@@ -17,3 +17,10 @@ tls:
     selfSigner:
       enabled: false
       caProvided: false
+
+statefulset:
+  replicas: 1
+  conf:
+    single-node: true
+  serviceAccount:
+    create: false

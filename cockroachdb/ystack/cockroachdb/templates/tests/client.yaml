@@ -11,7 +11,7 @@ spec:
   restartPolicy: Never
   containers:
     - name: client-test
-      image: "cockroachdb/cockroach:v23.1.4"
+      image: "cockroachdb/cockroach:v23.1.12"
       imagePullPolicy: "IfNotPresent"
       command:
         - /cockroach/cockroach

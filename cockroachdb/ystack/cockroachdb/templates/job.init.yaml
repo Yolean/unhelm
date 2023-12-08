@@ -6,7 +6,7 @@ metadata:
   name: cockroachdb-init
   namespace: "unhelm-namespace-placeholder"
   labels:
-    helm.sh/chart: cockroachdb-11.0.3
+    helm.sh/chart: cockroachdb-11.2.2
     app.kubernetes.io/name: cockroachdb
     app.kubernetes.io/instance: "cockroachdb"
     app.kubernetes.io/managed-by: "Helm"
@@ -22,11 +22,19 @@ spec:
         app.kubernetes.io/instance: "cockroachdb"
         app.kubernetes.io/component: init
     spec:
+      securityContext:
+        seccompProfile:
+          type: "RuntimeDefault"
+        runAsGroup: 1000
+        runAsUser: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
       restartPolicy: OnFailure
       terminationGracePeriodSeconds: 0
+      serviceAccountName: default
       containers:
         - name: cluster-init
-          image: "cockroachdb/cockroach:v23.1.4"
+          image: "cockroachdb/cockroach:v23.1.12"
           imagePullPolicy: "IfNotPresent"
           # Run the command in an `while true` loop because this Job is bound
           # to come up before the CockroachDB Pods (due to the time needed to
@@ -64,3 +72,7 @@ spec:
 
               initCluster;
           env:
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:  
+              drop: ["ALL"]
