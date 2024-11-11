@@ -14,6 +14,7 @@ VALUES=$1
 
 IREPO="# unhelm-template-repo:"
 INAMESPACE="# unhelm-namespace:"
+IVERSION="# unhelm-version:"
 DEFAULT_NAMESPACE=unhelm-namespace-placeholder
 
 CHART=$(echo $VALUES | cut -d'.' -f1)
@@ -22,6 +23,8 @@ NAME=$(echo $VALUES | cut -d'.' -f2)
 REPO=$(cat $VALUES | grep "^$IREPO" | cut -d' ' -f3)
 echo "=> repo=$REPO chart=$CHART name=$NAME"
 NAMESPACE="$(cat $VALUES | grep "^$INAMESPACE" | cut -d' ' -f3 || echo $DEFAULT_NAMESPACE)"
+VERSION="$(cat $VALUES | grep "^$IVERSION" | cut -d' ' -f3 || echo '')"
+[ -z "$VERSION" ] || VERSION="--version $VERSION"
 
 ORIGIN=$(echo $REPO | sed 's|.*://||' | sed 's|/$||' | sed 's|/|-|g')
 
@@ -42,6 +45,7 @@ resources:
 EOF
 
 helm template $CHART $ORIGIN/$CHART -f $VALUES \
+    $VERSION \
     --namespace $NAMESPACE \
     --output-dir $BASE \
     | sed "s|wrote $BASE/|- ./|" \
