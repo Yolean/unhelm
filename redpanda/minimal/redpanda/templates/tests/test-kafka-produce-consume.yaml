@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: redpanda-test-kafka-produce-consume
-  namespace: "unhelm-namespace-placeholder"
+  namespace: "kafka"
   labels:
     app.kubernetes.io/component: redpanda
     app.kubernetes.io/instance: redpanda
@@ -24,7 +24,7 @@ spec:
       image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
       env:
         - name: REDPANDA_BROKERS
-          value: "redpanda.unhelm-namespace-placeholder.svc.cluster.local:9093"
+          value: "redpanda.kafka.svc.cluster.local:9093"
         - name: POD_NAME
           valueFrom:
             fieldRef:

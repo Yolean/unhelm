@@ -13,14 +13,20 @@ export HELM_REPOSITORY_CONFIG="$HDIR/repositories.yaml"
 VALUES=$1
 
 IREPO="# unhelm-template-repo:"
+INAMESPACE="# unhelm-namespace:"
+IVERSION="# unhelm-version:"
+DEFAULT_NAMESPACE=unhelm-namespace-placeholder
 
 CHART=$(echo $VALUES | cut -d'.' -f1)
 NAME=$(echo $VALUES | cut -d'.' -f2)
 ! grep "^$IREPO" $VALUES && echo "Failed to find \"$IREPO \" in $VALUES" && exit 1
 REPO=$(cat $VALUES | grep "^$IREPO" | cut -d' ' -f3)
 echo "=> repo=$REPO chart=$CHART name=$NAME"
+NAMESPACE="$(cat $VALUES | grep "^$INAMESPACE" | cut -d' ' -f3 || echo $DEFAULT_NAMESPACE)"
+VERSION="$(cat $VALUES | grep "^$IVERSION" | cut -d' ' -f3 || echo '')"
+[ -z "$VERSION" ] || VERSION="--version $VERSION"
 
-ORIGIN=$(echo $REPO | sed 's|.*://||' | sed 's|/$||' | sed 's|/|-|')
+ORIGIN=$(echo $REPO | sed 's|.*://||' | sed 's|/$||' | sed 's|/|-|g')
 
 helm repo add $ORIGIN $REPO
 helm repo update
@@ -39,12 +45,16 @@ resources:
 EOF
 
 helm template $CHART $ORIGIN/$CHART -f $VALUES \
-    --namespace unhelm-namespace-placeholder \
+    $VERSION \
+    --namespace $NAMESPACE \
     --output-dir $BASE \
     | sed "s|wrote $BASE/|- ./|" \
     | sort | uniq \
     | tee -a $BASE/kustomization.yaml
 
+[ "$NAMESPACE" != "$DEFAULT_NAMESPACE" ] && {
+echo "=> Custom namespace: $NAMESPACE"
+} || {
 echo "=> Looking for namespace references"
 
 mkdir -p .namespace-test
@@ -63,6 +73,7 @@ Note the following instances of namespace strings that Kustomize won't replace
 =============================================================================
 
 EOF
-kustomize build .namespace-test | grep -C 5 unhelm-namespace-placeholder >> $NSINFO || true
-cat $NSINFO | grep unhelm-namespace-placeholder | wc -l || true
+kustomize build .namespace-test | grep -C 5 $NAMESPACE >> $NSINFO || true
+cat $NSINFO | grep $NAMESPACE | wc -l || true
 echo "=> Done"
+}

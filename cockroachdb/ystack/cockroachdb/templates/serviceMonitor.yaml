@@ -6,7 +6,7 @@ metadata:
   name: cockroachdb
   namespace: "unhelm-namespace-placeholder"
   labels:
-    helm.sh/chart: cockroachdb-11.0.3
+    helm.sh/chart: cockroachdb-11.2.2
     app.kubernetes.io/name: cockroachdb
     app.kubernetes.io/instance: "cockroachdb"
     app.kubernetes.io/managed-by: "Helm"

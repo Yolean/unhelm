@@ -4,7 +4,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: redpanda
-  namespace: "unhelm-namespace-placeholder"
+  namespace: "kafka"
   labels:
     app.kubernetes.io/component: redpanda
     app.kubernetes.io/instance: redpanda
@@ -64,13 +64,13 @@ data:
         port: 33145
       seed_servers:
         - host:
-            address: redpanda-0.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-0.redpanda.kafka.svc.cluster.local.
             port: 33145
         - host:
-            address: redpanda-1.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-1.redpanda.kafka.svc.cluster.local.
             port: 33145
         - host:
-            address: redpanda-2.redpanda.unhelm-namespace-placeholder.svc.cluster.local.
+            address: redpanda-2.redpanda.kafka.svc.cluster.local.
             port: 33145
     schema_registry:
       schema_registry_api:

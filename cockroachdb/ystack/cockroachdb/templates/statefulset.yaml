@@ -6,14 +6,14 @@ metadata:
   name: cockroachdb
   namespace: "unhelm-namespace-placeholder"
   labels:
-    helm.sh/chart: cockroachdb-11.0.3
+    helm.sh/chart: cockroachdb-11.2.2
     app.kubernetes.io/name: cockroachdb
     app.kubernetes.io/instance: "cockroachdb"
     app.kubernetes.io/managed-by: "Helm"
     app.kubernetes.io/component: cockroachdb
 spec:
   serviceName: cockroachdb
-  replicas: 3
+  replicas: 1
   updateStrategy:
     type: RollingUpdate
   podManagementPolicy: "Parallel"
@@ -29,6 +29,7 @@ spec:
         app.kubernetes.io/instance: "cockroachdb"
         app.kubernetes.io/component: cockroachdb
     spec:
+      serviceAccountName: default
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -54,7 +55,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
         - name: db
-          image: "cockroachdb/cockroach:v23.1.4"
+          image: "cockroachdb/cockroach:v23.1.12"
           imagePullPolicy: "IfNotPresent"
           args:
             - shell
@@ -115,10 +116,24 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 5
             failureThreshold: 2
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
       volumes:
         - name: datadir
           persistentVolumeClaim:
             claimName: datadir
+      securityContext:
+        seccompProfile:
+          type: "RuntimeDefault"
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+        runAsNonRoot: true
   volumeClaimTemplates:
     - metadata:
         name: datadir

@@ -4,7 +4,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: redpanda
-  namespace: unhelm-namespace-placeholder
+  namespace: kafka
   labels:
     app.kubernetes.io/component: redpanda
     app.kubernetes.io/instance: redpanda
